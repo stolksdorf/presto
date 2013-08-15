@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<body>
+	<div class='presto' xo-block='calculator'>
+
+		<div class='topbar'>
+			<span class='topbar__logo'> <i class='icon-plane' xo-element='logo'></i> </span>
+			<span class='topbar__title' xo-element='title'>Test</span>
+			<span class='topbar__editor clickable' xo-element='launchEditorButton'> <i class='icon-gear'></i> </span>
+		</div>
+
+
+
+
+
+
+		<div class='container'>
+
+			<div class='container__left'>
+
+				<div class='inputContainer' xo-element='inputContainer'></div>
+
+			</div>
+
+			<div class='container__right'>
+
+				<div class='chartContainer' xo-element='chartContainer'></div>
+
+
+			</div>
+
+
+		</div>
+
+
+
+
+
+
+
+<!--
+
+		<div class='input' xo-block='input'>
+
+			<div xo-element='inputContianer'>
+
+			</div>
+
+		</div>
+
+		<table xo-block='chart' border='1'>
+			<thead>
+			    <tr xo-element='head'>
+			    </tr>
+			  </thead>
+			  <tfoot>
+			    <tr xo-element='foot'>
+			    </tr>
+			  </tfoot>
+			  <tbody xo-element='body'>
+			  </tbody>
+
+			</table>
+
+-->
+
+
+
+	</div>
+
+
+
+
+
+
+</body>
+
+
+<!-- Schematics -->
+<div class='input' xo-schematic='input'>
+	<div class='input__value' ><span xo-element='value'></span></div>
+	<div class='input__title' xo-element='title'></div>
+	<div class='input__description' xo-element='description'></div>
+</div>
+
+
+
+
+<div class='chart' xo-schematic='chart'>
+
+	<div class='chart__title' xo-element='title'></div>
+
+	<div class='chart__data' xo-element='columnContainer'></div>
+
+</div>
+
+
+
+
+<div class='chart__column' xo-schematic='chartColumn'>
+	<div class='chart__column__title' xo-element='title'>Age</div>
+	<div class='chart__cellContainer' xo-element='cellContainer'></div>
+</div>
+
+
+
+
+
+
+<div class='codeEditor' xo-schematic='codeEditor'>
+
+	<div class='codeEditor__top title'>
+		<div class='codeEditor__top__close clickable' xo-element='closeButton'><i class='icon-remove card'></i></div>
+		<div class='codeEditor__top__title'>Code Editor</div>
+	</div>
+
+	<div class='codeEditor__edit' xo-element='editor'></div>
+
+	<div class='codeEditor__errors' xo-element='errors'>
+		<i class='icon-exclamation-sign'></i> <span xo-element='errorMsg'></span>
+	</div>
+
+
+	<div class='codeEditor__buttons'>
+		<div class='btn green' xo-element='runButton'><i class='icon-play'></i> Run</div>
+		<div class='btn orange' xo-element='uploadButton'><i class='icon-cloud-upload '></i> Upload</div>
+	</div>
+</div>
+
+
+
+
+<!-- Libraries -->
+<script type="text/javascript" src="libs/jq.js"></script>
+<script type="text/javascript" src="libs/underscore.js"></script>
+<script type="text/javascript" src="libs/moment.js"></script>
+<script type="text/javascript" src="libs/widget.js"></script>
+<link rel="Stylesheet" type="text/css" href="libs/hint.css" />
+
+<!-- remote
+<link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+<link href='http://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'>
+-->
+
+<!-- local -->
+<link href='libs/lato/lato.css' rel='stylesheet' type='text/css'>
+<link href='libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
+
+
+<!-- CodeMirror -->
+<script src="libs/codemirror/cm.js"></script>
+<link  href="libs/codemirror/cm.css" rel="stylesheet">
+<script src="libs/codemirror/javascript.js"></script>
+
+
+<!-- MVC -->
+<script type="text/javascript" src="libs/backbone.js"></script>
+<script type="text/javascript" src="libs/xo.js"></script>
+
+<!-- Style -->
+<link rel="Stylesheet" type="text/css" href="style/reset.css" />
+<link rel="Stylesheet" type="text/css" href="style/presto.css" />
+
+
+
+<script type="text/javascript" src="Block/CodeEditor.js"></script>
+
+
+<script type="text/javascript" src="Block/Calculator.js"></script>
+<script type="text/javascript" src="Block/Input.js"></script>
+<script type="text/javascript" src="Block/Chart.js"></script>
+
+<script type="text/javascript" src="index.js"></script>
+
+
+
+
+<script>
+
+Array.prototype.last = function(){
+	return this[this.length-1];
+}
+
+
+</script>
+
+
+
+
+
+
+</html>
