@@ -5,18 +5,6 @@ Presto_Block_CodeEditor = XO.Block.extend({
 	initialize : function(calcCode)
 	{
 
-		this._code = calcCode
-		if(typeof calcCode !== 'string'){
-			this._code = JSON.stringify(calcCode, null, '  ');
-		}
-
-
-		if(this.block !== ''){
-			this.dom.block = jQuery('[xo-block="' + this.block + '"]');
-			this.getElements();
-			this.render();
-		}
-
 		return this;
 	},
 
@@ -26,7 +14,7 @@ Presto_Block_CodeEditor = XO.Block.extend({
 		var self = this;
 		this.editor = CodeMirror(this.dom.editor[0],
 		{
-			value          : self._code,
+			value          : 'REMOVE LATER',
 			mode           : 'javascript',
 			viewportMargin : Infinity,
 			lineNumbers    : true,
@@ -45,12 +33,50 @@ Presto_Block_CodeEditor = XO.Block.extend({
 		});
 
 
+
+
+
+
+		//Add dragging
+		var dragging;
+		this.dom.topbar.on('mousedown', function(e){
+			dragging = true;
+
+			mouseTop = self.dom.block.offset().top - e.pageY;
+			mouseLeft = self.dom.block.offset().left - e.pageX;
+
+		}).on('mouseup', function(){
+			dragging = false;
+		});
+
+		$('body').on("mousemove", function(e) {
+			if (dragging) {
+
+				self.dom.block.offset({
+					top: e.pageY + mouseTop,
+					left: e.pageX + mouseLeft
+				});
+			}
+		});
+
+		return this;
+	},
+
+
+
+	setCode : function(code)
+	{
+		this.dom.block.show();
+		if(typeof code !== 'string'){
+			code = JSON.stringify(code, null, '  ');
+		}
+		this.editor.setValue(code);
+		this.dom.block.hide();
 		return this;
 	},
 
 	show : function()
 	{
-		console.log('showing?');
 		this.dom.block.show();
 		return this;
 	},
@@ -63,7 +89,7 @@ Presto_Block_CodeEditor = XO.Block.extend({
 		this.dom.errors.hide();
 
 		try{
-			eval('(function(){makeCalc('+self.editor.getValue()+')})();');
+			eval('(function(){myCalc.makeCalc('+self.editor.getValue()+'())})();');
 		}catch(e){
 			self.dom.errors.show();
 			self.dom.errorMsg.html(e.toString());

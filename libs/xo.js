@@ -10,11 +10,11 @@
 
 		initialize : function(model)
 		{
-			this.setup(model);
+			this._setup(model);
 			return this;
 		},
 
-		setup : function(model)
+		_setup : function(model)
 		{
 			this.dom= {};
 			if(model instanceof Backbone.Model){
@@ -23,7 +23,7 @@
 			if(this.block !== ''){
 				this.dom.block = jQuery('[xo-block="' + this.block + '"]');
 				this.getElements();
-				this.render();
+				this.render.apply(this, arguments);
 			}
 			return this;
 		},

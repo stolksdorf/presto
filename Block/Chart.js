@@ -6,18 +6,22 @@ Presto_Block_Chart = XO.Block.extend({
 	{
 		var self = this;
 
-		console.log('working');
+		this.columns = [];
+
 
 		this.model.onChange('title', function(){
 			self.dom.title.text(self.model.get('title'));
 		});
 
 		_.each(this.model.get('columns'), function(columnData, columnName){
-			console.log(columnData, columnName);
 
-			var newColumn = new Presto_Block_ChartColumn(new XO.Model(columnData));
+			var tempModel = new XO.Model(columnData);
+			tempModel.set('name', columnName);
+
+
+			var newColumn = new Presto_Block_ChartColumn(tempModel);
 			newColumn.injectInto(self.dom.columnContainer);
-
+			self.columns.push(newColumn);
 
 		});
 
@@ -26,11 +30,39 @@ Presto_Block_Chart = XO.Block.extend({
 	},
 
 
+	makeRows : function(count)
+	{
+		_.each(this.columns, function(columnBlock){
+			columnBlock.makeRows(count);
+		});
 
+		this.genEnvrio();
+		return this;
+	},
 
+	genEnvrio : function()
+	{
+		var self = this;
+		Chart = {};
+		_.each(this.columns, function(columnBlock){
+			Chart[columnBlock.model.get('name')] = columnBlock.rowVals;
 
-
-
+			//Modify the array prototype instead
+			Chart[columnBlock.model.get('name')].sum = function(){
+				var result = 0;
+				for(var i = 0; i<this.length;i++){
+					result += this[i];
+				}
+				return result;
+			};
+			Chart[columnBlock.model.get('name')].find = function(fn){
+				for(var i = 0; i<this.length;i++){
+					if(fn(i, this[i])) return this[i];
+				}
+			};
+		});
+		return this;
+	}
 
 
 });
@@ -43,19 +75,46 @@ Presto_Block_ChartColumn = XO.Block.extend({
 
 	render : function()
 	{
-
 		var self = this;
 
 		this.model.onChange('title', function(){
 			self.dom.title.text(self.model.get('title'));
 		});
 
-		var firstcell = $('<div></div>').appendTo(self.dom.cellContainer);
+		return this;
+	},
 
-		firstcell.addClass('chart__cell');
+	makeRows : function(numOfRows)
+	{
+		var self = this;
+		self.dom.cellContainer.html("");
 
-		this.model.onChange('value', function(){
-			firstcell.text(self.model.get('type').renderer(self.model.get('value'), firstcell));
+		this.rowVals = [];
+
+
+		//Add the rendering to this
+		var makeCell = function(value){
+			var temp = $('<div></div>').addClass('chart__cell');
+			return temp.html(self.model.get('type').renderer(value, temp));
+		};
+
+		var val = this.model.get('value');
+
+		if(typeof val === 'function'){
+			val = val();
+		}
+
+		var fn = this.model.get('fn');
+
+		//generate the first cell
+		self.dom.cellContainer.append(makeCell(val));
+
+		this.rowVals.push(val);
+
+		_.times(numOfRows, function(index){
+			val = fn(index,val);
+			self.rowVals.push(val);
+			self.dom.cellContainer.append(makeCell(val));
 		});
 
 
@@ -66,3 +125,9 @@ Presto_Block_ChartColumn = XO.Block.extend({
 
 
 });
+
+
+
+
+
+

@@ -128,7 +128,7 @@
 				for(var i=0; i < this._events.length; i++){
 					this._events[i](this._value, this);
 				}
-				this.view.text(this.renderer(this._value, this.view));
+				this.renderer(this._value, this.view);
 			}
 			return this;
 		},
@@ -148,7 +148,7 @@
 		 */
 		renderer : function(value, view)
 		{
-			return value;
+			view.text(value);
 		},
 	};
 

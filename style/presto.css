@@ -63,9 +63,28 @@ body{
 	vertical-align: top;
 	padding: 8px;
 	width:500px;
+	margin-bottom: 30px;
 }
 
 	.inputContainer__divider{
+		height: 2px;
+		background-color: #eee;
+		width: 65%;
+		margin-left: 45px;
+
+	}
+
+
+
+.outputContainer{
+	background-color: white;
+	display: inline-block;
+	vertical-align: top;
+	padding: 8px;
+	width:500px;
+}
+
+	.outputContainer__divider{
 		height: 2px;
 		background-color: #eee;
 		width: 65%;
@@ -108,6 +127,28 @@ body{
 			text-align: right;
 			min-width: 50px;
 		}
+
+.output{
+	padding:15px;
+}
+
+	.output__title{
+		font-size: 1.3em;
+		font-weight: 300;
+	}
+
+	.output__description{
+		margin-left: 8px;
+		margin-top : 5px;
+		color : #727272;
+		font-size: 0.8em;
+	}
+
+	.output__value{
+		vertical-align: middle;
+		float:right;
+		font-size : 1.3em;
+	}
 
 
 

@@ -19,6 +19,7 @@
 			<div class='container__left'>
 
 				<div class='inputContainer' xo-element='inputContainer'></div>
+				<div class='outputContainer' xo-element='outputContainer'></div>
 
 			</div>
 
@@ -26,46 +27,8 @@
 
 				<div class='chartContainer' xo-element='chartContainer'></div>
 
-
 			</div>
-
-
 		</div>
-
-
-
-
-
-
-
-<!--
-
-		<div class='input' xo-block='input'>
-
-			<div xo-element='inputContianer'>
-
-			</div>
-
-		</div>
-
-		<table xo-block='chart' border='1'>
-			<thead>
-			    <tr xo-element='head'>
-			    </tr>
-			  </thead>
-			  <tfoot>
-			    <tr xo-element='foot'>
-			    </tr>
-			  </tfoot>
-			  <tbody xo-element='body'>
-			  </tbody>
-
-			</table>
-
--->
-
-
-
 	</div>
 
 
@@ -76,6 +39,16 @@
 </body>
 
 
+
+<div class='calc' style='display:none'>
+
+
+</div>
+
+
+
+
+
 <!-- Schematics -->
 <div class='input' xo-schematic='input'>
 	<div class='input__value' ><span xo-element='value'></span></div>
@@ -83,19 +56,16 @@
 	<div class='input__description' xo-element='description'></div>
 </div>
 
-
-
-
-<div class='chart' xo-schematic='chart'>
-
-	<div class='chart__title' xo-element='title'></div>
-
-	<div class='chart__data' xo-element='columnContainer'></div>
-
+<div class='output' xo-schematic='output'>
+	<div class='output__value' ><span xo-element='value'></span></div>
+	<div class='output__title' xo-element='title'></div>
+	<div class='output__description' xo-element='description'></div>
 </div>
 
-
-
+<div class='chart' xo-schematic='chart'>
+	<div class='chart__title' xo-element='title'></div>
+	<div class='chart__data' xo-element='columnContainer'></div>
+</div>
 
 <div class='chart__column' xo-schematic='chartColumn'>
 	<div class='chart__column__title' xo-element='title'>Age</div>
@@ -109,7 +79,7 @@
 
 <div class='codeEditor' xo-schematic='codeEditor'>
 
-	<div class='codeEditor__top title'>
+	<div class='codeEditor__top title' xo-element='topbar'>
 		<div class='codeEditor__top__close clickable' xo-element='closeButton'><i class='icon-remove card'></i></div>
 		<div class='codeEditor__top__title'>Code Editor</div>
 	</div>
@@ -167,11 +137,15 @@
 
 
 <script type="text/javascript" src="Block/Calculator.js"></script>
+<script type="text/javascript" src="Block/Output.js"></script>
 <script type="text/javascript" src="Block/Input.js"></script>
 <script type="text/javascript" src="Block/Chart.js"></script>
 
+
+
 <script type="text/javascript" src="index.js"></script>
 
+<script type="text/javascript" src="calcs/LTC.js"></script>
 
 
 
