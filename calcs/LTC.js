@@ -40,14 +40,11 @@ var LTCPriceComparison = function(){
 		},
 
 		chart : {
-			title : 'Awesome', //Optional if the chart doesn't need a name
-			minRows : 100, //Number of rows automatically generated for the chart. Default 20 maybe?
-
+			title : 'LTC Run Down',
 			columns : {
 				age : {
 					title : 'Age',
 					type : Type.Number,
-					//Value is the first row of the column, this is used by 'fn' to build the rest of the values.
 					value : function(){
 						return Inputs.age;
 					},
@@ -82,8 +79,6 @@ var LTCPriceComparison = function(){
 				description : "Age at which you'll make back your initial investment",
 				type : Type.Number,
 				value : function(){
-					//'find' returns the first value from the chart where the internal function returns true
-					//So it'll return the first year where the benefit base is greater then the ungaurded benefit
 					var breakEvenAge = Chart.age.find(function(index, age){
 						if(Chart.benefitBase[index] > Inputs.unguarded){
 							return true;
