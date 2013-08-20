@@ -40,6 +40,13 @@
 				this.value(this.view.html());
 			}
 
+			if(typeof options.event === 'undefined'){
+				this.interactionEvent = 'click';
+			} else {
+				this.interactionEvent = options.event;
+			}
+
+
 			if(typeof options.onChange === 'function'){
 				this.onChange(options.onChange);
 			}
@@ -50,7 +57,7 @@
 				.hide();
 
 			//User clicks on text
-			this.view.click(function() {
+			this.view.on(this.interactionEvent, function() {
 				if(self._enabled) {
 					self.showControl();
 				}

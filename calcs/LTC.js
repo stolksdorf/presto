@@ -3,7 +3,7 @@ var LTCPriceComparison = function(){
 	return {
 		title : 'LTC Price Comparison',
 		description : 'Super cool thing',
-		icon : 'plane',
+		icon : 'icon-plane',
 
 		inputs : {
 			inflationGuard : {

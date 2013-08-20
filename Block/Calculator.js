@@ -11,7 +11,7 @@ Presto_Block_Calculator = XO.Block.extend({
 		return this;
 	},
 
-	render : function(calcGenerator)
+	render : function()
 	{
 
 		var self = this;

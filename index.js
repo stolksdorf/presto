@@ -21,7 +21,7 @@ Type = {
 			if(typeof value === 'undefined'){
 				view.text('None');
 			}
-			view.text(value * 100 + '%');
+			view.text(+(value * 100).toFixed(3) + '%');
 		}
 	},
 
