@@ -81,7 +81,7 @@ The `id` of the input is used to identify it in calculations For example if we w
 
 `columns` *(objects)* : A list of column definitions for the chart
 
-**Chart columns**
+####Chart columns
 `title` *(string)* : Header for the column
 
 `type`  *(type)* : One of the Types defined in Presto
@@ -229,7 +229,6 @@ Every column has a number of functions built-in to make calculations simple and 
 ## Full Calculator Examples
 ### LTC Price Comparison
 
-var LTCPriceComparison = function(){
 		{
 			title : 'LTC Price Comparison',
 			description : 'Super cool thing',
