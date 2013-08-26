@@ -1,0 +1,221 @@
+
+.container{
+	position: relative;
+	background-color:#C5C5C5;
+}
+
+	.container__left{
+		padding       : 20px;
+		display       : inline-block;
+		vertical-align: top;
+		/*min-width   : 500px;
+		width         :40%;*/
+		width         : 550px;
+	}
+
+	.container__right{
+		padding       : 20px;
+		display       : inline-block;
+		vertical-align: top;
+	}
+
+
+
+
+.inputContainer{
+	background-color: white;
+	display         : inline-block;
+	vertical-align  : top;
+	padding         : 8px;
+	width           :500px;
+	margin-bottom   : 30px;
+}
+
+	.inputContainer__divider{
+		height          : 2px;
+		background-color: #eee;
+		width           : 65%;
+		margin-left     : 45px;
+	}
+
+
+
+.outputContainer{
+	background-color: white;
+	display         : inline-block;
+	vertical-align  : top;
+	padding         : 8px;
+	width           :500px;
+}
+
+	.outputContainer__divider{
+		height          : 2px;
+		background-color: #eee;
+		width           : 65%;
+		margin-left     : 45px;
+	}
+
+
+.input{
+	padding:15px;
+}
+
+	.input__title{
+		font-size  : 1.3em;
+		font-weight: 300;
+	}
+
+	.input__description{
+		margin-left: 8px;
+		margin-top : 5px;
+		color      : #727272;
+		font-size  : 0.8em;
+	}
+
+	.input__value{
+		vertical-align: middle;
+		float         :right;
+		font-size     : 1.3em;
+	}
+
+		.input__value .widget__view{
+			cursor       : pointer;
+			border-bottom: 1px solid transparent;
+		}
+			.input__value .widget__view:hover{
+				background-color: #eee;
+			}
+
+		.input__value .widget__control{
+			text-align: right;
+			min-width : 50px;
+		}
+
+.output{
+	padding:15px;
+}
+
+	.output__title{
+		font-size  : 1.3em;
+		font-weight: 300;
+	}
+
+	.output__description{
+		margin-left: 8px;
+		margin-top : 5px;
+		color      : #727272;
+		font-size  : 0.8em;
+	}
+
+	.output__value{
+		vertical-align: middle;
+		float         :right;
+		font-size     : 1.3em;
+	}
+
+
+
+.chart{
+	background-color: white;
+	display         : inline-block;
+	right           :30px;
+	padding         :20px;
+}
+
+	.chart__title{
+		font-size     : 1.8em;
+		font-weight   : 300;
+		padding-bottom: 15px;
+	}
+
+	.chart__column{
+		min-width   : 50px;
+		display     : inline-block;
+		border-right: 1px solid rgb(102, 102, 102);
+		margin-right: -3px;
+	}
+
+		.chart__column:first-child{
+			border-left: 1px solid rgb(102, 102, 102);
+		}
+
+		.chart__column__title{
+			border-top    : 1px solid rgb(102, 102, 102);
+			border-bottom : 3px solid rgb(102, 102, 102);
+			padding-left  : 8px;
+			padding-right : 8px;
+			padding-top   : 8px;
+			padding-bottom: 3px;
+		}
+
+	.chart__cell{
+		font-size     : 1em;
+		border-bottom : 1px solid rgb(102, 102, 102);
+		padding-left  : 5px;
+		padding-right : 5px;
+		padding-top   : 5px;
+		padding-bottom: 5px;
+		vertical-align: middle;
+		text-align    : right;
+	}
+
+		.chart__cell:hover{
+			font-weight     : bold;
+			background-color: #eee;
+		}
+
+
+
+.codeEditor{
+	position        : absolute;
+	width           :500px;
+	top             :50px;
+	right           :0px;
+	z-index         :1000;
+	background-color: white;
+	border-bottom   : 5px solid #2C3E50;
+}
+
+	.codeEditor__resize{
+		width  :15px;
+		height :15px;
+		left   : 0;
+		bottom : 0;
+		cursor : sw-resize;
+	}
+		.codeEditor__resize:hover{
+			background-color: grey;
+		}
+
+	.codeEditor__top{
+		color           : white;
+		font-size       : 1.3em;
+		background-color: #2C3E50;
+		border-bottom   : 2px solid #34495E;
+		cursor          :move;
+	}
+
+		.codeEditor__top__title{
+		}
+
+		.codeEditor__top__close{
+			float: right;
+		}
+
+	.codeEditor__errors{
+		display         : none;
+		padding         : 15px;
+		background-color:#e74c3c;
+		color           : white;
+	}
+
+	.codeEditor__buttons{
+		text-align    : center;
+		border-top    :1px solid #eee;
+		padding-top   :15px;
+		padding-bottom:15px;
+	}
+		.codeEditor__buttons > .btn{
+			margin-right : 50px;
+			margin-left  : 50px;
+		}

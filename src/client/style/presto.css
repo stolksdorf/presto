@@ -1,0 +1,119 @@
+/* COLORS
+	http://flatuicolors.com/
+
+	.teal-light    {color:#1ABC9C;}
+	.teal          {color:#16A085;}
+	.green-light   {color:#2ECC71;}
+	.green         {color:#27AE60;}
+	.blue-light    {color:#3498DB;}
+	.blue          {color:#2980B9;}
+	.purple-light  {color:#9B59B6;}
+	.purple        {color:#8E44AD;}
+	.steel-light   {color:#34495E;}
+	.steel         {color:#2C3E50;}
+	.yellow-light  {color:#F1C40F;}
+	.yellow        {color:#F39C12;}
+	.orange-light  {color:#E67E22;}
+	.orange        {color:#D35400;}
+	.red-light     {color:#E74C3C;}
+	.red           {color:#C0392B;}
+	.silver-light  {color:#ECF0F1;}
+	.silver        {color:#BDC3C7;}
+	.grey-light    {color:#95A5A6;}
+	.grey          {color:#7F8C8D;}
+*/
+
+html { height: 100%; }
+
+body{
+	height          : 100%;
+
+	font-family     : 'Lato', sans-serif;
+}
+
+
+.title{
+	padding    : 10px;
+
+	font-size  : 1.8em;
+	font-weight: 300;
+}
+
+
+.clickable{
+	cursor : pointer;
+	opacity: 1.0;
+}
+	.clickable:hover{
+		opacity: 0.7;
+	}
+
+
+.btn{
+	display  : inline-block;
+
+	padding  : 0.6em;
+
+	cursor   : pointer;
+	font-size: 1.1em;
+	color    :white;
+}
+	.btn.teal               {background-color:#16A085;border-bottom : 2px solid #16A085;}
+		.btn.teal:hover     {background-color:#1ABC9C;}
+	.btn.green              {background-color:#27AE60;border-bottom : 2px solid #27AE60;}
+		.btn.green:hover    {background-color:#2ECC71;}
+	.btn.blue               {background-color:#2980B9;border-bottom : 2px solid #2980B9;}
+		.btn.blue:hover     {background-color:#3498DB;}
+	.btn.purple             {background-color:#8E44AD;border-bottom : 2px solid #8E44AD;}
+		.btn.purple:hover   {background-color:#9B59B6;}
+	.btn.steel              {background-color:#2C3E50;border-bottom : 2px solid #2C3E50;}
+		.btn.steel:hover    {background-color:#34495E;}
+	.btn.yellow             {background-color:#F39C12;border-bottom : 2px solid #F39C12;}
+		.btn.yellow:hover   {background-color:#F1C40F;}
+	.btn.orange             {background-color:#D35400;border-bottom : 2px solid #D35400;}
+		.btn.orange:hover   {background-color:#E67E22;}
+	.btn.red                {background-color:#C0392B;border-bottom : 2px solid #C0392B;}
+		.btn.red:hover      {background-color:#E74C3C;}
+	.btn.silver             {background-color:#BDC3C7;border-bottom : 2px solid #BDC3C7;}
+		.btn.silver:hover   {background-color:#ECF0F1;}
+	.btn.grey               {background-color:#7F8C8D;border-bottom : 2px solid #7F8C8D;}
+		.btn.grey:hover     {background-color:#95A5A6;}
+
+
+
+
+
+.topbar{
+	z-index         :1000;
+
+	height          : 40px;
+	width           : 100%;
+
+	background-color: #2980B9;
+	color           :white;
+}
+	.topbar__logo{
+		display    : inline-block;
+
+		width      : 40px;
+
+		font-size  : 30px;
+		line-height: 40px;
+		text-align : center;
+	}
+	.topbar__title{
+		font-size  : 30px;
+		font-weight: 300;
+	}
+
+	.topbar__editor{
+		display    : inline-block;
+		float      : right;
+
+		width      : 40px;
+
+		cursor     : pointer;
+		font-size  : 30px;
+		line-height: 40px;
+		text-align : center;
+	}
