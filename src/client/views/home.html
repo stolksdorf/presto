@@ -6,7 +6,7 @@
 	<script type="text/javascript" src="../libs/jq.js"></script>
 	<script type="text/javascript" src="../libs/underscore.js"></script>
 	<script type="text/javascript" src="../libs/moment.js"></script>
-	<link rel="Stylesheet" type="text/css" href="libs/hint.css" />
+	<link rel="Stylesheet" type="text/css" href="../libs/hint.css" />
 
 
 	<!-- MVC -->
@@ -53,44 +53,66 @@
 			];
 	*/
 
-			calculators = [
+			CALCS = [
 				{
-					id : 'ltc',
-					title : 'LTC Price Comparison',
+					id          : 'ltc',
+					title       : 'LTC Price Comparison',
 					description : 'A realy swanky way to figure out the differnece between an guarded and ungaurded benefit claim',
-					color : 'blue',
-					icon : 'icon-bullhorn',
-					url : 'calculator.html',
+					color       : 'blue',
+					icon        : 'icon-bullhorn',
+					url         : 'calculator.html',
 				},
 				{
-					id : 'rort',
-					title : 'Rate of Return Tracker',
+					id          : 'rort',
+					title       : 'Rate of Return Tracker',
 					description : 'A realy swanky way to figure out the differnece between an guarded and ungaurded benefit claim',
-					color : 'green',
-					icon : 'icon-money',
-					url : 'rort',
+					color       : 'green',
+					icon        : 'icon-money',
+					url         : 'rort',
 				},
 				{
-					id : 'split',
-					title : 'Income Split',
-					description : 'A realy swanky way to figure out the differnece between an guarded and ungaurded benefit claim',
-					color : 'orange',
-					icon : 'icon-credit-card',
-					url : 'http://google.ca',
+					id          : 'split',
+					title       : 'Income Split',
+					description : 'A realy swanky way to figure out the differnece between an guarded and ungaurded benefit claim so much more text you cant even handle',
+					color       : 'orange',
+					icon        : 'icon-credit-card',
+					url         : 'http://google.ca',
 				}
 
 
 			];
 
+			Presto = new Presto_Block_Home();
+		});
 
-			_.each(calculators, function(calculator){
-				var newBlock = new Presto_Block_CalculatorOption(new XO.Model(calculator));
-				newBlock.injectInto($('.calculatorContainer'));
+	Presto_Block_Home = XO.Block.extend({
+		block : 'home',
+
+		render : function()
+		{
+			var self = this;
+
+			_.each(CALCS, function(calculator){
+				self.addCalculator(new Presto_Model_Calculator(calculator));
 			});
 
 
+			this.dom.newCalculatorButton.click(function(){
+				var test = new Presto_Model_Calculator();
+				test.save();
+			});
+			return this;
+		},
 
-		});
+		addCalculator : function(calculatorModel)
+		{
+			var newBlock = new Presto_Block_CalculatorOption(calculatorModel);
+			newBlock.injectInto(this.dom.container);
+			return this;
+		},
+
+
+	})
 
 
 
@@ -121,7 +143,18 @@
 		},
 
 
-	})
+	});
+
+	Presto_Model_Calculator = XO.Model.extend({
+		urlRoot : '/api/calculator',
+		defaults : {
+			title : 'Cool newness',
+			description : 'Click here to edit the calculator',
+			icon : 'icon-question',
+			color : 'orange'
+		}
+
+	});
 
 
 
@@ -133,12 +166,10 @@
 		<img class='sidebar__logo' src='../assets/rabbit hat.png'></img>
 		<div class='sidebar__text'>Presto</div>
 
-		cool things will go here
-
 	</div>
 
 
-	<div class='content' xo-block='content'>
+	<div class='content' xo-block='home'>
 		<!--
 		<div class='content__title'>Presto Calculators</div>
 
@@ -176,15 +207,15 @@
 
 	-->
 
-		<div class='calculator newCalculator yellow' xo-element='newCalc'>
+		<div class='calculator newCalculator yellow' xo-element='newCalculatorButton'>
 			<div class='calculator__icon' xo-element='icon'><i class='icon-plus'></i></div>
-			<div style='display:inline-block'>
-				<div class='calculator__title' xo-element='title'>New Calculator</div>
-				<div class='calculator__description' xo-element='description'>Click here to create a new calculator</div>
+			<div class='calculator__info'>
+				<div class='calculator__info__title' xo-element='title'>New Calculator</div>
+				<div class='calculator__info__description' xo-element='description'>Click here to create a new calculator</div>
 			</div>
 		</div>
 
-		<div class='calculatorContainer'>
+		<div class='calculatorContainer' xo-element='container'>
 			<!-- Calculators go here! -->
 		</div>
 	</div>
@@ -194,9 +225,9 @@
 	<div class='calculator' xo-schematic='calculator'>
 		<a xo-element='link' target="_blank">
 			<div class='calculator__icon' xo-element='icon'><i></i></div>
-			<div style='display:inline-block'>
-				<div class='calculator__title' xo-element='title'></div>
-				<div class='calculator__description' xo-element='description'></div>
+			<div class='calculator__info'>
+				<div class='calculator__info__title' xo-element='title'></div>
+				<div class='calculator__info__description' xo-element='description'></div>
 			</div>
 		</a>
 	</div>

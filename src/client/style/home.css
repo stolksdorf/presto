@@ -83,9 +83,7 @@
 
 
 	.calculator__icon{
-		display         : inline-block;
-		display         : inline-block;
-		vertical-align  : top;
+		float:left;
 
 		height          : 1.7em;
 		width           : 1.7em;
@@ -100,20 +98,25 @@
 		text-align      : center;
 	}
 
-	.calculator__title{
-		margin-bottom: 15px;
+	.calculator__info{
+		margin-left: 125px;
 
-		font-size    : 2em;
-		font-weight  : 300;
 	}
-	.calculator__description{
-		display  : inline-block;
 
-		max-width: 700px;
+		.calculator__info__title{
+			margin-bottom: 15px;
 
-		font-size: 1em;
-		color    : grey;
-	}
+			font-size    : 2em;
+			font-weight  : 300;
+		}
+		.calculator__info__description{
+			display  : inline-block;
+
+			max-width: 700px;
+
+			font-size: 1em;
+			color    : grey;
+		}
 
 
 
