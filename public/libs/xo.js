@@ -28,13 +28,17 @@
 			return this;
 		},
 
-		injectInto : function(injectionPoint)
+		injectInto : function(injectionPoint, options)
 		{
 			this.dom = {};
 			if(injectionPoint.length === 0 ){throw 'XO: Could not find the injection point';}
 			if(this.schematic === ''){throw 'XO: Schematic name not set' ;}
 			this.trigger('before:inject', this);
-			this.dom.block = this.getSchematic(this.schematic).appendTo(injectionPoint);
+			if(options.at_top){
+				this.dom.block = this.getSchematic(this.schematic).prependTo(injectionPoint);
+			} else {
+				this.dom.block = this.getSchematic(this.schematic).appendTo(injectionPoint);
+			}
 			this.getElements().render();
 			this.trigger('inject', this);
 			return this;
@@ -99,7 +103,18 @@
 
 
 
-	XO.Collection = Backbone.Collection.extend({});
+	XO.Collection = Backbone.Collection.extend({
+		//Adds a new model model to the collection and saves it to the server
+		addNew : function(newModel)
+		{
+			if(!(newModel instanceof this.model)){
+				newModel = new this.model(newModel);
+			}
+			this.add(newModel);
+			newModel.save({wait:true});
+			return this;
+		}
+	});
 	XO.Controller = Backbone.Router.extend({});
 
 

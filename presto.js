@@ -19,6 +19,31 @@ app.engine('html', require('ejs').renderFile);
 
 
 
+/*
+app.configure(function(){
+        app.set('views', __dirname + '/views');
+        app.use(express.static(__dirname + '/public'));
+});
+*/
+
+
+app.use(express.bodyParser());
+app.use(express.static(__dirname + '/public'));
+
+
+//Schema
+var CalculatorModel = mongoose.model('CalculatorModel', mongoose.Schema({
+	id       : String,
+	title       : String,
+	description : String,
+	color       : String,
+	icon        : String,
+	url         : String,
+	script      : String
+}));
+
+
+
 //Routes
 app.get('/', function (req, res) {
 	res.render('home.html',
@@ -32,25 +57,48 @@ app.get('/calc/*', function(req,res){
 
 
 
-
 	//Add a calc
-app.post('/api/addcalc', function(req, res){
-	console.log(req);
-	res.send({
-		id : 'superTest',
-		time : new Date().toString()
+app.get('/api/calculator', function(req, res){
+	console.log('getting calcs');
+	CalculatorModel.find(function(err, calculators){
+		res.send(calculators);
 	});
 });
+
+app.post('/api/calculator', function(req, res){
+
+	var newCalc = new CalculatorModel(req.body);
+	newCalc.id = newCalc._id;
+	newCalc.url = '/calc/' + newCalc.id;
+
+	console.log('saving' ,newCalc);
+	newCalc.save(function(error, newCalc){
+		res.send(newCalc);
+	});
+});
+
+app.get('/reset', function(req, res){
+	mongoose.connection.db.dropDatabase();
+	res.send('db dropped');
+});
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 //Mongoose test
 
-var Kitten = mongoose.model('Kitten', mongoose.Schema({
-	name: String
-}));
 
-
+/*
 
 app.get('/add', function(req, res){
 	console.log(req.query);
@@ -67,11 +115,7 @@ app.get('/get', function(req, res){
 	});
 });
 
-app.get('/reset', function(req, res){
-	mongoose.connection.db.dropDatabase();
-	new Kitten().save();
-	res.send('db dropped');
-})
+*/
 
 
 

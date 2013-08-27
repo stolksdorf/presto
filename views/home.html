@@ -3,23 +3,23 @@
 <body>
 
 	<!-- Libraries -->
-	<script type="text/javascript" src="../libs/jq.js"></script>
-	<script type="text/javascript" src="../libs/underscore.js"></script>
-	<script type="text/javascript" src="../libs/moment.js"></script>
-	<link rel="Stylesheet" type="text/css" href="../libs/hint.css" />
+	<script type="text/javascript" src="libs/jq.js"></script>
+	<script type="text/javascript" src="libs/underscore.js"></script>
+	<script type="text/javascript" src="libs/moment.js"></script>
+	<link rel="Stylesheet" type="text/css" href="libs/hint.css" />
 
 
 	<!-- MVC -->
-	<script type="text/javascript" src="../libs/backbone.js"></script>
-	<script type="text/javascript" src="../libs/xo.js"></script>
+	<script type="text/javascript" src="libs/backbone.js"></script>
+	<script type="text/javascript" src="libs/xo.js"></script>
 
 	<!-- Style -->
-	<link rel="Stylesheet" type="text/css" href="../style/reset.css" />
-	<link rel="Stylesheet" type="text/css" href="../style/presto.css" />
-	<link rel="Stylesheet" type="text/css" href="../style/home.css" />
+	<link rel="Stylesheet" type="text/css" href="style/reset.css" />
+	<link rel="Stylesheet" type="text/css" href="style/presto.css" />
+	<link rel="Stylesheet" type="text/css" href="style/home.css" />
 
-	<link href='../libs/lato/lato.css' rel='stylesheet' type='text/css'>
-	<link href='../libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
+	<link href='libs/lato/lato.css' rel='stylesheet' type='text/css'>
+	<link href='libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
 
 
 	<script>
@@ -82,8 +82,15 @@
 
 			];
 
+
+
+
 			Presto = new Presto_Block_Home();
 		});
+
+
+
+
 
 	Presto_Block_Home = XO.Block.extend({
 		block : 'home',
@@ -92,27 +99,37 @@
 		{
 			var self = this;
 
-			_.each(CALCS, function(calculator){
-				self.addCalculator(new Presto_Model_Calculator(calculator));
+
+			this.calculatorCollection = new XO.Collection([],{
+				url : '/api/calculator',
+				model:Presto_Model_Calculator
 			});
 
+			this.calculatorCollection.on('add', function(calc) {
+				self.addCalculator(calc);
+
+			});
+
+			this.calculatorCollection.fetch();
 
 			this.dom.newCalculatorButton.click(function(){
-				var test = new Presto_Model_Calculator();
-				test.save();
+				self.calculatorCollection.addNew();
 			});
 			return this;
 		},
 
 		addCalculator : function(calculatorModel)
 		{
+			console.log('add calc', calculatorModel.attributes);
+
 			var newBlock = new Presto_Block_CalculatorOption(calculatorModel);
-			newBlock.injectInto(this.dom.container);
+			newBlock.injectInto(this.dom.container, {at_top:true});
 			return this;
 		},
 
 
 	})
+
 
 
 
@@ -148,10 +165,12 @@
 	Presto_Model_Calculator = XO.Model.extend({
 		urlRoot : '/api/calculator',
 		defaults : {
-			title : 'Cool newness',
+			title       : 'Cool newness',
 			description : 'Click here to edit the calculator',
-			icon : 'icon-question',
-			color : 'orange'
+			icon        : 'icon-question',
+			color       : 'steel',
+			script      : "function(){}",
+			url         : ''
 		}
 
 	});
@@ -163,7 +182,7 @@
 
 
 	<div class='sidebar'>
-		<img class='sidebar__logo' src='../assets/rabbit hat.png'></img>
+		<img class='sidebar__logo' src='assets/rabbit hat.png'></img>
 		<div class='sidebar__text'>Presto</div>
 
 	</div>
