@@ -40,6 +40,9 @@ Presto = {
 		this.calculatorBlueprint.on('runScript', function(newBlueprint){
 			self.calculatorModel.set(newBlueprint);
 		});
+		this.calculatorBlueprint.on('error', function(errors){
+			self.editor.showErrors(errors);
+		});
 
 		this.calculatorBlueprint.onChange('script', function(newScript){
 			self.editor.setCode(newScript);

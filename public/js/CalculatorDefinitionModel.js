@@ -63,7 +63,14 @@ Presto_Model_CalculatorBlueprint = XO.Model.extend({
 	executeScript : function()
 	{
 		var self = this;
-		eval("with (this) {var result = (" + this.get('script') + ")}");
+		try{
+			eval("with (this) {var result = (" + this.get('script') + ")}");
+		} catch(e){
+			console.log('ERROR');
+			self.trigger('error', e.toString());
+			return '';
+		}
+
 
 		//update model from result
 		_.each(['title','description', 'color', 'icon'], function(modelAttributeName){

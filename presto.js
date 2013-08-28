@@ -39,7 +39,8 @@ var CalculatorModel = mongoose.model('CalculatorModel', mongoose.Schema({
 	color       : String,
 	icon        : String,
 	url         : String,
-	script      : String
+	script      : String,
+	last_modified : Date
 }));
 
 
@@ -78,12 +79,48 @@ app.post('/api/calculator', function(req, res){
 	var newCalc = new CalculatorModel(req.body);
 	if(!newCalc.id) newCalc.id = newCalc._id;
 	newCalc.url = '/calc/' + newCalc.id;
+	newCalc.last_modified = new Date();
 
 	console.log('saving' ,newCalc);
 	newCalc.save(function(error, newCalc){
 		res.send(newCalc);
 	});
 });
+
+
+app.put('/api/calculator/*', function(req, res){
+
+	/*
+	var fields = req.body;
+	  delete fields._id;
+
+	  Team.findByIdAndUpdate(req.params.id, {$set: fields}, function(err, doc) {
+	    if (err) {
+	      return res.send(500, err.message);
+	    }
+	    if (!doc) {
+	      return res.send(404);
+	    }
+	    return res.send(200, doc);
+	  });
+	};
+	 */
+
+	CalculatorModel.update(
+		{id:req.body.id},
+		{$set : req.body},
+		{upsert:true},
+		function(err, numberAffected, rawResponse){
+			if(err){ console.log('error', err) }
+			res.send(rawResponse);
+		}
+	);
+
+});
+
+
+
+
 
 app.get('/reset', function(req, res){
 	mongoose.connection.db.dropDatabase();
