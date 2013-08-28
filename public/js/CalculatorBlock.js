@@ -1,51 +1,43 @@
 Presto_Block_Calculator = XO.Block.extend({
 	block : 'calculator',
 
-	initialize : function(calcDefinition, calcBlueprint)
+/*
+	initialize : function(calcDefinition, model)
 	{
 		this.calcDefinition = calcDefinition;
-		this.calcBlueprint = calcBlueprint;
+		this.model = model;
 
-		this.editor = new Presto_Block_CodeEditor();
 
 		this._setup();
 		return this;
 	},
-
+*/
 	render : function()
 	{
 		var self = this;
 
 		//Setup Topbar
 		this._topbarClasses = this.dom.topbar.attr('class');
-		this.calcBlueprint.onChange('color', function(newColor){
+		this.model.onChange('color', function(newColor){
 			self.dom.topbar
 				.removeClass()
 				.attr('class', self._topbarClasses)
 				.addClass(newColor);
 		});
 
-		this.calcBlueprint.onChange('icon', function(newIcon){
+		this.model.onChange('icon', function(newIcon){
 			self.dom.icon
 				.removeClass()
 				.addClass(newIcon);
 		});
 
-		this.calcBlueprint.onChange('title', function(newTitle){
+		this.model.onChange('title', function(newTitle){
 			self.dom.title.text(newTitle);
-		})
+		});
 
-
-
-		//Setup editor
-		this.editor.injectInto(this.dom.block);
-		this.calcDefinition.onChange('script', function(newScript){
-			self.editor.setCode(newScript);
-		})
 
 
 		this.dom.launchEditorButton.click(function(){
-			self.editor.show();
 			self.trigger('showEditor');
 		});
 

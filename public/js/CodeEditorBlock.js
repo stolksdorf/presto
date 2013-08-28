@@ -1,10 +1,11 @@
 Presto_Block_CodeEditor = XO.Block.extend({
 
-	schematic : 'codeEditor',
+	block : 'codeEditor',
 
 	initialize : function(code)
 	{
 		this._code = code || "";
+		this._setup();
 		return this;
 	},
 
@@ -131,6 +132,11 @@ Presto_Block_CodeEditor = XO.Block.extend({
 		this.editor.setValue(code);
 		if(!isVisible) this.dom.block.hide();
 		return this;
+	},
+
+	getCode : function()
+	{
+		return this.editor.getValue();
 	},
 
 	show : function()

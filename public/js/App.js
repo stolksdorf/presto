@@ -3,29 +3,47 @@ Presto = {
 	{
 		var self = this;
 
+		this.calculatorBlueprint = new Presto_Model_CalculatorBlueprint();
+		this.calculatorModel     = new Presto_Model_Calculator();
+
+		this.calcBlock = new Presto_Block_Calculator(this.calculatorModel);//this.calculatorBlueprint, this.calculatorModel);
+		this.editor    = new Presto_Block_CodeEditor();
 
 
 
 
-		//create definition and data model
-
-		this.calcDefinition = new Presto_Model_CalcDefinition();
-		this.calcBlueprint = new Presto_Model_CalcBlueprint();
 
 
+		//Events
+		this.editor.on('change', function(newScript){
 
-		//this.codeEditor = etc.
+		});
 
+		this.editor.on('run', function(){
+			self.calculatorBlueprint.set('script', self.editor.getCode());
+			self.calculatorModel.set(self.calculatorBlueprint.executeScript());
+		});
 
-		//create event listeners to tie both models together
-
-		this.calcDefinition.on('runScript', function(newBlueprint){
-			self.calcBlueprint.set(newBlueprint);
+		this.editor.on('upload', function(){
+			self.calculatorBlueprint.set('script', self.editor.getCode());
+			self.calculatorBlueprint.uploadToServer();
 		});
 
 
 
-		this.calcBlock = new Presto_Block_Calculator(this.calcDefinition, this.calcBlueprint);
+		this.calcBlock.on('showEditor', function(){
+			self.editor.show();
+		});
+
+
+		//?
+		this.calculatorBlueprint.on('runScript', function(newBlueprint){
+			self.calculatorModel.set(newBlueprint);
+		});
+
+		this.calculatorBlueprint.onChange('script', function(newScript){
+			self.editor.setCode(newScript);
+		})
 
 
 
@@ -49,11 +67,10 @@ Presto = {
 	},
 
 
-	loadCalculator : function(calcDefObj)
+	loadCalculator : function(calcBlueprint)
 	{
-		console.log('set calculator', calcDefObj);
-		this.calcDefinition.set(calcDefObj);
-		this.calcDefinition.executeScript();
+		this.calculatorBlueprint.set(calcBlueprint);
+		this.calculatorModel.set(this.calculatorBlueprint.executeScript());
 		return this;
 	},
 

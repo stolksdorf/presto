@@ -1,4 +1,10 @@
-Presto_Model_CalcDefinition = XO.Model.extend({
+
+/**
+ * This is what get fecthed and uploaded to the server
+ * contains the blueprint for generating the actual Calculator Model
+ * @type {[type]}
+ */
+Presto_Model_CalculatorBlueprint = XO.Model.extend({
 	/* Attributes
 		id
 		title
@@ -9,12 +15,23 @@ Presto_Model_CalcDefinition = XO.Model.extend({
 		url
 	*/
 
+	urlRoot : '/api/calculator',
+	defaults : {
+		title       : 'Cool newness',
+		description : 'Click here to edit the calculator',
+		icon        : 'icon-question',
+		color       : 'silver',
+		script      : "{title:'test'}",
+		url         : ''
+	},
+
 	initialize : function()
 	{
 		var self = this;
 
-		//whenever the script uploads, run script to model to update self
-		//fire execute script exposes to new data object
+		//whenever script change, pull out new changes?
+
+		//OR whenever upload, pull out the new changes
 
 
 		return this;
@@ -22,7 +39,19 @@ Presto_Model_CalcDefinition = XO.Model.extend({
 
 	uploadToServer : function()
 	{
+		//make sure the model is updated
+		this.executeScript();
 
+		this.log();
+
+		this.save({
+			success  : function(model, response, options){
+				console.log('ah yis', response);
+			},
+			error : function(model, response, options){
+				console.log('oh no!', response);
+			},
+		});
 		return this;
 	},
 
@@ -43,11 +72,7 @@ Presto_Model_CalcDefinition = XO.Model.extend({
 			}
 		});
 
-
-
-		//fire event with result
-		this.trigger('runScript', result);
-		return this;
+		return result;
 	},
 
 
@@ -67,7 +92,7 @@ Presto_Model_CalcDefinition = XO.Model.extend({
  *
  * @type {[type]}
  */
-Presto_Model_CalcBlueprint = XO.Model.extend({
+Presto_Model_Calculator = XO.Model.extend({
 
 
 	initialize : function()

@@ -30,17 +30,28 @@
 
 
 
+	<!-- Code Editor -->
+	<div class='codeEditor' xo-block='codeEditor'>
+		<div class='codeEditor__top title' xo-element='topbar'>
+			<div class='codeEditor__top__close clickable' xo-element='closeButton'><i class='icon-remove card'></i></div>
+			<div class='codeEditor__top__title'>Code Editor</div>
+		</div>
+		<div class='codeEditor__edit' xo-element='editor'></div>
+		<div class='codeEditor__errors' xo-element='errors'>
+			<i class='icon-exclamation-sign'></i> <span xo-element='errorMsg'></span>
+		</div>
+		<div class='codeEditor__buttons'>
+			<div class='button green' xo-element='runButton'><i class='icon-play'></i> Run</div>
+			<div class='button orange' xo-element='uploadButton'><i class='icon-cloud-upload '></i> Upload</div>
+		</div>
+		<div class='codeEditor__resize' xo-element='resize'></div>
+	</div>
+
 
 
 
 </body>
 
-
-
-<div class='calc' style='display:none'>
-
-
-</div>
 
 
 
@@ -73,27 +84,6 @@
 
 
 
-
-<div class='codeEditor' xo-schematic='codeEditor'>
-	<div class='codeEditor__top title' xo-element='topbar'>
-		<div class='codeEditor__top__close clickable' xo-element='closeButton'><i class='icon-remove card'></i></div>
-		<div class='codeEditor__top__title'>Code Editor</div>
-	</div>
-
-	<div class='codeEditor__edit' xo-element='editor'></div>
-
-	<div class='codeEditor__errors' xo-element='errors'>
-		<i class='icon-exclamation-sign'></i> <span xo-element='errorMsg'></span>
-	</div>
-
-
-	<div class='codeEditor__buttons'>
-		<div class='button green' xo-element='runButton'><i class='icon-play'></i> Run</div>
-		<div class='button orange' xo-element='uploadButton'><i class='icon-cloud-upload '></i> Upload</div>
-	</div>
-
-	<div class='codeEditor__resize' xo-element='resize'></div>
-</div>
 
 
 
