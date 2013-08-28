@@ -16,7 +16,7 @@
 
 		_setup : function(model)
 		{
-			this.dom= {};
+			this.dom = this.dom || {};
 			if(model instanceof Backbone.Model){
 				this.model = model;
 			}
@@ -30,7 +30,8 @@
 
 		injectInto : function(injectionPoint, options)
 		{
-			this.dom = {};
+			options = options || {};
+			this.dom = this.dom || {};
 			if(injectionPoint.length === 0 ){throw 'XO: Could not find the injection point';}
 			if(this.schematic === ''){throw 'XO: Schematic name not set' ;}
 			this.trigger('before:inject', this);
@@ -86,7 +87,10 @@
 		 */
 		onChange : function(attrName, event)
 		{
-			this.on('change:' + attrName, event);
+			var self = this;
+			this.on('change:' + attrName, function(){
+				event(self.get(attrName));
+			});
 			event(this.get(attrName));
 			return this;
 		},
@@ -98,7 +102,13 @@
 		toJSONString: function()
 		{
 			return JSON.stringify(this.toJSON());
-		}
+		},
+
+		log : function()
+		{
+			console.log(this.attributes);
+			return this;
+		},
 	});
 
 

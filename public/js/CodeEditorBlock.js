@@ -2,9 +2,9 @@ Presto_Block_CodeEditor = XO.Block.extend({
 
 	schematic : 'codeEditor',
 
-	initialize : function(calcCode)
+	initialize : function(code)
 	{
-
+		this._code = code || "";
 		return this;
 	},
 
@@ -13,7 +13,7 @@ Presto_Block_CodeEditor = XO.Block.extend({
 		var self = this;
 		this.editor = CodeMirror(this.dom.editor[0],
 		{
-			value          : 'REMOVE LATER',
+			value          : self._code,
 			mode           : 'javascript',
 			viewportMargin : Infinity,
 			lineNumbers    : true,
@@ -21,20 +21,30 @@ Presto_Block_CodeEditor = XO.Block.extend({
 			tabMode        : 'indent'
 		});
 
-		this.dom.block.hide();
+		this.editor.on('change', function(){
+			self.trigger('change', self.editor.getValue());
+		})
 
 		this.dom.closeButton.click(function(){
 			self.dom.block.hide();
 		});
 
 		this.dom.runButton.click(function(){
-			self.executeCodeBlock();
+			self.dom.errors.hide();
+			self.trigger('run');
+		});
+
+		this.dom.uploadButton.click(function(){
+			self.trigger('upload');
 		});
 
 
 
 
 
+
+		//TODO: Turn Dragging and resizing and show/hide into a window trait, mk?
+		//grab the additioanl css needed to make arbitary divs windows
 
 		//Add dragging
 		var dragging;
@@ -105,23 +115,21 @@ Presto_Block_CodeEditor = XO.Block.extend({
 
 		});
 
-
-
-
+		this.dom.block.hide();
 
 		return this;
 	},
 
-
-
 	setCode : function(code)
 	{
+		var isVisible = this.dom.block.is(':visible');
+		code = code || "";
 		this.dom.block.show();
 		if(typeof code !== 'string'){
 			code = JSON.stringify(code, null, '  ');
 		}
 		this.editor.setValue(code);
-		this.dom.block.hide();
+		if(!isVisible) this.dom.block.hide();
 		return this;
 	},
 
@@ -131,23 +139,11 @@ Presto_Block_CodeEditor = XO.Block.extend({
 		return this;
 	},
 
-
-
-	executeCodeBlock : function()
+	showErrors : function(errors)
 	{
-		var self = this;
-		this.dom.errors.hide();
-
-		try{
-			eval('(function(){myCalc.makeCalc('+self.editor.getValue()+'())})();');
-		}catch(e){
-			self.dom.errors.show();
-			self.dom.errorMsg.html(e.toString());
-		}
-
+		this.dom.errors.show();
+		this.dom.errorMsg.html(errors);
 		return this;
-	},
-
-
+	}
 
 });

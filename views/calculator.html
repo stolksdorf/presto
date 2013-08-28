@@ -3,14 +3,11 @@
 <body>
 	<div class='presto' xo-block='calculator'>
 
-		<div class='topbar'>
-			<span class='topbar__logo'> <i class='icon-plane' xo-element='logo'></i> </span>
-			<span class='topbar__title' xo-element='title'>Test</span>
+		<div class='topbar awesome' xo-element='topbar'>
+			<span class='topbar__logo'> <i xo-element='icon'></i> </span>
+			<span class='topbar__title' xo-element='title'></span>
 			<span class='topbar__editor clickable' xo-element='launchEditorButton'> <i class='icon-code'></i> </span>
 		</div>
-
-
-
 
 
 
@@ -91,8 +88,8 @@
 
 
 	<div class='codeEditor__buttons'>
-		<div class='btn green' xo-element='runButton'><i class='icon-play'></i> Run</div>
-		<div class='btn orange' xo-element='uploadButton'><i class='icon-cloud-upload '></i> Upload</div>
+		<div class='button green' xo-element='runButton'><i class='icon-play'></i> Run</div>
+		<div class='button orange' xo-element='uploadButton'><i class='icon-cloud-upload '></i> Upload</div>
 	</div>
 
 	<div class='codeEditor__resize' xo-element='resize'></div>
@@ -102,69 +99,62 @@
 
 
 <!-- Libraries -->
-<script type="text/javascript" src="libs/jq.js"></script>
-<script type="text/javascript" src="libs/underscore.js"></script>
-<script type="text/javascript" src="libs/moment.js"></script>
-<script type="text/javascript" src="libs/widget.js"></script>
-<link rel="Stylesheet" type="text/css" href="libs/hint.css" />
+<script type="text/javascript" src="../libs/jq.js"></script>
+<script type="text/javascript" src="../libs/underscore.js"></script>
+<script type="text/javascript" src="../libs/moment.js"></script>
+<script type="text/javascript" src="../libs/widget.js"></script>
+<link rel="Stylesheet" type="text/css" href="../libs/hint.css" />
 
 <!-- remote
-<link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-<link href='http://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'>
+<link href="../http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+<link href='../http://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'>
 -->
 
 <!-- local -->
-<link href='libs/lato/lato.css' rel='stylesheet' type='text/css'>
-<link href='libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
+<link href='../libs/lato/lato.css' rel='stylesheet' type='text/css'>
+<link href='../libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
 
 
 <!-- CodeMirror -->
-<script src="libs/codemirror/cm.js"></script>
-<link  href="libs/codemirror/cm.css" rel="stylesheet">
-<script src="libs/codemirror/javascript.js"></script>
+<script src="../libs/codemirror/cm.js"></script>
+<link  href="../libs/codemirror/cm.css" rel="stylesheet">
+<script src="../libs/codemirror/javascript.js"></script>
 
 
 <!-- MVC -->
-<script type="text/javascript" src="libs/backbone.js"></script>
-<script type="text/javascript" src="libs/xo.js"></script>
+<script type="text/javascript" src="../libs/backbone.js"></script>
+<script type="text/javascript" src="../libs/xo.js"></script>
 
 <!-- Style -->
-<link rel="Stylesheet" type="text/css" href="style/reset.css" />
-<link rel="Stylesheet" type="text/css" href="style/presto.css" />
-<link rel="Stylesheet" type="text/css" href="style/calculator.css" />
+<link rel="Stylesheet" type="text/css" href="../style/reset.css" />
+<link rel="Stylesheet" type="text/css" href="../style/presto.css" />
+<link rel="Stylesheet" type="text/css" href="../style/calculator.css" />
 
 
 
-<script type="text/javascript" src="Block/CodeEditor.js"></script>
+<!-- Scripts -->
+<script type="text/javascript" src="../js/App.js"></script>
+
+<script type="text/javascript" src="../js/CalculatorDefinitionModel.js"></script>
+
+<script type="text/javascript" src="../js/CodeEditorBlock.js"></script>
 
 
-<script type="text/javascript" src="Block/Calculator.js"></script>
-<script type="text/javascript" src="Block/Output.js"></script>
-<script type="text/javascript" src="Block/Input.js"></script>
-<script type="text/javascript" src="Block/Chart.js"></script>
+<script type="text/javascript" src="../js/CalculatorBlock.js"></script>
+<script type="text/javascript" src="../js/OutputBlock.js"></script>
+<script type="text/javascript" src="../js/InputBlock.js"></script>
+<script type="text/javascript" src="../js/ChartBlock.js"></script>
 
+<script type="text/javascript" src="../js/Types.js"></script>
 
-
-<script type="text/javascript" src="index.js"></script>
-
-<script type="text/javascript" src="calcs/LTC.js"></script>
 
 
 
 <script>
 
-
-
 	$(document).ready(function(){
-
-		//codeEditor = new Presto_Block_CodeEditor();
-
-		myCalc = new Presto_Block_Calculator(LTCPriceComparison);
-
-		//myCalc.makeCalc(LTCPriceComparison());
-
+		Presto.start();
 	});
-
 
 
 </script>

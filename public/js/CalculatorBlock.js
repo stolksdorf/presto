@@ -1,20 +1,58 @@
 Presto_Block_Calculator = XO.Block.extend({
 	block : 'calculator',
 
-	initialize : function(calcGenerator)
+	initialize : function(calcDefinition, calcBlueprint)
 	{
-		this.calcGenerator = calcGenerator
+		this.calcDefinition = calcDefinition;
+		this.calcBlueprint = calcBlueprint;
+
+		this.editor = new Presto_Block_CodeEditor();
 
 		this._setup();
-
-
 		return this;
 	},
 
 	render : function()
 	{
-
 		var self = this;
+
+		//Setup Topbar
+		this._topbarClasses = this.dom.topbar.attr('class');
+		this.calcBlueprint.onChange('color', function(newColor){
+			self.dom.topbar
+				.removeClass()
+				.attr('class', self._topbarClasses)
+				.addClass(newColor);
+		});
+
+		this.calcBlueprint.onChange('icon', function(newIcon){
+			self.dom.icon
+				.removeClass()
+				.addClass(newIcon);
+		});
+
+		this.calcBlueprint.onChange('title', function(newTitle){
+			self.dom.title.text(newTitle);
+		})
+
+
+
+		//Setup editor
+		this.editor.injectInto(this.dom.block);
+		this.calcDefinition.onChange('script', function(newScript){
+			self.editor.setCode(newScript);
+		})
+
+
+		this.dom.launchEditorButton.click(function(){
+			self.editor.show();
+			self.trigger('showEditor');
+		});
+
+
+
+		//FIX LATER
+/*
 
 		this.InputCollection = new XO.Collection();
 		this.OutputCollection = new XO.Collection();
@@ -27,24 +65,16 @@ Presto_Block_Calculator = XO.Block.extend({
 				outputBlock.update();
 			});
 		})
-
+*/
 
 
 
 		/*Editor junk*/
 
+/*
 
-		this.editor = new Presto_Block_CodeEditor();
-
-		this.dom.launchEditorButton.click(function(){
-			self.editor.show();
-		});
-
-		this.editor.injectInto(this.dom.block);
-		this.editor.setCode(this.calcGenerator.toString());
-
-		this.makeCalc(this.calcGenerator());
-
+		this.makeCalc(this.calcObj);
+*/
 
 		return this;
 	},
