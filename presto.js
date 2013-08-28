@@ -90,32 +90,22 @@ app.post('/api/calculator', function(req, res){
 
 app.put('/api/calculator/*', function(req, res){
 
-	/*
 	var fields = req.body;
-	  delete fields._id;
+	delete fields._id;
 
-	  Team.findByIdAndUpdate(req.params.id, {$set: fields}, function(err, doc) {
-	    if (err) {
-	      return res.send(500, err.message);
-	    }
-	    if (!doc) {
-	      return res.send(404);
-	    }
-	    return res.send(200, doc);
-	  });
-	};
-	 */
-
-	CalculatorModel.update(
-		{id:req.body.id},
-		{$set : req.body},
-		{upsert:true},
-		function(err, numberAffected, rawResponse){
-			if(err){ console.log('error', err) }
-			res.send(rawResponse);
+	CalculatorModel.findByIdAndUpdate(req.body.id,
+		{$set: fields},
+		function(err, doc) {
+			console.log('doing my thing');
+			if (err) {
+				return res.send(500, err.message);
+			}
+			if (!doc) {
+				return res.send(404);
+			}
+			return res.send(200, doc);
 		}
 	);
-
 });
 
 

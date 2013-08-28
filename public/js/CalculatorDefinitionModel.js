@@ -39,12 +39,21 @@ Presto_Model_CalculatorBlueprint = XO.Model.extend({
 
 	uploadToServer : function()
 	{
+		var self = this;
 		//make sure the model is updated
-		this.executeScript();
+		this.executeScript(function(){
+			self.save({},{
+				success  : function(model, response, options){
+					alert('uploaded!')
+				},
+				error : function(model, response, options){
+					alert('upload failed!')
+				}
+			});
+		});
+/*
 
-		this.log();
-
-		this.save({
+		self.save({
 			success  : function(model, response, options){
 				console.log('ah yis', response);
 			},
@@ -52,6 +61,7 @@ Presto_Model_CalculatorBlueprint = XO.Model.extend({
 				console.log('oh no!', response);
 			},
 		});
+*/
 		return this;
 	},
 
@@ -60,7 +70,7 @@ Presto_Model_CalculatorBlueprint = XO.Model.extend({
 	 * Executes the current script and triggers out the resultant object
 	 * @return {[type]} [description]
 	 */
-	executeScript : function()
+	executeScript : function(callback)
 	{
 		var self = this;
 		try{
@@ -78,6 +88,10 @@ Presto_Model_CalculatorBlueprint = XO.Model.extend({
 				self.set(modelAttributeName, result[modelAttributeName]);
 			}
 		});
+
+		if(typeof callback === 'function'){
+			callback(result);
+		}
 
 		return result;
 	},
