@@ -36,15 +36,7 @@ var CalculatorModel = mongoose.model('CalculatorModel', mongoose.Schema({
 
 
 
-errorHandler = function(err, calculator) {
-	if (err) {
-		return res.send(500, err.message);
-	}
-	if (!calculator) {
-		return res.send(404);
-	}
-	return res.send(200, calculator);
-};
+//errorHandler = ;
 
 
 //Routes
@@ -89,7 +81,15 @@ app.put('/api/calculator/*', function(req, res){
 	delete fields._id;
 	CalculatorModel.findByIdAndUpdate(req.body.id,
 		{$set: fields},
-		errorHandler
+		function(err, calculator) {
+			if (err) {
+				return res.send(500, err.message);
+			}
+			if (!calculator) {
+				return res.send(404);
+			}
+			return res.send(200, calculator);
+		}
 	);
 });
 
