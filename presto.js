@@ -36,6 +36,17 @@ var CalculatorModel = mongoose.model('CalculatorModel', mongoose.Schema({
 
 
 
+errorHandler = function(err, calculator) {
+	if (err) {
+		return res.send(500, err.message);
+	}
+	if (!calculator) {
+		return res.send(404);
+	}
+	return res.send(200, calculator);
+};
+
+
 //Routes
 app.get('/', function (req, res) {
 	res.render('home.html');
@@ -78,17 +89,23 @@ app.put('/api/calculator/*', function(req, res){
 	delete fields._id;
 	CalculatorModel.findByIdAndUpdate(req.body.id,
 		{$set: fields},
-		function(err, doc) {
-			if (err) {
-				return res.send(500, err.message);
-			}
-			if (!doc) {
-				return res.send(404);
-			}
-			return res.send(200, doc);
-		}
+		errorHandler
 	);
 });
+
+app.delete('/api/calculator/*', function(req, res){
+	return CalculatorModel.findById(req.params[0], function (err, calculator) {
+		return calculator.remove(function (err) {
+			if (!err) {
+				console.log("removed");
+				return res.send(200, calculator);
+			} else {
+				return res.send(500, err.message);
+			}
+		});
+	});
+});
+
 
 
 

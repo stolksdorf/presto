@@ -97,6 +97,15 @@
 				self.dom.link.attr('href', self.model.get('url'));
 			});
 
+			this.dom.deleteBtn.click(function(event){
+				event.preventDefault();
+				var temp = confirm("Are you sure you want to delete this calculator?");
+				if(temp){
+					self.model.destroy();
+					self.remove();
+				}
+			});
+
 			return this;
 		},
 
@@ -174,6 +183,9 @@
 			<div class='calculator__info'>
 				<div class='calculator__info__title' xo-element='title'></div>
 				<div class='calculator__info__description' xo-element='description'></div>
+			</div>
+			<div class='calculator__delete' xo-element='deleteBtn'>
+				<i class='icon-remove'></i>
 			</div>
 		</a>
 	</div>
