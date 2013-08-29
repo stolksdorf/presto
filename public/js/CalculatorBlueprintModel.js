@@ -2,19 +2,8 @@
 /**
  * This is what get fecthed and uploaded to the server
  * contains the blueprint for generating the actual Calculator Model
- * @type {[type]}
  */
 Presto_Model_CalculatorBlueprint = XO.Model.extend({
-	/* Attributes
-		id
-		title
-		description
-		icon
-		color
-		script
-		url
-	*/
-
 	urlRoot : '/api/calculator',
 	defaults : {
 		title       : 'New Calculator',
@@ -61,15 +50,7 @@ Presto_Model_CalculatorBlueprint = XO.Model.extend({
 	executeScript : function(callback)
 	{
 		var self = this;
-		//try{
-			eval("with (this) {var result = (" + this.get('script') + ")}");
-		/*} catch(e){
-			var errorMessage
-			console.log('ERROR');
-			self.trigger('error', e.toString());
-			return '';
-		}*/
-
+		eval("with (this) {var result = (" + this.get('script') + ")}");
 
 		//update model from result
 		_.each(['title','description', 'color', 'icon'], function(modelAttributeName){

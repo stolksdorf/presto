@@ -4,6 +4,7 @@
 	height          : 100%;
 
 	background-color:#ECF0F1;
+	overflow: hidden;
 }
 
 	.container__left{
@@ -20,6 +21,15 @@
 
 		padding       : 20px;
 	}
+
+
+.prestoTileSmall{
+
+}
+
+.prestoTileLarge{
+
+}
 
 
 
@@ -182,7 +192,7 @@
 
 
 
-.chart{
+.table{
 	display         : inline-block;
 	right           :30px;
 
@@ -191,14 +201,14 @@
 	background-color: white;
 }
 
-	.chart__title{
+	.table__title{
 		padding-bottom: 15px;
 
 		font-size     : 1.8em;
 		font-weight   : 300;
 	}
 
-	.chart__column{
+	.table__column{
 		display     : inline-block;
 
 		min-width   : 50px;
@@ -207,11 +217,11 @@
 		border-right: 1px solid rgb(102, 102, 102);
 	}
 
-		.chart__column:first-child{
+		.table__column:first-child{
 			border-left: 1px solid rgb(102, 102, 102);
 		}
 
-		.chart__column__title{
+		.table__column__title{
 			padding-top   : 8px;
 			padding-right : 8px;
 			padding-bottom: 3px;
@@ -221,7 +231,7 @@
 			border-bottom : 3px solid rgb(102, 102, 102);
 		}
 
-	.chart__cell{
+	.table__cell{
 		vertical-align: middle;
 
 		padding-top   : 5px;
@@ -234,7 +244,7 @@
 		border-bottom : 1px solid rgb(102, 102, 102);
 	}
 
-		.chart__cell:hover{
+		.table__cell:hover{
 			background-color: #eee;
 			font-weight     : bold;
 		}

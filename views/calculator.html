@@ -3,6 +3,7 @@
 <body>
 	<div class='presto' xo-block='calculator'>
 
+		<!-- Top Bar -->
 		<div class='topbar awesome' xo-element='topbar'>
 			<span class='topbar__logo'> <i xo-element='icon'></i> </span>
 			<span class='topbar__title' xo-element='title'></span>
@@ -10,28 +11,17 @@
 		</div>
 
 
+		<!-- Main Area -->
+		<div class='container' xo-element='container'>
 
-		<div class='container'>
 
-			<div class='container__left'>
-
-				<div class='inputContainer' xo-element='inputContainer'></div>
-				<div class='outputContainer' xo-element='outputContainer'></div>
-
-			</div>
-
-			<div class='container__right'>
-
-				<div class='chartContainer' xo-element='chartContainer'></div>
-
-			</div>
 		</div>
 	</div>
 
 
 
 	<!-- Code Editor -->
-	<div class='codeEditor' xo-block='codeEditor'>
+	<div class='codeEditor' xo-block='codeEditor' style='display:none'>
 		<div class='codeEditor__topbar title' xo-element='topbar'>
 			<div class='codeEditor__topbar__close clickable' xo-element='closeButton'><i class='icon-remove card'></i></div>
 			<span class='codeEditor__topbar__title'>Code Editor</span>
@@ -55,7 +45,6 @@
 				<div class='button orange' xo-element='uploadButton'><i class='icon-cloud-upload '></i> Upload</div>
 			</div>
 		</div>
-		<!--<div class='codeEditor__resize' xo-element='resize'></div>-->
 	</div>
 </body>
 
@@ -65,28 +54,29 @@
 
 
 <!-- Schematics -->
+<div class='inputContainer' xo-schematic='inputContainer'></div>
 <div class='input' xo-schematic='input'>
 	<div class='input__value' ><span xo-element='value'></span></div>
 	<div class='input__title' xo-element='title'></div>
 	<div class='input__description' xo-element='description'></div>
 </div>
 
+<div class='tableContainer' xo-schematic='tableContainer'></div>
+<div class='table' xo-schematic='table'>
+	<div class='table__title' xo-element='title'></div>
+	<div class='table__data' xo-element='columnContainer'></div>
+</div>
+<div class='table__column' xo-schematic='tableColumn'>
+	<div class='table__column__title' xo-element='title'>Age</div>
+	<div class='table__cellContainer' xo-element='cellContainer'></div>
+</div>
+
+<div class='outputContainer' xo-schematic='outputContainer'></div>
 <div class='output' xo-schematic='output'>
 	<div class='output__value' ><span xo-element='value'></span></div>
 	<div class='output__title' xo-element='title'></div>
 	<div class='output__description' xo-element='description'></div>
 </div>
-
-<div class='chart' xo-schematic='chart'>
-	<div class='chart__title' xo-element='title'></div>
-	<div class='chart__data' xo-element='columnContainer'></div>
-</div>
-
-<div class='chart__column' xo-schematic='chartColumn'>
-	<div class='chart__column__title' xo-element='title'>Age</div>
-	<div class='chart__cellContainer' xo-element='cellContainer'></div>
-</div>
-
 
 
 
@@ -138,10 +128,13 @@
 <script type="text/javascript" src="../js/CodeEditorBlock.js"></script>
 
 
+
+
+<script type="text/javascript" src="../js/OutputModule.js"></script>
+<script type="text/javascript" src="../js/InputModule.js"></script>
+<script type="text/javascript" src="../js/TableModule.js"></script>
+
 <script type="text/javascript" src="../js/CalculatorBlock.js"></script>
-<script type="text/javascript" src="../js/OutputBlock.js"></script>
-<script type="text/javascript" src="../js/InputBlock.js"></script>
-<script type="text/javascript" src="../js/ChartBlock.js"></script>
 
 <script type="text/javascript" src="../js/Types.js"></script>
 

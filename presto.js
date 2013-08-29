@@ -18,15 +18,6 @@ app.engine('html', require('ejs').renderFile);
 
 
 
-
-/*
-app.configure(function(){
-        app.set('views', __dirname + '/views');
-        app.use(express.static(__dirname + '/public'));
-});
-*/
-
-
 app.use(express.bodyParser());
 app.use(express.static(__dirname + '/public'));
 

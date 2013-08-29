@@ -106,40 +106,6 @@ Presto_Block_CodeEditor = XO.Block.extend({
 			leftOffset = target.offset().left - event.pageX;
 		});
 
-		//Add global mouse watcher
-		$('body').on("mousemove", function(event) {
-			if (dragging) {
-				target.offset({
-					top : event.pageY + topOffset,
-					left: event.pageX + leftOffset
-				});
-			}
-			if(resizingLeft){
-				//check for min dimensions
-				if(parseInt(target.css('min-height')) <= event.pageY - heightOffset){
-					target.height(event.pageY - heightOffset);
-				}
-				if(parseInt(target.css('min-width')) <= widthOffset - event.pageX){
-					target.width(widthOffset - event.pageX);
-					target.offset({left: event.pageX + leftOffset});
-				}
-			}
-			if(resizingRight){
-				//check for min dimensions
-				if(parseInt(target.css('min-height')) <= event.pageY - heightOffset){
-					target.height(event.pageY - heightOffset);
-				}
-				//if(parseInt(target.css('min-width')) <= widthOffset - event.pageX){
-					target.width(event.pageX - widthOffset);
-					//target.offset({left: event.pageX + leftOffset});
-				//}
-			}
-		}).on('mouseup', function(){
-			dragging = false;
-			resizingLeft = false;
-			resizingRight = false;
-		});
-
 		//Add resizing
 		var resizingLeft;
 		var leftResize = $('<div></div>').appendTo(target).css({
@@ -174,6 +140,36 @@ Presto_Block_CodeEditor = XO.Block.extend({
 			widthOffset  = event.pageX - target.width();
 			leftOffset   = target.offset().left - event.pageX;
 		});
+
+		//Add global mouse watcher
+		$('body').on("mousemove", function(event) {
+			if (dragging) {
+				target.offset({
+					top : event.pageY + topOffset,
+					left: event.pageX + leftOffset
+				});
+			}
+			if(resizingLeft){
+				//check for min dimensions
+				if(parseInt(target.css('min-height')) <= event.pageY - heightOffset){
+					target.height(event.pageY - heightOffset);
+				}
+				if(parseInt(target.css('min-width')) <= widthOffset - event.pageX){
+					target.width(widthOffset - event.pageX);
+					target.offset({left: event.pageX + leftOffset});
+				}
+			}
+			if(resizingRight){
+				target.height(event.pageY - heightOffset);
+				target.width(event.pageX - widthOffset);
+			}
+		}).on('mouseup', function(){
+			dragging = false;
+			resizingLeft = false;
+			resizingRight = false;
+		});
+
+
 		return this;
 	},
 

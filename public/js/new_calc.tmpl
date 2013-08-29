@@ -28,7 +28,7 @@
           firstCell : function(){
             return Inputs.age;
           },
-          generator : function(index, previousCellValue){
+          generator : function(previousCellValue, index){
             return previousCellValue + 1;
           }
         },
@@ -38,7 +38,7 @@
           firstCell : function(){
             return Inputs.capital;
           },
-          generator : function(index, previousCellValue){
+          generator : function(previousCellValue, index){
             return previousCellValue + Math.random()*100;
           }
         },
@@ -51,7 +51,7 @@
       description : 'Age at which you made 10% of your initial capital',
       type : Type.Number,
       value : function(){
-        var breakEvenAge = Tables.sample.age.find(function(index, age){
+        var breakEvenAge = Tables.sample.age.find(function(age, index){
           if(Tables.sample.capitalDelta[index] > Inputs.capital * 1.10){
             return true;
           }

@@ -6,50 +6,11 @@ Presto = {
 		this.calculatorBlueprint = new Presto_Model_CalculatorBlueprint();
 		this.calculatorModel     = new Presto_Model_Calculator();
 
-		this.calcBlock = new Presto_Block_Calculator(this.calculatorModel);//this.calculatorBlueprint, this.calculatorModel);
-		this.editor    = new Presto_Block_CodeEditor();
+		this.calcBlock = new Presto_Block_Calculator(this.calculatorModel);
 
 
 
-
-
-
-		//Events
-		this.editor.on('change', function(newScript){
-
-		});
-
-		this.editor.on('run', function(){
-			self.calculatorBlueprint.set('script', self.editor.getCode());
-			self.calculatorModel.set(self.calculatorBlueprint.executeScript());
-		});
-
-		this.editor.on('upload', function(){
-			self.calculatorBlueprint.set('script', self.editor.getCode());
-			self.calculatorBlueprint.uploadToServer();
-		});
-
-
-
-		this.calcBlock.on('showEditor', function(){
-			self.editor.show();
-		});
-
-
-		//?
-		this.calculatorBlueprint.on('runScript', function(newBlueprint){
-			self.calculatorModel.set(newBlueprint);
-		});
-		this.calculatorBlueprint.on('uploaded', function(){
-			//self.editor.showMessage('Upload Successful!', 'success');
-		});
-
-		this.calculatorBlueprint.onChange('script', function(newScript){
-			self.editor.setCode(newScript);
-		})
-
-
-
+		this.setupEditor();
 
 		//get Calcualtor ID from URL
 		var calcId = document.URL.split('/').last();
@@ -73,9 +34,54 @@ Presto = {
 	loadCalculator : function(calcBlueprint)
 	{
 		this.calculatorBlueprint.set(calcBlueprint);
-		this.calculatorModel.set(this.calculatorBlueprint.executeScript());
+		this.calculatorModel.clear().set(this.calculatorBlueprint.executeScript());
+		return this;
+	},
+
+	setupEditor : function()
+	{
+		var self = this;
+
+		this.editor    = new Presto_Block_CodeEditor();
+		this.editor.on('run', function(){
+			self.calculatorBlueprint.set('script', self.editor.getCode());
+			self.calculatorModel.set(self.calculatorBlueprint.executeScript());
+		});
+
+		this.editor.on('upload', function(){
+			self.calculatorBlueprint.set('script', self.editor.getCode());
+			self.calculatorBlueprint.uploadToServer();
+		});
+		this.calculatorBlueprint.on('uploaded', function(){
+			self.editor.showMessage('Upload Successful!', 'success');
+		});
+		this.calculatorBlueprint.onChange('script', function(newScript){
+			self.editor.setCode(newScript);
+		});
+		this.calcBlock.on('showEditor', function(){
+			self.editor.show();
+		});
 		return this;
 	},
 
 
 };
+
+
+
+
+//TODO: move to modules later
+
+makeViews = function(collection, Block, Model, target){
+	return _.map(collection, function(def, name){
+
+		var newView = new Block(Model);
+
+		newView.name = name;
+		newView.def = def;
+
+
+		newView.injectInto(target);
+		return newView;
+	});
+}
