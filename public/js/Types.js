@@ -103,38 +103,22 @@ Array.prototype.delta = function(){
 	return this.max() - this.min();
 };
 
-/*
-Array.prototype.max = function(){
-	var val, result, compareval;
-	for(var propName in this){
-		if(this.hasOwnProperty(propName)){
-			compareval = this[propName];
-			if(typeof val === 'undefined' || compareval > val){
-				val = compareval;
-				result = this[propName];
-			}
-		}
-	}
-	return result;
-}
-*/
-Array.prototype.min = function(){
-	var val, result, compareval;
-	for(var propName in this){
-		if(this.hasOwnProperty(propName)){
-			compareval = this[propName];
-			if(typeof val === 'undefined' || compareval < val){
-				val = compareval;
-				result = this[propName];
-			}
-		}
-	}
-	return result;
-}
+Array.prototype.sum = function(){
+	return this.reduce(function(memo,num){
+		return memo + num;
+	},0);
+};
 
-//Array.prototype.min = function(fn){
+Array.prototype.find = function(fn){
+	return this.reduce(function(memo,obj, index){
+		if(fn(obj,index) && !memo) return obj;
+		return memo;
+	});
+};
 
-
-
-
-
+Array.prototype.filter = function(fn){
+	return this.reduce(function(memo,obj, index){
+		if(fn(obj,index)) memo.push(obj);
+		return memo;
+	},[]);
+};
