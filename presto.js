@@ -33,7 +33,7 @@ app.use(express.static(__dirname + '/public'));
 
 //Schema
 var CalculatorModel = mongoose.model('CalculatorModel', mongoose.Schema({
-	id       : String,
+	id          : String,
 	title       : String,
 	description : String,
 	color       : String,
@@ -47,15 +47,11 @@ var CalculatorModel = mongoose.model('CalculatorModel', mongoose.Schema({
 
 //Routes
 app.get('/', function (req, res) {
-	res.render('home.html',
-	{ title : 'Home' }
-	);
+	res.render('home.html');
 });
 
 app.get('/calc/*', function (req, res) {
-	res.render('calculator.html',
-	{ title : 'Home' }
-	);
+	res.render('calculator.html');
 });
 
 
@@ -80,8 +76,6 @@ app.post('/api/calculator', function(req, res){
 	if(!newCalc.id) newCalc.id = newCalc._id;
 	newCalc.url = '/calc/' + newCalc.id;
 	newCalc.last_modified = new Date();
-
-	console.log('saving' ,newCalc);
 	newCalc.save(function(error, newCalc){
 		res.send(newCalc);
 	});
@@ -89,14 +83,11 @@ app.post('/api/calculator', function(req, res){
 
 
 app.put('/api/calculator/*', function(req, res){
-
 	var fields = req.body;
 	delete fields._id;
-
 	CalculatorModel.findByIdAndUpdate(req.body.id,
 		{$set: fields},
 		function(err, doc) {
-			console.log('doing my thing');
 			if (err) {
 				return res.send(500, err.message);
 			}

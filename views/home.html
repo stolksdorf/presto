@@ -18,72 +18,15 @@
 	<link rel="Stylesheet" type="text/css" href="style/presto.css" />
 	<link rel="Stylesheet" type="text/css" href="style/home.css" />
 
+	<script type="text/javascript" src="../js/CalculatorBlueprintModel.js"></script>
+
 	<link href='libs/lato/lato.css' rel='stylesheet' type='text/css'>
 	<link href='libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
 
 
 	<script>
 
-	//alert("<%= title %>");
-
 		$(document).ready(function(){
-
-
-
-			/*
-			groups = [
-				{
-					id : 'tax',
-					name : "Taxes",
-					color : 'red',
-					icon : 'icon-legal'
-				},
-				{
-					id : 'credit',
-					name:' Credit',
-					color : 'orange',
-					icon : 'icon-credit-card'
-				},
-				{
-					id : 'investment',
-					name :'Investment',
-					color : 'green',
-					icon : "icon-money"
-				}
-			];
-	*/
-
-			CALCS = [
-				{
-					id          : 'ltc',
-					title       : 'LTC Price Comparison',
-					description : 'A realy swanky way to figure out the differnece between an guarded and ungaurded benefit claim',
-					color       : 'blue',
-					icon        : 'icon-bullhorn',
-					url         : 'calculator.html',
-				},
-				{
-					id          : 'rort',
-					title       : 'Rate of Return Tracker',
-					description : 'A realy swanky way to figure out the differnece between an guarded and ungaurded benefit claim',
-					color       : 'green',
-					icon        : 'icon-money',
-					url         : 'rort',
-				},
-				{
-					id          : 'split',
-					title       : 'Income Split',
-					description : 'A realy swanky way to figure out the differnece between an guarded and ungaurded benefit claim so much more text you cant even handle',
-					color       : 'orange',
-					icon        : 'icon-credit-card',
-					url         : 'http://google.ca',
-				}
-
-
-			];
-
-
-
 
 			Presto = new Presto_Block_Home();
 		});
@@ -102,26 +45,24 @@
 
 			this.calculatorCollection = new XO.Collection([],{
 				url : '/api/calculator',
-				model:Presto_Model_Calculator
+				model:Presto_Model_CalculatorBlueprint
 			});
 
 			this.calculatorCollection.on('add', function(calc) {
 				self.addCalculator(calc);
-
 			});
 
-			this.calculatorCollection.fetch();
 
 			this.dom.newCalculatorButton.click(function(){
 				self.calculatorCollection.addNew();
 			});
+
+			this.calculatorCollection.fetch();
 			return this;
 		},
 
 		addCalculator : function(calculatorModel)
 		{
-			console.log('add calc', calculatorModel.attributes);
-
 			var newBlock = new Presto_Block_CalculatorOption(calculatorModel);
 			newBlock.injectInto(this.dom.container, {at_top:true});
 			return this;
@@ -161,20 +102,6 @@
 
 
 	});
-
-	Presto_Model_Calculator = XO.Model.extend({
-		urlRoot : '/api/calculator',
-		defaults : {
-			title       : 'Cool newness',
-			description : 'Click here to edit the calculator',
-			icon        : 'icon-question',
-			color       : 'steel',
-			script      : "{title:'test'}",
-			url         : ''
-		}
-
-	});
-
 
 
 	</script>

@@ -40,8 +40,8 @@ Presto = {
 		this.calculatorBlueprint.on('runScript', function(newBlueprint){
 			self.calculatorModel.set(newBlueprint);
 		});
-		this.calculatorBlueprint.on('error', function(errors){
-			self.editor.showErrors(errors);
+		this.calculatorBlueprint.on('uploaded', function(){
+			//self.editor.showMessage('Upload Successful!', 'success');
 		});
 
 		this.calculatorBlueprint.onChange('script', function(newScript){

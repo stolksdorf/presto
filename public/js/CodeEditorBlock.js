@@ -31,93 +31,27 @@ Presto_Block_CodeEditor = XO.Block.extend({
 		});
 
 		this.dom.runButton.click(function(){
-			self.dom.errors.hide();
-			self.trigger('run');
+			try{
+				self.trigger('run');
+				self.showMessage('Updated calculator', 'success');
+			}catch(error){
+				self.showMessage('ERROR: ' + error.message, 'error');
+			}
 		});
 
 		this.dom.uploadButton.click(function(){
-			self.trigger('upload');
-		});
-
-
-
-
-
-
-		//TODO: Turn Dragging and resizing and show/hide into a window trait, mk?
-		//grab the additioanl css needed to make arbitary divs windows
-
-		//Add dragging
-		var dragging;
-		this.dom.topbar.on('mousedown', function(e){
-			dragging = true;
-
-			mouseTop = self.dom.block.offset().top - e.pageY;
-			mouseLeft = self.dom.block.offset().left - e.pageX;
-
-		});
-
-
-		this.dom.topbar.attr('unselectable','on')
-     .css({'-moz-user-select':'-moz-none',
-           '-moz-user-select':'none',
-           '-o-user-select':'none',
-           '-khtml-user-select':'none', /* you could also put this in a class */
-           '-webkit-user-select':'none',/* and add the CSS class here instead */
-           '-ms-user-select':'none',
-           'user-select':'none'
-     }).bind('selectstart', function(){ return false; });
-
-		$('body').on("mousemove", function(e) {
-			if (dragging) {
-
-				self.dom.block.offset({
-					top: e.pageY + mouseTop,
-					left: e.pageX + mouseLeft
-				});
+			try{
+				self.showMessage('Uploading to server...', 'info');
+				self.trigger('upload');
+			}catch(error){
+				self.showMessage(error.message, 'error');
 			}
-
-			if(resizing){
-				self.dom.block.offset({
-					left: e.pageX + testLeft
-				});
-				//self.dom.block.height(testHeight + e.pageY);
-				self.dom.block.width(testWidth - e.pageX);
-
-				self.editor.setSize(self.dom.block.width(), testHeight + e.pageY);
-			}
-		}).on('mouseup', function(){
-			dragging = false;
-			resizing = false;
 		});
 
 
-
-
-		//Add resizing
-		var resizing;
-		this.dom.resize.on('mousedown', function(e){
-			resizing = true;
-
-/*
-			height = self.dom.block.height();
-
-
-			mouseTop = self.dom.block.offset().top - e.pageY;
-			mouseLeft = self.dom.block.offset().left - e.pageX;
-
-			startTop = e.pageY
-*/
-			testHeight = self.dom.editor.height() - e.pageY;
-			testWidth = self.dom.block.width() + e.pageX;
-			testLeft = self.dom.block.offset().left - e.pageX;
-
-
-
-		});
-
+		this.addWindowTraits(this.dom.block, this.dom.topbar)
+		this.showMessage('Rendered Code Editor!', 'success');
 		this.dom.block.hide();
-
 		return this;
 	},
 
@@ -145,11 +79,103 @@ Presto_Block_CodeEditor = XO.Block.extend({
 		return this;
 	},
 
-	showErrors : function(errors)
+	showMessage : function(msgText, msgType)
 	{
-		this.dom.errors.show();
-		this.dom.errorMsg.html(errors);
+		this.dom.success.hide();
+		this.dom.error.hide();
+		this.dom.info.hide();
+		this.dom[msgType].show().find('span').text(msgText);
 		return this;
-	}
+	},
+
+
+	addWindowTraits : function(target, topbar)
+	{
+
+		var topOffset,
+			leftOffset,
+			heightOffset,
+			widthOffset;
+
+		//Add dragging
+		var dragging;
+		topbar.on('mousedown', function(event){
+			event.preventDefault();
+			dragging = true;
+			topOffset  = target.offset().top - event.pageY;
+			leftOffset = target.offset().left - event.pageX;
+		});
+
+		//Add global mouse watcher
+		$('body').on("mousemove", function(event) {
+			if (dragging) {
+				target.offset({
+					top : event.pageY + topOffset,
+					left: event.pageX + leftOffset
+				});
+			}
+			if(resizingLeft){
+				//check for min dimensions
+				if(parseInt(target.css('min-height')) <= event.pageY - heightOffset){
+					target.height(event.pageY - heightOffset);
+				}
+				if(parseInt(target.css('min-width')) <= widthOffset - event.pageX){
+					target.width(widthOffset - event.pageX);
+					target.offset({left: event.pageX + leftOffset});
+				}
+			}
+			if(resizingRight){
+				//check for min dimensions
+				if(parseInt(target.css('min-height')) <= event.pageY - heightOffset){
+					target.height(event.pageY - heightOffset);
+				}
+				//if(parseInt(target.css('min-width')) <= widthOffset - event.pageX){
+					target.width(event.pageX - widthOffset);
+					//target.offset({left: event.pageX + leftOffset});
+				//}
+			}
+		}).on('mouseup', function(){
+			dragging = false;
+			resizingLeft = false;
+			resizingRight = false;
+		});
+
+		//Add resizing
+		var resizingLeft;
+		var leftResize = $('<div></div>').appendTo(target).css({
+			position: 'absolute',
+			bottom  : 0,
+			left    : 0,
+			height  :'15px',
+			width   :'15px',
+			cursor  : 'sw-resize',
+		});
+		leftResize.on('mousedown', function(event){
+			event.preventDefault()
+			resizingLeft = true;
+			heightOffset = event.pageY - target.height();
+			widthOffset  = target.width() + event.pageX;
+			leftOffset   = target.offset().left - event.pageX;
+		});
+
+		var resizingRight;
+		var rightResize = $('<div></div>').appendTo(target).css({
+			position: 'absolute',
+			bottom  : 0,
+			right   : 0,
+			height  :'15px',
+			width   :'15px',
+			cursor  : 'se-resize',
+		});
+		rightResize.on('mousedown', function(event){
+			event.preventDefault()
+			resizingRight = true;
+			heightOffset = event.pageY - target.height();
+			widthOffset  = event.pageX - target.width();
+			leftOffset   = target.offset().left - event.pageX;
+		});
+		return this;
+	},
+
 
 });

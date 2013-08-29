@@ -33,8 +33,8 @@ Presto_Block_Calculator = XO.Block.extend({
 
 
 		//FIX LATER
-/*
 
+/*
 		this.InputCollection = new XO.Collection();
 		this.OutputCollection = new XO.Collection();
 
@@ -46,15 +46,14 @@ Presto_Block_Calculator = XO.Block.extend({
 				outputBlock.update();
 			});
 		})
-*/
 
 
 
-		/*Editor junk*/
 
-/*
 
-		this.makeCalc(this.calcObj);
+
+
+		this.makeCalc(this.model.attributes);
 */
 
 		return this;
