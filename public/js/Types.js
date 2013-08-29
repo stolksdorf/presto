@@ -8,20 +8,27 @@ Type = {
 		},
 		isNumerical : true,
 		renderer : function(value, view){
-			if(typeof value === 'undefined'){
-				view.text('None');
+			if(view){
+				if(typeof value === 'undefined'){
+					view.text('None');
+				}
+				view.text(value*1);
 			}
-			view.text(value);
+			return value*1;
 		}
 	},
 
 	Percent : {
 		isNumerical : true,
 		renderer : function(value, view){
-			if(typeof value === 'undefined'){
-				view.text('None');
+			var val = +(value * 100).toFixed(3) + '%';
+			if(view){
+				if(typeof value === 'undefined'){
+					view.text('None');
+				}
+				view.text(val);
 			}
-			view.text(+(value * 100).toFixed(3) + '%');
+			return val;
 		}
 	},
 
@@ -29,26 +36,36 @@ Type = {
 		isNumerical : true,
 		renderer : function(value, view)
 		{
-			if(typeof value === 'undefined'){
-				view.text('None');
+			var val = ("$" + (value * 1).toFixed(2)).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+			if(view){
+				if(typeof value === 'undefined'){
+					view.text('None');
+				}
+				view.css('color', 'inherit');
+				if(value < 0) view.css('color', 'red');
+				view.text(val);
 			}
-			view.css('color', 'inherit');
-			if(value < 0) view.css('color', 'red');
-			view.text(("$" + (value * 1).toFixed(2)).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+			return val;
 		},
 	},
 
 	Text : {
 		isNumerical : false,
 		renderer : function(value, view){
-			view.text(value);
+			if(view){
+				view.text(value+"");
+			}
+			return value+"";
 		}
 	},
 
 	Notes : {
 		isNumerical : false,
 		renderer : function(value, view){
-			view.text(value);
+			if(view){
+				view.text(value);
+			}
+			return value;
 		}
 	}
 };

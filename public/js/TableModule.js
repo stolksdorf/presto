@@ -105,7 +105,7 @@ Presto_Block_TableColumn = XO.Block.extend({
 			} else {
 				_val = self.def.generator(_val, index);
 			}
-			cell.html(self.def.type.renderer(_val, cell));
+			self.def.type.renderer(_val, cell);
 			return _val;
 		});
 

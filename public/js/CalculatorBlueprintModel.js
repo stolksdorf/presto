@@ -25,14 +25,14 @@ Presto_Model_CalculatorBlueprint = XO.Model.extend({
 		return this;
 	},
 
-	uploadToServer : function()
+	uploadToServer : function(callback)
 	{
 		var self = this;
 		//make sure the model is updated
 		this.executeScript(function(){
 			self.save({},{
 				success  : function(model, response, options){
-					self.trigger('uploaded', response);
+					if(callback) callback(response);
 				},
 				error : function(model, response, options){
 					throw response;
@@ -64,6 +64,12 @@ Presto_Model_CalculatorBlueprint = XO.Model.extend({
 		}
 
 		return result;
+	},
+
+	run : function()
+	{
+		Presto.calculatorModel.set(this.executeScript());
+		return this;
 	},
 
 

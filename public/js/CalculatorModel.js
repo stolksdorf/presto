@@ -31,6 +31,7 @@ Presto_Model_Calculator = XO.Model.extend({
 	//loops through all the inputs, builds all charts and tables and outputs, updates globals
 	update : function()
 	{
+		//console.log(this);
 
 		this.trigger('update');
 

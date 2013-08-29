@@ -58,7 +58,12 @@ Presto_Block_Calculator = XO.Block.extend({
 
 		_.each(mod_map, function(module, moduleName){
 			var temp = new module(self.model.get(moduleName), self.model);
-			temp.injectInto(self.dom.container);
+
+			if(moduleName === 'tables' || moduleName === 'charts' ){
+				temp.injectInto(self.dom.container);
+			} else {
+				temp.injectInto(self.dom.leftSide);
+			}
 			self.modules[moduleName] = temp;
 		});
 

@@ -5,7 +5,7 @@ A service for creating detailed and interactive investment calculators
 
 ## Presto Markup Language
 
-Presto Markup Language, PML is a simplified version of Javascript to faciliate calculator creation. It's heavily based on JSON, with functions added in. PML is broken down into four major sections: **Calculator Details**, **Inputs**, **Charts**, and **Outputs**.
+Presto Markup Language, PML is a simplified version of Javascript to faciliate calculator creation. It's heavily based on JSON, with functions added in. PML is broken down into four major sections: **Calculator Details**, **Inputs**, **Tables**, and **Outputs**.
 
 ### Calculator Details
 This is a list of attributes about the calculator used for basic presentaiton, sorting, and filtering.
@@ -30,7 +30,7 @@ This is a list of attributes about the calculator used for basic presentaiton, s
 		group       : 'investment',
 		keywords    : ['benefits', 'inflation', 'ltc', 'unguarded', 'guarded'],
 		inputs      : {...},
-		chart       : {...},
+		tables       : {...},
 		outputs     : {...}
 	}
 
@@ -66,59 +66,62 @@ List of inputs to be generated for the user to modify.
 
 The `id` of the input is used to identify it in calculations For example if we would like to use the On-Claim percent in a later calculation we can access it's current value by using `Inputs.onClaim`
 
-	function(index, previousCellValue){
+	function(previousCellValue, index){
 		return previousCellValue*(1 + Inputs.onClaim);
 	}
 
 
 
-### Chart
-`title` *(string)* : A display name for the Chart
+### Table
+`title` *(string)* : A display name for the Table
 
-`description` *(string:optional)* : Text describing what the chart represents
+`description` *(string:optional)* : Text describing what the table represents
 
-`minRows` *(number:optional)* : The number of rows to initially show for the chart. Defaults to 20. *
+`rows` *(number:optional)* : The number of rows to initially show for the table. Defaults to 20. *
 
-`columns` *(objects)* : A list of column definitions for the chart
+`columns` *(objects)* : A list of column definitions for the table
 
-####Chart columns
+####Table columns
 `title` *(string)* : Header for the column
 
 `type`  *(type)* : One of the Types defined in Presto
 
-`firstValue` *(function)*  : The starting value for the input. This must always be a function.
+`firstCell` *(function)*  : The starting value for the input. This must always be a function.
 
-`fn` *(function)* : The generator function used to calculate the value of each row. The function will be given the current row index and the previous cell's value as it's two inputs.
+`generator` *(function)* : The generator function used to calculate the value of each row. The function will be given the current row index and the previous cell's value as it's two inputs.
 
-	chart : {
-		title : 'LTC Rundown',
-		minRows : 30,
-		columns : {
-			age : {
-				title : 'Age',
-				type  : Type.Number,
-				firstValue : function(){
-					return Inputs.age;
+	tables : {
+		ltc : {
+			title : 'LTC Rundown',
+			rows : 30,
+			columns : {
+				age : {
+					title : 'Age',
+					type  : Type.Number,
+					firstCell : function(){
+						return Inputs.age;
+					},
+					//Simply increments the age
+					generator : function(previousCellValue, index){
+						return previousCellValue + 1;
+					}
 				},
-				//Simply increments the age
-				fn    : function(rowIndex, previousCellValue){
-					return previousCellValue + 1;
-				}
-			},
-			benefitBase : {
-				title : 'Benefit Base',
-				type  : Type.Money,
-				firstValue : function(){
-					return Inputs.guarded;
-				},
-				fn    : function(index, previousCellValue){
-					return previousCellValue*(1 + Inputs.inflationGuard);
+				benefitBase : {
+					title : 'Benefit Base',
+					type  : Type.Money,
+					firstCell : function(){
+						return Inputs.guarded;
+					},
+					generator : function(previousCellValue, index){
+						return previousCellValue*(1 + Inputs.inflationGuard);
+					}
 				}
 			}
-		}
+		},
+		...
 	},
 
-The `id` of the column is used in calculations regarding values in the chart. `Chart.benefitBase` will return a array of numbers corresponding to the values in the column. Columns also have many useful functions you can use, such as `sum()` and `filter()`. You can review all available functions here.
+The `id` of the column is used in calculations regarding values in the table. `Table.benefitBase` will return a array of numbers corresponding to the values in the column. Columns also have many useful functions you can use, such as `sum()` and `filter()`. You can review all available functions here.
 
 
 ### Outputs
@@ -138,10 +141,10 @@ Output are very similar to inputs in visuals, but the user can not modify any of
 			description : "Age at which you'll make back your initial investment",
 			type : Type.Number,
 			value : function(){
-				//'find' returns the first value from the chart where the internal function returns true
+				//'find' returns the first value from the table where the internal function returns true
 				//So it'll return the first year where the benefit base is greater then the ungaurded benefit
-				var breakEvenAge = Chart.age.find(function(rowIndex, age){
-					if(Chart.benefitBase[rowIndex] > Inputs.unguarded){
+				var breakEvenAge = Table.age.find(function(rowIndex, age){
+					if(Table.benefitBase[rowIndex] > Inputs.unguarded){
 						return true;
 					}
 					return false;
@@ -185,30 +188,30 @@ Every column has a number of functions built-in to make calculations simple and 
 
 `filter(function)` - Returns an array of value in which the given function returns true*
 
-	Chart.exampleColumn = [5, 8, 23.5, 1, 51, 42.01];
+	Table.exampleColumn = [5, 8, 23.5, 1, 51, 42.01];
 
-	Chart.exampleColumn[2];
+	Table.exampleColumn[2];
 	//-> 23.5
 
-	Chart.exampleColumn.sum()
+	Table.exampleColumn.sum()
 	//-> 130.51
 
-	Chart.exampleColumn.max()
+	Table.exampleColumn.max()
 	//-> 51
 
-	Chart.exampleColumn.min()
+	Table.exampleColumn.min()
 	//-> 1
 
-	Chart.exampleColumn.delta()
+	Table.exampleColumn.delta()
 	//-> 50
 
-	Chart.exampleColumn.map(function(rowIndex, rowValue){
+	Table.exampleColumn.map(function(rowValue, rowIndex){
 		return rowValue * 100;
 	})
 	//-> [500, 800, 100, 2350, 5100, 4201]
 
 	//Finds first value over 20
-	Chart.exampleColumn.find(function(rowIndex, rowValue){
+	Table.exampleColumn.find(function(rowValue, rowIndex){
 		if(rowValue > 20){
 			return true;
 		}
@@ -217,7 +220,7 @@ Every column has a number of functions built-in to make calculations simple and 
 	//-> 23.5
 
 	//Retuns all values over 20
-	Chart.exampleColumn.filter(function(rowIndex, rowValue){
+	Table.exampleColumn.filter(function(rowValue, rowIndex){
 		if(rowValue > 20){
 			return true;
 		}
@@ -229,106 +232,110 @@ Every column has a number of functions built-in to make calculations simple and 
 ## Full Calculator Examples
 ### LTC Price Comparison
 
-		{
-			title : 'LTC Price Comparison',
-			description : 'Super cool thing',
-			icon : 'icon-plane',
+	{
+		title : 'LTC Price Comparison',
+		description : 'A comparison between guarded and ungaurded beneits or whatever',
+		color : 'blue',
+		icon : 'icon-paper-clip',
 
-			inputs : {
-				inflationGuard : {
-					title : 'Inflation Guard (off-claim)',
-					description : 'The estimated inflation rate while off-claim',
-					type : Type.Percent,
-					value : 0.02
-				},
-				onClaim : {
-					title : 'On-Claim',
-					type : Type.Percent,
-					value : 0.03
-				},
-				unguarded : {
-					title : 'Unguarded Benefit',
-					type : Type.Money,
-					value : 650
-				},
-				guarded : {
-					title : 'Guarded Benefit',
-					type : Type.Money,
-					value : 500
-				},
-				age : {
-					title : 'Age',
-					type : Type.Number,
-					value : 25
-				},
-				notes : {
-					title : 'Notes',
-					type : Type.Text,
-					value : 'Cool stuff'
-				}
+		inputs : {
+			inflationGuard : {
+				title : 'Inflation Guard (off-claim)',
+				description : 'The estimated inflation rate while off-claim',
+				type : Type.Percent,
+				initialValue : 0.02
 			},
+			onClaim : {
+				title : 'On-Claim',
+				type : Type.Percent,
+				initialValue : 0.03
+			},
+			unguarded : {
+				title : 'Unguarded Benefit',
+				type : Type.Money,
+				initialValue : 650
+			},
+			guarded : {
+				title : 'Guarded Benefit',
+				type : Type.Money,
+				initialValue : 500
+			},
+			age : {
+				title : 'Age',
+				type : Type.Number,
+				initialValue : 25
+			},
+			notes : {
+				title : 'Notes',
+				type : Type.Text,
+				initialValue : 'Cool stuff'
+			}
+		},
 
-			chart : {
+		tables : {
+			ltc : {
 				title : 'LTC Run Down',
 				columns : {
 					age : {
 						title : 'Age',
 						type : Type.Number,
-						value : function(){
+						firstCell : function(){
 							return Inputs.age;
 						},
-						fn : Functions.Increment()
+						generator : function(previousVal){
+							return previousVal + 1;
+						}
 					},
 					benefitBase : {
 						title : 'Benefit Base',
 						type : Type.Money,
-						value : function(){
+						firstCell : function(){
 							return Inputs.guarded;
 						},
-						fn : function(index, previousCellValue){
+						generator : function(previousCellValue, index){
 							return previousCellValue*(1 + Inputs.inflationGuard);
 						}
 					},
 					onClaim : {
 						title : 'On-Claim',
 						type : Type.Money,
-						value : function(){
+						firstCell : function(){
 							return Inputs.guarded;
 						},
-						fn : function(index, previousCellValue){
+						generator : function(previousCellValue, index){
 							return previousCellValue*(1 + Inputs.onClaim);
 						}
 					},
 				}
-			},
+			}
+		},
 
-			outputs : {
-				breakEvenOff : {
-					title : 'Breakeven (off-claim)',
-					description : "Age at which you'll make back your initial investment",
-					type : Type.Number,
-					value : function(){
-						var breakEvenAge = Chart.age.find(function(index, age){
-							if(Chart.benefitBase[index] > Inputs.unguarded){
-								return true;
-							}
-							return false;
-						});
-						return breakEvenAge;
-					}
-				},
-				breakEvenOn : {
-					title : 'Breakeven (on-claim)',
-					type : Type.Number,
-					value : function(){
-						var breakEvenAge = Chart.age.find(function(index, age){
-							if(Chart.onClaim[index] > Inputs.guarded){
-								return true;
-							}
-							return false;
-						});
-						return breakEvenAge;
-					}
+		outputs : {
+			breakEvenOff : {
+				title : 'Breakeven (off-claim)',
+				description : "Age at which you'll make back your initial investment",
+				type : Type.Number,
+				value : function(){
+					var breakEvenAge = Tables.ltc.age.find(function(age, index){
+						if(Tables.ltc.benefitBase[index] > Inputs.unguarded){
+							return true;
+						}
+						return false;
+					});
+					return breakEvenAge;
+				}
+			},
+			breakEvenOn : {
+				title : 'Breakeven (on-claim)',
+				type : Type.Number,
+				value : function(){
+					var breakEvenAge = Tables.ltc.age.find(function(age, index){
+						if(Tables.ltc.onClaim[index] > Inputs.guarded){
+							return true;
+						}
+						return false;
+					});
+					return breakEvenAge;
 				}
 			}
 		}

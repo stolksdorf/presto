@@ -2,19 +2,12 @@ Presto_Block_CodeEditor = XO.Block.extend({
 
 	block : 'codeEditor',
 
-	initialize : function(code)
-	{
-		this._code = code || "";
-		this._setup();
-		return this;
-	},
-
 	render : function()
 	{
 		var self = this;
 		this.editor = CodeMirror(this.dom.editor[0],
 		{
-			value          : self._code,
+			value          : "",
 			mode           : 'javascript',
 			viewportMargin : Infinity,
 			lineNumbers    : true,
@@ -22,32 +15,39 @@ Presto_Block_CodeEditor = XO.Block.extend({
 			tabMode        : 'indent'
 		});
 
-		this.editor.on('change', function(){
-			self.trigger('change', self.editor.getValue());
-		})
-
 		this.dom.closeButton.click(function(){
 			self.dom.block.hide();
 		});
 
 		this.dom.runButton.click(function(){
 			try{
-				self.trigger('run');
+				Presto.calculatorBlueprint.set('script', self.getCode());
+				Presto.calculatorBlueprint.run();
 				self.showMessage('Updated calculator', 'success');
 			}catch(error){
 				self.showMessage('ERROR: ' + error.message, 'error');
+				throw error;
+
 			}
 		});
 
 		this.dom.uploadButton.click(function(){
 			try{
 				self.showMessage('Uploading to server...', 'info');
-				self.trigger('upload');
+				Presto.calculatorBlueprint.set('script', self.getCode());
+				Presto.calculatorBlueprint.uploadToServer(function(){
+					self.showMessage('Upload Successful!', 'success');
+					alert('Uploaded');
+				});
 			}catch(error){
 				self.showMessage(error.message, 'error');
 			}
 		});
 
+
+		Presto.calculatorBlueprint.onChange('script', function(newScript){
+			self.setCode(newScript);
+		});
 
 		this.addWindowTraits(this.dom.block, this.dom.topbar)
 		this.showMessage('Rendered Code Editor!', 'success');
@@ -84,7 +84,8 @@ Presto_Block_CodeEditor = XO.Block.extend({
 		this.dom.success.hide();
 		this.dom.error.hide();
 		this.dom.info.hide();
-		this.dom[msgType].show().find('span').text(msgText);
+		this.dom[msgType].stop().show().find('span').text(msgText);
+		if(msgType==='success') this.dom[msgType].delay(3000).fadeOut(1200);
 		return this;
 	},
 

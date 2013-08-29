@@ -3,14 +3,12 @@ Presto = {
 	{
 		var self = this;
 
-		this.calculatorBlueprint = new Presto_Model_CalculatorBlueprint();
 		this.calculatorModel     = new Presto_Model_Calculator();
+		this.calculatorBlueprint = new Presto_Model_CalculatorBlueprint();
 
 		this.calcBlock = new Presto_Block_Calculator(this.calculatorModel);
 
-
-
-		this.setupEditor();
+		//
 
 		//get Calcualtor ID from URL
 		var calcId = document.URL.split('/').last();
@@ -24,8 +22,12 @@ Presto = {
 	{
 		var self = this;
 		$.get('/api/calculator/' + calculatorId, function(response){
+			self.setupEditor();
 			//TODO: check for errors later
 			self.loadCalculator(response);
+
+
+
 		});
 		return this;
 	},
@@ -34,7 +36,7 @@ Presto = {
 	loadCalculator : function(calcBlueprint)
 	{
 		this.calculatorBlueprint.set(calcBlueprint);
-		this.calculatorModel.clear().set(this.calculatorBlueprint.executeScript());
+		this.calculatorBlueprint.run();
 		return this;
 	},
 
@@ -43,21 +45,7 @@ Presto = {
 		var self = this;
 
 		this.editor    = new Presto_Block_CodeEditor();
-		this.editor.on('run', function(){
-			self.calculatorBlueprint.set('script', self.editor.getCode());
-			self.calculatorModel.set(self.calculatorBlueprint.executeScript());
-		});
 
-		this.editor.on('upload', function(){
-			self.calculatorBlueprint.set('script', self.editor.getCode());
-			self.calculatorBlueprint.uploadToServer();
-		});
-		this.calculatorBlueprint.on('uploaded', function(){
-			self.editor.showMessage('Upload Successful!', 'success');
-		});
-		this.calculatorBlueprint.onChange('script', function(newScript){
-			self.editor.setCode(newScript);
-		});
 		this.calcBlock.on('showEditor', function(){
 			self.editor.show();
 		});

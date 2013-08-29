@@ -1,10 +1,10 @@
 .presto{
 	position        : relative;
 
+	overflow        : hidden;
 	height          : 100%;
 
 	background-color:#ECF0F1;
-	overflow: hidden;
 }
 
 	.container__left{
@@ -21,20 +21,6 @@
 
 		padding       : 20px;
 	}
-
-
-.prestoTileSmall{
-
-}
-
-.prestoTileLarge{
-
-}
-
-
-
-
-
 
 
 .topbar{
@@ -89,14 +75,11 @@
 
 
 .inputContainer{
-	display         : inline-block;
-	vertical-align  : top;
+	min-width           :500px;
+	margin              : 15px;
+	padding             : 8px;
 
-	width           :500px;
-	margin-bottom   : 30px;
-	padding         : 8px;
-
-	background-color: white;
+	background-color    : white;
 }
 
 	.inputContainer__divider{
@@ -108,15 +91,20 @@
 	}
 
 
+	.inputContainer__title, .outputContainer__title{
+		font-size    : 1.8em;
+
+		/*font-weight: 300;*/
+	}
+
+
 
 .outputContainer{
-	display         : inline-block;
-	vertical-align  : top;
+	min-width           :500px;
+	margin              : 15px;
+	padding             : 8px;
 
-	width           :500px;
-	padding         : 8px;
-
-	background-color: white;
+	background-color    : white;
 }
 
 	.outputContainer__divider{
@@ -126,6 +114,13 @@
 
 		background-color: #eee;
 	}
+
+.tableContainer{
+	float    :left;
+
+	margin   : 15px;
+}
+
 
 
 .input{
@@ -194,8 +189,9 @@
 
 .table{
 	display         : inline-block;
-	right           :30px;
+	vertical-align  : top;
 
+	margin-right    : 15px;
 	padding         :20px;
 
 	background-color: white;
@@ -245,7 +241,7 @@
 	}
 
 		.table__cell:hover{
-			background-color: #eee;
+			/*background-color: #eee;*/
 			font-weight     : bold;
 		}
 
