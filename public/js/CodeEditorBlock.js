@@ -50,7 +50,7 @@ Presto_Block_CodeEditor = XO.Block.extend({
 		});
 
 		this.addWindowTraits(this.dom.block, this.dom.topbar)
-		this.showMessage('Rendered Code Editor!', 'success');
+		//this.showMessage('Rendered Code Editor!', 'success');
 		this.dom.block.hide();
 		return this;
 	},
