@@ -1,3 +1,5 @@
+
+
 Presto_Block_CodeEditor = XO.Block.extend({
 
 	block : 'codeEditor',
@@ -20,37 +22,31 @@ Presto_Block_CodeEditor = XO.Block.extend({
 		});
 
 		this.dom.runButton.click(function(){
-			try{
-				Presto.calculatorBlueprint.set('script', self.getCode());
-				Presto.calculatorBlueprint.run();
-				self.showMessage('Updated calculator', 'success');
-			}catch(error){
-				self.showMessage('ERROR: ' + error.message, 'error');
-				throw error;
-
-			}
+			Presto.calculatorBlueprint.set('script', self.getCode());
+			Presto.calculatorBlueprint.run();
+			self.showMessage('Updated calculator', 'success');
 		});
 
 		this.dom.uploadButton.click(function(){
-			try{
-				self.showMessage('Uploading to server...', 'info');
-				Presto.calculatorBlueprint.set('script', self.getCode());
-				Presto.calculatorBlueprint.uploadToServer(function(){
-					self.showMessage('Upload Successful!', 'success');
-					alert('Uploaded');
-				});
-			}catch(error){
-				self.showMessage(error.message, 'error');
-			}
+			self.showMessage('Uploading to server...', 'info');
+			Presto.calculatorBlueprint.set('script', self.getCode());
+			Presto.calculatorBlueprint.uploadToServer(function(){
+				self.showMessage('Upload Successful!', 'success');
+				alert('Uploaded');
+			});
 		});
-
 
 		Presto.calculatorBlueprint.onChange('script', function(newScript){
 			self.setCode(newScript);
 		});
 
+		//Catches any eval errors
+		window.onerror = function(error, fileName, lineNumber){
+			self.showMessage('line ' + lineNumber + ' : ' + error, 'error');
+		}
+
+
 		this.addWindowTraits(this.dom.block, this.dom.topbar)
-		//this.showMessage('Rendered Code Editor!', 'success');
 		this.dom.block.hide();
 		return this;
 	},

@@ -3,6 +3,8 @@ Presto = {
 	{
 		var self = this;
 
+
+
 		this.calculatorModel     = new Presto_Model_Calculator();
 		this.calculatorBlueprint = new Presto_Model_CalculatorBlueprint();
 

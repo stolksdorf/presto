@@ -36,7 +36,6 @@ var CalculatorModel = mongoose.model('CalculatorModel', mongoose.Schema({
 
 
 
-//errorHandler = ;
 
 
 //Routes
@@ -105,10 +104,6 @@ app.delete('/api/calculator/*', function(req, res){
 		});
 	});
 });
-
-
-
-
 
 
 app.get('/reset', function(req, res){
