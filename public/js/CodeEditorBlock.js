@@ -1,7 +1,11 @@
+var Presto_CodeEditor_ErrorMap = {
+	"Uncaught SyntaxError: Unexpected token ILLEGAL" : "Finish ya quotes man!",
+	"Uncaught SyntaxError: Unexpected identifier" : "Yo bro, you're missing a comma on the previous line"
+};
+
 
 
 Presto_Block_CodeEditor = XO.Block.extend({
-
 	block : 'codeEditor',
 
 	render : function()
@@ -42,8 +46,20 @@ Presto_Block_CodeEditor = XO.Block.extend({
 
 		//Catches any eval errors
 		window.onerror = function(error, fileName, lineNumber){
-			self.showMessage('line ' + lineNumber + ' : ' + error, 'error');
-		}
+			if(Presto_CodeEditor_ErrorMap[error]){
+				error = Presto_CodeEditor_ErrorMap[error];
+			}
+			if(lineNumber){
+				self.editor.addLineClass(
+					self.editor.getLineHandle(lineNumber-1),
+					'background',
+					'codeEditor__editor__errorLine');
+				self.showMessage('line ' + lineNumber + ' : ' + error, 'error');
+				return;
+			}
+			self.showMessage(error, 'error');
+			return;
+		};
 
 
 		this.addWindowTraits(this.dom.block, this.dom.topbar)

@@ -308,6 +308,10 @@
 				height  : auto;
 			}
 
+				.codeEditor__editor__errorLine{
+					background-color: rgba(231, 76, 60,0.5);
+				}
+
 
 	.codeEditor__footer{
 		position: absolute;
@@ -333,4 +337,6 @@
 			text-align    : center;
 			border-top    :1px solid #eee;
 		}
+
+
 
