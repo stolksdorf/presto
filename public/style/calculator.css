@@ -281,6 +281,12 @@
 				/*background-color: #eee;*/
 			}
 
+		.table__bottom{
+			display:none;
+			font-weight       : bold;
+			border-top: 2px solid black;
+		}
+
 
 
 .codeEditor{

@@ -9,10 +9,10 @@ Type = {
 		isNumerical : true,
 		renderer : function(value, view){
 			if(view){
-				if(typeof value === 'undefined'){
-					view.text('None');
-				}
 				view.text(value*1);
+				if(typeof value === 'undefined'){
+					view.text('--');
+				}
 			}
 			return value*1;
 		}
@@ -23,10 +23,10 @@ Type = {
 		renderer : function(value, view){
 			var val = +(value * 100).toFixed(3) + '%';
 			if(view){
-				if(typeof value === 'undefined'){
-					view.text('None');
-				}
 				view.text(val);
+				if(typeof value === 'undefined'){
+					view.text('--');
+				}
 			}
 			return val;
 		}
@@ -38,12 +38,12 @@ Type = {
 		{
 			var val = ("$" + (value * 1).toFixed(2)).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 			if(view){
-				if(typeof value === 'undefined'){
-					view.text('None');
-				}
 				view.css('color', 'inherit');
 				if(value < 0) view.css('color', 'red');
 				view.text(val);
+				if(typeof value === 'undefined'){
+					view.text('--');
+				}
 			}
 			return val;
 		},

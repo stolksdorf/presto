@@ -57,7 +57,21 @@ Presto_Block_Table = XO.Block.extend({
 
 			//Scroll to bottom of table
 			self.dom.columnContainer.scrollTop(self.dom.columnContainer[0].scrollHeight);
-		})
+		});
+
+		//check for bottom value definitions
+		hasBottom = _.reduce(this.columns, function(memo, column){
+				if(column.def.bottom) return true;
+				return memo;
+		}, false);
+
+		console.log(hasBottom);
+
+		if(hasBottom){
+			_.each(this.columns, function(column){
+				column.dom.bottom.show();
+			});
+		}
 
 
 
@@ -77,10 +91,18 @@ Presto_Block_Table = XO.Block.extend({
 	update : function()
 	{
 		var self = this;
+
+		//update all the cells first
 		Tables[self.name] = _.object(_.map(this.columns, function(column){
 			column.update();
 			return [column.name, column.cellValues];
 		}));
+
+		//then update the bottom values
+		_.each(this.columns, function(column){
+			Tables[self.name][column.name].bottom = column.updateBottom();
+		});
+
 		return this;
 	},
 
@@ -96,6 +118,9 @@ Presto_Block_TableColumn = XO.Block.extend({
 		var self = this;
 		self.cells = [];
 		this.dom.title.text(this.def.title);
+
+		//this.dom.bottom.hide()
+		//if(this.def.bottom) this.dom.bottom.show();
 		return this;
 	},
 
@@ -127,6 +152,14 @@ Presto_Block_TableColumn = XO.Block.extend({
 
 		return this;
 	},
+
+	updateBottom : function(){
+		var self = this;
+		var _val = typeof this.def.bottom === 'function' ? this.def.bottom() : this.def.bottom;
+
+		self.def.type.renderer(_val, self.dom.bottom);
+		return _val;
+	}
 });
 
 
