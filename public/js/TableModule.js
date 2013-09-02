@@ -48,6 +48,7 @@ Presto_Block_Table = XO.Block.extend({
 
 
 		this.dom.moreRowsButton.click(function(event){
+			//if the user clicks on the textbox, doesn't fire the add rows event
 			if(event.target.type === 'text'){
 				event.stopPropagation();
 				return false;
@@ -64,16 +65,11 @@ Presto_Block_Table = XO.Block.extend({
 				if(column.def.bottom) return true;
 				return memo;
 		}, false);
-
-		console.log(hasBottom);
-
 		if(hasBottom){
 			_.each(this.columns, function(column){
 				column.dom.bottom.show();
 			});
 		}
-
-
 
 		this.addRows(this.def.rows || 20);
 		return this;
@@ -128,7 +124,15 @@ Presto_Block_TableColumn = XO.Block.extend({
 	{
 		var self = this;
 		_.times(count, function(index){
-			self.cells.push($('<div></div>').addClass('table__cell').appendTo(self.dom.cellContainer));
+			var newCell = $('<div></div>').addClass('table__cell').appendTo(self.dom.cellContainer);
+			newCell.click(function(){
+				if(newCell.hasClass('highlight')){
+					newCell.removeClass('highlight');
+					return;
+				}
+				newCell.addClass('highlight');
+			});
+			self.cells.push(newCell);
 		});
 		return this;
 	},
