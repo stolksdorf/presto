@@ -94,7 +94,7 @@
 	.inputContainer__title, .outputContainer__title{
 		font-size    : 1.8em;
 
-		/*font-weight: 300;*/
+		font-weight: 300;
 	}
 
 
@@ -241,8 +241,9 @@
 	}
 
 		.table__cell:hover{
+			font-weight       : bold;
+
 			/*background-color: #eee;*/
-			font-weight     : bold;
 		}
 
 

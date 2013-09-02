@@ -1,4 +1,5 @@
 var mod_map = {
+	global  : Presto_Module_Global,
 	inputs  : Presto_Module_Input,
 	tables  : Presto_Module_Table,
 	outputs : Presto_Module_Output,
@@ -61,7 +62,7 @@ Presto_Block_Calculator = XO.Block.extend({
 
 			if(moduleName === 'tables' || moduleName === 'charts' ){
 				temp.injectInto(self.dom.container);
-			} else {
+			} else if(temp.schematic){
 				temp.injectInto(self.dom.leftSide);
 			}
 			self.modules[moduleName] = temp;

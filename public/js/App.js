@@ -54,6 +54,12 @@ Presto = {
 		return this;
 	},
 
+	addModule : function(moduleName, moduleDefinition)
+	{
+		this.modules[moduleName] = Presto_Module.extend(moduleDefinition);
+		return this;
+	},
+
 
 };
 

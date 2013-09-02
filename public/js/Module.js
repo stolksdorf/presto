@@ -25,4 +25,36 @@
 
 
 
- */
+*/
+
+Presto_Module = Archetype.extend({
+
+
+
+
+	/**
+	 * Called whenever the module needs to update it's global references
+	 * @return {[type]} [description]
+	 */
+	update : function()
+	{
+
+		return this;
+	},
+
+
+	addViews : function(collection, Block, Model, injectionPoint){
+		return _.map(collection, function(def, name){
+			var newView = new Block(Model);
+			newView.name = name;
+			newView.def = def;
+			newView.injectInto(injectionPoint);
+			return newView;
+		});
+	},
+
+
+
+
+
+});
