@@ -289,6 +289,23 @@
 		}
 
 
+.chart{
+	background-color: white;
+	margin: 15px;
+	padding: 8px;
+}
+
+	.chart__title{
+		font-size    : 1.8em;
+		font-weight: 300;
+		margin-bottom: 10px;
+	}
+
+	.chart__graph{
+		width : 450px;
+		height : 300px;
+	}
+
 
 .codeEditor{
 	position        : absolute;
