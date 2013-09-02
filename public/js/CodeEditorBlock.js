@@ -90,6 +90,11 @@ Presto_Block_CodeEditor = XO.Block.extend({
 		this.dom.block.show();
 		return this;
 	},
+	hide : function()
+	{
+		this.dom.block.hide();
+		return this;
+	},
 
 	showMessage : function(msgText, msgType)
 	{

@@ -32,6 +32,10 @@ Presto_Block_Calculator = XO.Block.extend({
 		this.dom.launchEditorButton.click(function(){
 			self.trigger('showEditor');
 		});
+		//TODO: remove later after beta
+		if(document.URL.indexOf('beta') !== -1){
+			this.dom.launchEditorButton.hide();
+		}
 
 
 		//Model events

@@ -51,6 +51,8 @@ Presto = {
 		this.calcBlock.on('showEditor', function(){
 			self.editor.show();
 		});
+
+
 		return this;
 	},
 

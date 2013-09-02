@@ -47,6 +47,15 @@ app.get('/calc/*', function (req, res) {
 	res.render('calculator.html');
 });
 
+//Beta Routes
+app.get('/beta', function (req, res) {
+	res.render('home.html');
+});
+
+app.get('/beta/calc/*', function (req, res) {
+	res.render('calculator.html');
+});
+
 
 
 

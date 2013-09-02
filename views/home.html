@@ -58,6 +58,9 @@
 			this.dom.newCalculatorButton.click(function(){
 				self.calculatorCollection.addNew();
 			});
+			if(document.URL.indexOf('beta') !== -1){
+				this.dom.newCalculatorButton.hide();
+			}
 
 			this.calculatorCollection.fetch();
 			return this;
@@ -65,6 +68,12 @@
 
 		addCalculator : function(calculatorModel)
 		{
+			//TODO: Remove later out of beta
+			if(document.URL.indexOf('beta') !== -1){
+				calculatorModel.set('url', calculatorModel.get('url') + '?beta');
+			}
+
+			console.log(calculatorModel);
 			var newBlock = new Presto_Block_CalculatorOption(calculatorModel);
 			newBlock.injectInto(this.dom.container, {at_top:true});
 			return this;
@@ -107,6 +116,12 @@
 					self.remove();
 				}
 			});
+
+			//TODO: Remove later out of beta
+			if(document.URL.indexOf('beta') !== -1){
+				this.dom.deleteBtn.hide()
+			}
+
 
 			return this;
 		},
