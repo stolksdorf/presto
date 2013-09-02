@@ -14,6 +14,8 @@
 		<!-- Main Area -->
 		<div class='container' xo-element='container'>
 			<div style='float:left; width:540px;' xo-element='leftSide'></div>
+			<div style='float:left;' xo-element='rightSide'></div>
+			<div style='clear:both'></div>
 
 		</div>
 	</div>
@@ -63,6 +65,11 @@
 <div class='table' xo-schematic='table'>
 	<div class='table__title' xo-element='title'></div>
 	<div class='table__data' xo-element='columnContainer'></div>
+	<div class='table__moreRowsButton' xo-element='moreRowsButton'>
+		<i class='icon-plus'></i>
+		 Add more
+		 <input class='table__moreRowsButton__input' xo-element='moreRowsInput' type='text' value='20'></input> rows
+	</div>
 </div>
 <div class='table__column' xo-schematic='tableColumn'>
 	<div class='table__column__title' xo-element='title'>Age</div>

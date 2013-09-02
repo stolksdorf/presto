@@ -45,6 +45,22 @@ Presto_Block_Table = XO.Block.extend({
 			this.model,
 			this.dom.columnContainer
 		);
+
+
+		this.dom.moreRowsButton.click(function(event){
+			if(event.target.type === 'text'){
+				event.stopPropagation();
+				return false;
+			}
+			self.addRows(self.dom.moreRowsInput.val());
+			self.update();
+
+			//Scroll to bottom of table
+			self.dom.columnContainer.scrollTop(self.dom.columnContainer[0].scrollHeight);
+		})
+
+
+
 		this.addRows(this.def.rows || 20);
 		return this;
 	},

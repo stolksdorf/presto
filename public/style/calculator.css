@@ -4,7 +4,7 @@
 	overflow        : hidden;
 	height          : 100%;
 
-	background-color:#ECF0F1;
+	background-color:#BDC3C7;
 }
 
 	.container__left{
@@ -204,47 +204,82 @@
 		font-weight   : 300;
 	}
 
-	.table__column{
-		display     : inline-block;
 
-		min-width   : 50px;
-		margin-right: -3px;
+	.table__moreRowsButton{
+		cursor: pointer;
+		margin: 0;
 
-		border-right: 1px solid rgb(102, 102, 102);
+		background-color: #2980B9;
+		color : white;
+		text-align: center;
+		width: 100%;
+
+		margin-top: 15px;
+
+		padding-top   : 0.6em;
+		padding-bottom   : 0.6em;
+
 	}
 
-		.table__column:first-child{
-			border-left: 1px solid rgb(102, 102, 102);
+		.table__moreRowsButton:hover{
+			background-color:#3498DB;
 		}
 
-		.table__column__title{
-			padding-top   : 8px;
-			padding-right : 8px;
-			padding-bottom: 3px;
-			padding-left  : 8px;
-
-			border-top    : 1px solid rgb(102, 102, 102);
-			border-bottom : 3px solid rgb(102, 102, 102);
+		.table__moreRowsButton__input{
+			width: 23px;
+			text-align: right;
+			margin-right: 5px;
+			margin-left: 5px;
 		}
 
-	.table__cell{
-		vertical-align: middle;
 
-		padding-top   : 5px;
-		padding-right : 5px;
-		padding-bottom: 5px;
-		padding-left  : 5px;
-
-		font-size     : 1em;
-		text-align    : right;
-		border-bottom : 1px solid rgb(102, 102, 102);
+	.table__data{
+		overflow-y: scroll;
+		overflow-x: hidden;
+		max-height: 500px;
 	}
 
-		.table__cell:hover{
-			font-weight       : bold;
+		.table__column{
+			display     : inline-block;
 
-			/*background-color: #eee;*/
+			min-width   : 50px;
+			margin-right: -3px;
+
+			border-right: 1px solid rgb(102, 102, 102);
 		}
+
+			.table__column:first-child{
+				border-left: 1px solid rgb(102, 102, 102);
+			}
+
+			.table__column__title{
+				padding-top   : 8px;
+				padding-right : 8px;
+				padding-bottom: 3px;
+				padding-left  : 8px;
+
+				border-top    : 1px solid rgb(102, 102, 102);
+				border-bottom : 3px solid rgb(102, 102, 102);
+			}
+
+		.table__cell{
+			vertical-align: middle;
+
+			padding-top   : 5px;
+			padding-right : 5px;
+			padding-bottom: 5px;
+			padding-left  : 5px;
+
+			font-size     : 1em;
+			text-align    : right;
+			border-bottom : 1px solid rgb(102, 102, 102);
+		}
+
+			.table__cell:hover{
+				font-weight       : bold;
+
+				/*background-color: #eee;*/
+			}
 
 
 
