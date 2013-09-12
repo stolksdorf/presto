@@ -13,9 +13,6 @@ Presto.registerModule({
 	render : function(moduleData)
 	{
 		var self = this;
-
-		console.log('rendering output module', moduleData);
-
 		this.outputContainer.schematic = 'outputContainer';
 		this.outputContainer.injectInto($('#leftSide')); //<-- fix this later
 
@@ -30,7 +27,6 @@ Presto.registerModule({
 
 	update : function()
 	{
-		console.log('updating all outputs');
 		_.each(this.outputs, function(output){
 			output.update();
 		});
@@ -51,7 +47,6 @@ Presto.registerModule({
 		schematic : 'output',
 		render : function()
 		{
-			console.log('rendering output');
 			var self = this;
 			this.dom.title.text(this.model.get('title'));
 			this.dom.description.text(this.model.get('description'));
@@ -62,11 +57,8 @@ Presto.registerModule({
 		},
 		update : function()
 		{
-			var outputValue = this.model.get('value');
-			if(typeof outputValue === 'function'){
-				outputValue = outputValue();
-			}
-			console.log('Updating output', outputValue, this.name);
+			var outputValue = Presto.evalue(this.model.get('value'));
+
 			this.model.get('type').renderer(outputValue, this.dom.value);
 			Outputs[this.name] = outputValue;
 			return this;

@@ -14,8 +14,6 @@ Presto.registerModule({
 	{
 		var self = this;
 
-		console.log('rendering input', moduleData);
-
 		this.inputContainer.schematic = 'inputContainer';
 		this.inputContainer.injectInto($('#leftSide')); //<-- fix this later
 
@@ -47,7 +45,6 @@ Presto.registerModule({
 		schematic : 'input',
 		render : function()
 		{
-			console.log('rendering', this.model);
 			var self = this;
 			this.widget = this.dom.value.widget({
 				value : this.model.get('initialValue'),

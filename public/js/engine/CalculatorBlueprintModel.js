@@ -24,7 +24,6 @@ Presto_Model_CalculatorBlueprint = XO.Model.extend({
 	{
 		var self = this;
 		//make sure the model is updated
-		console.log('updaloading script to DB');
 		this.execute(function(){
 			self.save({},{
 				success  : function(model, response, options){
@@ -43,7 +42,6 @@ Presto_Model_CalculatorBlueprint = XO.Model.extend({
 	retrieve : function(callback)
 	{
 		var self = this;
-		console.log('Retrieveing blueprint', this.get('id'));
 		$.get(this.urlRoot + '/' + this.get('id'), function(response){
 			self.set(response);
 			self.execute();
@@ -58,7 +56,6 @@ Presto_Model_CalculatorBlueprint = XO.Model.extend({
 	 */
 	execute : function(callback)
 	{
-		console.log('Executing the script');
 		var self = this;
 		eval("with (this) {var result = (" + this.get('script') + ")}");
 

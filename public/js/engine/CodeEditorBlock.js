@@ -4,7 +4,6 @@ var Presto_CodeEditor_ErrorMap = {
 };
 
 
-
 Presto_Block_CodeEditor = XO.Block.extend({
 	block : 'codeEditor',
 
@@ -41,7 +40,6 @@ Presto_Block_CodeEditor = XO.Block.extend({
 		});
 
 		this.model.onChange('script', function(newScript){
-			console.log('updating editor with blueprint');
 			self.setCode(newScript);
 		});
 

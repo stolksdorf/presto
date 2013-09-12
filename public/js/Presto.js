@@ -83,14 +83,10 @@ Presto = {
 		//TODO: Add a name/global collision check
 		var newModule = Presto_Module.extend(moduleObject);
 		newModule.initialize();
+
 		//TODO: Maybe add global init here as well?
+
 		this.modules[newModule.name] = newModule;
-
-
-		//Sort modules
-
-
-		console.log("SORTED", this.sortModules());
 
 		return this;
 	},
@@ -120,7 +116,6 @@ Presto = {
 	 */
 	updateModules : function()
 	{
-		console.log('Upating Presto');
 		_.each(this.sortModules(), function(module){
 			module.update();
 		});
@@ -153,7 +148,6 @@ Presto = {
 	 */
 	createBlocks : function(args)
 	{
-		console.log('args', args);
 		return _.map(args.data, function(data, dataName){
 			var newBlock = new args.block(data);
 			newBlock.name = dataName;
