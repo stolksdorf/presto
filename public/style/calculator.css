@@ -250,8 +250,6 @@
 
 
 .table{
-	/*display         : inline-block;
-	vertical-align  : top;*/
 
 	margin-right    : 15px;
 	padding         : 20px;
@@ -296,7 +294,7 @@
 
 
 	.table__data{
-		overflow-y: auto;
+		overflow-y: scroll;
 		overflow-x: hidden;
 		max-height: 500px;
 	}

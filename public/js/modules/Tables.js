@@ -98,6 +98,15 @@ Presto.registerModule({
 
 			this.dom.title.text(_.evalue(this.model.get('title')));
 
+
+			//Use heights to see if we need a scrollbar
+			if(this.dom.columnContainer.height() < this.columns[0].dom.block.height()){
+				this.dom.columnContainer.css({"overflow-y" : "scroll"});
+			} else {
+				this.dom.columnContainer.css({"overflow-y" : "hidden"});
+			}
+
+
 			//then update the bottom values
 			/*
 			_.each(this.columns, function(column){
