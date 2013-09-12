@@ -28,6 +28,9 @@ Presto.registerModule({
 
 	update : function()
 	{
+		_.each(this.inputs, function(input){
+			input.update();
+		})
 		return this;
 	},
 
@@ -57,6 +60,14 @@ Presto.registerModule({
 					Presto.update();
 				},
 			});
+
+
+			return this;
+		},
+
+		update : function()
+		{
+			var self = this;
 
 			this.dom.title.text(this.model.get('title'));
 			this.dom.description.text(this.model.get('description'));
