@@ -35,14 +35,6 @@ input{
 	font-family     : 'Lato', sans-serif;
 }
 
-.title{
-	padding    : 10px;
-
-	font-size  : 1.8em;
-	font-weight: 300;
-}
-
-
 .clickable{
 	cursor : pointer;
 	opacity: 1.0;

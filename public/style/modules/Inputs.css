@@ -1,0 +1,38 @@
+.input{
+	padding-right  : 15px;
+	padding-bottom : 15px;
+	padding-left   : 15px;
+}
+
+	.input__title{
+		font-size   : 1.3em;
+		font-weight : 300;
+	}
+
+	.input__description{
+		margin-top  : 5px;
+		margin-left : 8px;
+
+		font-size   : 0.8em;
+		color       : #727272;
+	}
+
+	.input__value{
+		vertical-align : middle;
+		float          : right;
+		font-size      : 1.3em;
+	}
+
+		.input__value .widget__view{
+			cursor        : pointer;
+			border-bottom : 1px solid transparent;
+		}
+			.input__value .widget__view:hover{
+				background-color : #eee;
+			}
+
+		.input__value .widget__control{
+			min-width  : 50px;
+			text-align : right;
+		}
+

@@ -1,453 +1,222 @@
 .presto{
-	position        : relative;
+	position         : relative;
 
-	overflow        : hidden;
-	height          : 100%;
+	overflow         : hidden;
+	height           : 100%;
 
-	background-color:#BDC3C7;
+	background-color : #BDC3C7;
 }
 
+	.presto__errorBar{
+		position         : absolute;
+		display          : none;
+		bottom           : 0px;
 
-	.errorBar{
-		display: none;
-		position: absolute;
-		bottom  : 0px;
+		width            : 100%;
+		padding          : 15px;
 
-		width   : 100%;
-		color : white;
-
-		padding : 15px;
-		font-size: 1.3em;
-		background-color:#E74C3C;
+		background-color : #E74C3C;
+		font-size        : 1.3em;
+		color            : white;
 	}
 
 
-.topbar{
-	z-index         :1000;
+	.presto__topbar{
+		z-index          : 1000;
 
-	height          : 40px;
-	width           : 100%;
+		height           : 40px;
+		width            : 100%;
 
-	background-color: #7F8C8D;
-	color           :white;
-}
-	.topbar__logo{
-		display    : inline-block;
-
-		width      : 40px;
-
-		font-size  : 30px;
-		line-height: 40px;
-		text-align : center;
+		background-color : #7F8C8D;
+		color            : white;
 	}
-	.topbar__title{
-		font-size  : 30px;
-		font-weight: 300;
-	}
-
-	.topbar__editor{
-		display    : inline-block;
-		float      : right;
-
-		width      : 40px;
-
-		cursor     : pointer;
-		font-size  : 30px;
-		line-height: 40px;
-		text-align : center;
-	}
-
-	.topbar.teal  {background-color:#16A085;}
-	.topbar.green {background-color:#27AE60;}
-	.topbar.blue  {background-color:#2980B9;}
-	.topbar.purple{background-color:#8E44AD;}
-	.topbar.steel {background-color:#2C3E50;}
-	.topbar.yellow{background-color:#F39C12;}
-	.topbar.orange{background-color:#D35400;}
-	.topbar.red   {background-color:#C0392B;}
-	.topbar.silver{background-color:#BDC3C7;}
-	.topbar.grey  {background-color:#7F8C8D;}
-
-
-
-
-.main{
-	overflow: hidden;
-	height: auto;
-	width: 100%;
-	position: absolute;
-	top: 40px;
-	bottom: 0;
-	overflow-y: auto;
-}
-
-
-
-
-.moduleContainer > div{
-	margin              : 15px;
-	background-color    : white;
-}
-
-.staticContainer{
-	max-height : 100%;
-
-	float : left;
-
-	max-width:550px;
-	min-width:400px;
-
-	overflow-y: auto;
-
-	width : 40%;
-}
-
-
-.flowContainer{
-	min-width:300px;
-	overflow: hidden;
-	height:100%;
-}
-
-
-#rightSide{
-	overflow-x: auto;
-
-	height:100%;
-	white-space: nowrap;
-
-}
-
-#rightSide > div{
-	display: inline-block;
-	vertical-align: top;
-}
-
-
-
-
-
-
-
-
-
-
-/* Module Styles below */
-
-
-
-
-.inputContainer{
-	margin              : 15px;
-	padding             : 8px;
-
-	background-color    : white;
-}
-
-	.inputContainer__divider{
-		height          : 2px;
-		width           : 65%;
-		margin-left     : 45px;
-
-		background-color: #eee;
-	}
-
-
-	.inputContainer__title, .outputContainer__title{
-		font-size    : 1.8em;
-
-		font-weight: 300;
-	}
-
-
-
-.outputContainer{
-	margin              : 15px;
-	padding             : 8px;
-
-	background-color    : white;
-}
-
-	.outputContainer__divider{
-		height          : 2px;
-		width           : 65%;
-		margin-left     : 45px;
-
-		background-color: #eee;
-	}
-
-/*
-.tableContainer{
-	float    :left;
-
-	margin   : 15px;
-}
-*/
-
-
-.input{
-	padding:15px;
-}
-
-	.input__title{
-		font-size  : 1.3em;
-		font-weight: 300;
-	}
-
-	.input__description{
-		margin-top : 5px;
-		margin-left: 8px;
-
-		font-size  : 0.8em;
-		color      : #727272;
-	}
-
-	.input__value{
-		vertical-align: middle;
-		float         :right;
-
-		font-size     : 1.3em;
-	}
-
-		.input__value .widget__view{
-			cursor       : pointer;
-			border-bottom: 1px solid transparent;
-		}
-			.input__value .widget__view:hover{
-				background-color: #eee;
-			}
-
-		.input__value .widget__control{
-			min-width : 50px;
-
-			text-align: right;
-		}
-
-.output{
-	padding:15px;
-}
-
-	.output__title{
-		font-size  : 1.3em;
-		font-weight: 300;
-	}
-
-	.output__description{
-		margin-top : 5px;
-		margin-left: 8px;
-
-		font-size  : 0.8em;
-		color      : #727272;
-	}
-
-	.output__value{
-		vertical-align: middle;
-		float         :right;
-
-		font-size     : 1.3em;
-	}
-
-
-
-.table{
-
-	margin-right    : 15px;
-	padding         : 20px;
-
-	background-color: white;
-}
-
-	.table__title{
-		padding-bottom: 15px;
-
-		font-size     : 1.8em;
-		font-weight   : 300;
-	}
-
-
-	.table__moreRowsButton{
-		cursor: pointer;
-		margin: 0;
-
-		background-color: #2980B9;
-		color : white;
-		text-align: center;
-		width: 100%;
-
-		margin-top: 15px;
-
-		padding-top   : 0.6em;
-		padding-bottom   : 0.6em;
-
-	}
-
-		.table__moreRowsButton:hover{
-			background-color:#3498DB;
-		}
-
-		.table__moreRowsButton__input{
-			width: 23px;
-			text-align: right;
-			margin-right: 5px;
-			margin-left: 5px;
-		}
-
-
-	.table__data{
-		overflow-y: scroll;
-		overflow-x: hidden;
-		max-height: 500px;
-	}
-
-		.table__column{
+		.presto__topbar__logo{
 			display     : inline-block;
 
-			min-width   : 50px;
+			width       : 40px;
 
-			border-right: 1px solid rgb(102, 102, 102);
+			font-size   : 30px;
+			line-height : 40px;
+			text-align  : center;
+		}
+		.presto__topbar__title{
+			font-size   : 30px;
+			font-weight : 300;
 		}
 
-			.table__column:first-child{
-				border-left: 1px solid rgb(102, 102, 102);
-			}
+		.presto__topbar__editor{
+			display     : inline-block;
+			float       : right;
 
-			.table__column__title{
-				padding-top   : 8px;
-				padding-right : 8px;
-				padding-bottom: 3px;
-				padding-left  : 8px;
+			width       : 40px;
 
-				border-top    : 1px solid rgb(102, 102, 102);
-				border-bottom : 3px solid rgb(102, 102, 102);
-			}
-
-		.table__cell{
-			vertical-align: middle;
-
-			cursor : default;
-
-			padding-top   : 5px;
-			padding-right : 5px;
-			padding-bottom: 5px;
-			padding-left  : 5px;
-
-			font-size     : 1em;
-			text-align    : right;
-			border-bottom : 1px solid rgb(102, 102, 102);
+			cursor      : pointer;
+			font-size   : 30px;
+			line-height : 40px;
+			text-align  : center;
 		}
 
-			.table__cell:hover{
-				font-weight       : bold;
-			}
+		.presto__topbar.teal  {background-color:#16A085;}
+		.presto__topbar.green {background-color:#27AE60;}
+		.presto__topbar.blue  {background-color:#2980B9;}
+		.presto__topbar.purple{background-color:#8E44AD;}
+		.presto__topbar.steel {background-color:#2C3E50;}
+		.presto__topbar.yellow{background-color:#F39C12;}
+		.presto__topbar.orange{background-color:#D35400;}
+		.presto__topbar.red   {background-color:#C0392B;}
+		.presto__topbar.silver{background-color:#BDC3C7;}
+		.presto__topbar.grey  {background-color:#7F8C8D;}
 
-			.table__cell.highlight{
-				background-color: rgba(241, 196, 15, 0.8);
-			}
 
-		.table__bottom{
-			display:none;
-			font-weight       : bold;
-			border-top: 2px solid rgb(102, 102, 102);
+
+
+	.presto__main{
+		position   : absolute;
+		top        : 40px;
+		bottom     : 0;
+
+		overflow   : hidden;
+		overflow-y : auto;
+		height     : auto;
+		width      : 100%;
+	}
+
+
+		.staticContainer{
+			float      : left;
+
+			overflow-y : auto;
+			max-height : 100%;
+			width      : 40%;
+			min-width  : 400px;
+			max-width  : 550px;
 		}
 
 
-.chart{
-	background-color: white;
-	margin: 15px;
-	padding: 8px;
+		.flowContainer{
+			overflow  : hidden;
+			height    : 100%;
+			min-width : 250px;
+		}
+
+			.flowContainer__tiles{
+				overflow-x  : auto;
+				height      : 100%;
+				white-space : nowrap;
+			}
+
+				.flowContainer__tiles .PrestoTile{
+					display        : inline-block;
+					vertical-align : top;
+				}
+
+
+
+
+
+
+.PrestoTile{
+	margin           : 15px;
+	padding          : 15px;
+	background-color : white;
 }
-
-	.chart__title{
-		font-size    : 1.8em;
-		font-weight: 300;
-		margin-bottom: 10px;
+	.PrestoTile > .title{
+		padding-bottom : 15px;
+		font-size      : 1.8em;
+		font-weight    : 300;
 	}
 
-	.chart__graph{
-		width : 450px;
-		height : 300px;
+	/* TODO: Fix and implement later */
+	.PrestoTile > .divider{
+		height           : 2px;
+		width            : 65%;
+		margin-left      : 45px;
+
+		background-color : #eee;
 	}
+
+
+
+
+
+
 
 
 .codeEditor{
-	position        : absolute;
-	top             :40px;
-	right           :0px;
-	z-index         :1000;
+	position         : absolute;
+	top              : 40px;
+	right            : 0px;
+	z-index          : 1000;
 
-	height          : 500px;
-	width           :500px;
-	min-width       : 300px;
-	padding-bottom  : 147px;
+	height           : 500px;
+	width            : 500px;
+	min-width        : 300px;
+	padding-bottom   : 147px;
 
-	background-color: white;
-	border-bottom   : 5px solid #2C3E50;
+	background-color : white;
+	border-bottom    : 5px solid #2C3E50;
 }
 
 	.codeEditor__topbar{
-		cursor          :move;
-		background-color: #2C3E50;
-		font-size       : 1.3em;
-		color           : white;
-		border-bottom   : 2px solid #34495E;
+		cursor           : move;
+		background-color : #2C3E50;
+		font-size        : 1.3em;
+		color            : white;
+		border-bottom    : 2px solid #34495E;
 	}
 
 		.codeEditor__topbar__title{
 		}
 
 		.codeEditor__topbar__close{
-			float: right;
+			float : right;
 		}
 
 		.codeEditor__topbar__docsLink{
-			display        : none;
+			display         : none;
 
-			margin-left    : 10px;
+			margin-left     : 10px;
 
-			font-size      : 0.5em;
-			color          : white;
-			text-decoration: none;
-			text-transform : uppercase;
+			font-size       : 0.5em;
+			color           : white;
+			text-decoration : none;
+			text-transform  : uppercase;
 		}
 			.codeEditor__topbar:hover .codeEditor__topbar__docsLink{
-				display: inline;
+				display : inline;
 			}
 
 		.codeEditor__editor{
-			position  : relative;
-
-			height    : auto;
-			min-height: 100%;
+			position   : relative;
+			height     : auto;
+			min-height : 100%;
 		}
 
 			.codeEditor__editor .CodeMirror{
-				position: absolute;
-				top     : 0;
-				right   : 0;
-				bottom  : 0;
-				left    : 0;
+				position : absolute;
+				top      : 0;
+				right    : 0;
+				bottom   : 0;
+				left     : 0;
 
-				height  : auto;
+				height   : auto;
 			}
 
 				.codeEditor__editor__errorLine{
-					background-color: rgba(231, 76, 60,0.5);
+					background-color : rgba(231, 76, 60,0.5);
 				}
 
 
 	.codeEditor__footer{
-		position: absolute;
-		bottom  : 0px;
-
-		width   : 100%;
+		position : absolute;
+		bottom   : 0px;
+		width    : 100%;
 	}
 
 		.codeEditor__footer__messages > *{
-			display         : none;
-
-			padding         : 10px;
-
-			color           : white;
+			display : none;
+			padding : 10px;
+			color   : white;
 		}
 
 		.codeEditor__footer__messages__success { background-color:#2ECC71;}
@@ -455,9 +224,9 @@
 		.codeEditor__footer__messages__info    { background-color:#95A5A6;}
 
 		.codeEditor__footer__buttons{
-			font-size     : 1.3em;
-			text-align    : center;
-			border-top    :1px solid #eee;
+			font-size  : 1.3em;
+			text-align : center;
+			border-top : 1px solid #eee;
 		}
 
 

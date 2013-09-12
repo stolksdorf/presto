@@ -172,6 +172,16 @@ Presto = {
 		});
 	},
 
+	getStaticPanel : function()
+	{
+		return this.overlayBlock.dom.staticContainer;
+	},
+
+	getFlowPanel : function()
+	{
+		return this.overlayBlock.dom.flowContainer;
+	},
+
 };
 
 //TODO: Fix

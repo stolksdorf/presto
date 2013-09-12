@@ -16,7 +16,7 @@ Presto.registerModule({
 		this.tables = Presto.createBlocks({
 			data      : moduleData,
 			block     : this.TableBlock,
-			container : $('#rightSide')
+			container : Presto.getFlowPanel()
 		});
 
 		return this;

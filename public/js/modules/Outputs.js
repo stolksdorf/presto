@@ -14,7 +14,7 @@ Presto.registerModule({
 	{
 		var self = this;
 		this.outputContainer.schematic = 'outputContainer';
-		this.outputContainer.injectInto($('#leftSide')); //<-- fix this later
+		this.outputContainer.injectInto(Presto.getStaticPanel());
 
 		this.outputs = Presto.createBlocks({
 			data      : moduleData,

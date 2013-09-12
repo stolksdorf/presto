@@ -4,23 +4,23 @@
 	<div class='presto' xo-block='calculator'>
 
 		<!-- Top Bar -->
-		<div class='topbar awesome' xo-element='topbar'>
-			<span class='topbar__logo'> <i xo-element='icon'></i> </span>
-			<span class='topbar__title' xo-element='title'></span>
-			<span class='topbar__editor clickable' xo-element='launchEditorButton'> <i class='icon-code'></i> </span>
+		<div class='presto__topbar' xo-element='topbar'>
+			<span class='presto__topbar__logo'> <i xo-element='icon'></i> </span>
+			<span class='presto__topbar__title' xo-element='title'></span>
+			<span class='presto__topbar__editor clickable' xo-element='launchEditorButton'> <i class='icon-code'></i> </span>
 		</div>
 
 
 		<!-- Main Area -->
-		<div class='main' xo-element='main'>
-			<div class='staticContainer moduleContainer' xo-element='staticContainer' id="leftSide"></div>
-			<div class='flowContainer' >
-				<div id="rightSide" class='moduleContainer' xo-element='flowContainer'></div>
+		<div class='presto__main' xo-element='main'>
+			<div class='staticContainer' xo-element='staticContainer'></div>
+			<div class='flowContainer'>
+				<div class='flowContainer__tiles' xo-element='flowContainer'></div>
 			</div>
 		</div>
 
 		<!-- Error Bar -->
-		<div class='errorBar' xo-element='errorBar'>
+		<div class='presto__errorBar' xo-element='errorBar'>
 			<i class='icon-exclamation-sign'></i> <span></span>
 		</div>
 
@@ -57,14 +57,26 @@
 
 
 <!-- Schematics -->
+<div class='inputContainer PrestoTile' xo-schematic="inputContainer">
+	<div class='title'>Inputs</div>
+</div>
 <div class='input ' xo-schematic='input'>
 	<div class='input__value' ><span xo-element='value'></span></div>
 	<div class='input__title' xo-element='title'></div>
 	<div class='input__description' xo-element='description'></div>
 </div>
 
-<div class='table' xo-schematic='table'>
-	<div class='table__title' xo-element='title'></div>
+<div class='outputContainer PrestoTile' xo-schematic='outputContainer'>
+	<div class='title'>Outputs</div>
+</div>
+<div class='output' xo-schematic='output'>
+	<div class='output__value' ><span xo-element='value'></span></div>
+	<div class='output__title' xo-element='title'></div>
+	<div class='output__description' xo-element='description'></div>
+</div>
+
+<div class='table PrestoTile' xo-schematic='table'>
+	<div class='title' xo-element='title'></div>
 	<div class='table__data' xo-element='columnContainer'></div>
 	<div class='table__moreRowsButton' xo-element='moreRowsButton'>
 		<i class='icon-plus'></i>
@@ -78,21 +90,8 @@
 	<div class='table__bottom table__cell' xo-element='bottom'></div>
 </div>
 
-<div class='output' xo-schematic='output'>
-	<div class='output__value' ><span xo-element='value'></span></div>
-	<div class='output__title' xo-element='title'></div>
-	<div class='output__description' xo-element='description'></div>
-</div>
 
-	<div class='inputContainer' xo-schematic="inputContainer">
-		<div class='inputContainer__title'>Inputs</div>
-	</div>
-	<div class='outputContainer' xo-schematic='outputContainer'>
-		<div class='outputContainer__title'>Outputs</div>
-	</div>
-<div class='tableContainer' xo-schematic='tableContainer'></div>
-
-<div class='chart' xo-schematic='chart'>
+<div class='chart PrestoTile' xo-schematic='chart'>
 	<div class='chart__title' xo-element='title'></div>
 	<div class='chart__graph' xo-element='graph'></div>
 </div>
@@ -161,10 +160,14 @@
 
 
 <!-- Modules -->
-<script type="text/javascript" src="../js/modules/Inputs.js"></script>
-<script type="text/javascript" src="../js/modules/Outputs.js"></script>
-<script type="text/javascript" src="../js/modules/Tables.js"></script>
-<script type="text/javascript" src="../js/modules/Charts.js"></script>
-<script type="text/javascript" src="../js/modules/Global.js"></script>
+<script type="text/javascript"             src="../js/modules/Inputs.js"></script>
+<link rel="Stylesheet" type="text/css" href="../style/modules/Inputs.css" />
+<script type="text/javascript"             src="../js/modules/Outputs.js"></script>
+<link rel="Stylesheet" type="text/css" href="../style/modules/Outputs.css" />
+<script type="text/javascript"             src="../js/modules/Tables.js"></script>
+<link rel="Stylesheet" type="text/css" href="../style/modules/Tables.css" />
+<script type="text/javascript"             src="../js/modules/Charts.js"></script>
+<link rel="Stylesheet" type="text/css" href="../style/modules/Charts.css" />
+<script type="text/javascript"             src="../js/modules/Global.js"></script>
 
 </html>

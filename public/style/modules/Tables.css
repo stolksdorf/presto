@@ -1,0 +1,83 @@
+.table{
+
+}
+
+	.table__moreRowsButton{
+		width            : 100%;
+		margin           : 0;
+		margin-top       : 15px;
+		padding-top      : 0.6em;
+		padding-bottom   : 0.6em;
+
+		cursor           : pointer;
+		background-color : #2980B9;
+		color            : white;
+		text-align       : center;
+	}
+
+		.table__moreRowsButton:hover{
+			background-color : #3498DB;
+		}
+
+		.table__moreRowsButton__input{
+			width        : 23px;
+			margin-right : 5px;
+			margin-left  : 5px;
+
+			text-align   : right;
+		}
+
+
+	.table__data{
+		overflow-x : hidden;
+		overflow-y : scroll;
+		max-height : 500px;
+	}
+
+		.table__column{
+			display      : inline-block;
+			min-width    : 50px;
+			border-right : 1px solid rgb(102, 102, 102);
+		}
+
+			.table__column:first-child{
+				border-left : 1px solid rgb(102, 102, 102);
+			}
+
+			.table__column__title{
+				padding-top    : 8px;
+				padding-right  : 8px;
+				padding-bottom : 3px;
+				padding-left   : 8px;
+
+				border-top     : 1px solid rgb(102, 102, 102);
+				border-bottom  : 3px solid rgb(102, 102, 102);
+			}
+
+		.table__cell{
+			vertical-align : middle;
+
+			padding-top    : 5px;
+			padding-right  : 5px;
+			padding-bottom : 5px;
+			padding-left   : 5px;
+
+			cursor         : default;
+			font-size      : 1em;
+			text-align     : right;
+			border-bottom  : 1px solid rgb(102, 102, 102);
+		}
+
+			.table__cell:hover{
+				font-weight : bold;
+			}
+
+			.table__cell.highlight{
+				background-color : rgba(241, 196, 15, 0.8);
+			}
+
+		.table__bottom{
+			display     : none;
+			font-weight : bold;
+			border-top  : 2px solid rgb(102, 102, 102);
+		}

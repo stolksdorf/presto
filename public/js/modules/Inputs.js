@@ -15,7 +15,7 @@ Presto.registerModule({
 		var self = this;
 
 		this.inputContainer.schematic = 'inputContainer';
-		this.inputContainer.injectInto($('#leftSide')); //<-- fix this later
+		this.inputContainer.injectInto(Presto.getStaticPanel());
 
 		this.inputs = this.createBlocks({
 			data      : moduleData,
