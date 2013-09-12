@@ -7,21 +7,6 @@
 	background-color:#BDC3C7;
 }
 
-	.container__left{
-		display       : inline-block;
-		vertical-align: top;
-
-		width         : 550px;
-		padding       : 20px;
-	}
-
-	.container__right{
-		display       : inline-block;
-		vertical-align: top;
-
-		padding       : 20px;
-	}
-
 
 	.errorBar{
 		display: none;
@@ -86,6 +71,18 @@
 
 
 
+.main{
+	overflow: hidden;
+	height: auto;
+	width: 100%;
+	position: absolute;
+	top: 40px;
+	bottom: 0;
+	overflow-y: auto;
+}
+
+
+
 
 .moduleContainer > div{
 	margin              : 15px;
@@ -93,20 +90,38 @@
 }
 
 .staticContainer{
-	display: inline-block;
-	vertical-align: top;
-	width : 100%;
-	max-width:540px;
-	min-width:300px;
+	max-height : 100%;
+
+	float : left;
+
+	max-width:550px;
+	min-width:400px;
+
+	overflow-y: auto;
+
+	width : 40%;
 }
+
 
 .flowContainer{
-	display: inline-block;
-	vertical-align: top;
 	min-width:300px;
+	overflow: hidden;
+	height:100%;
 }
 
 
+#rightSide{
+	overflow-x: auto;
+
+	height:100%;
+	white-space: nowrap;
+
+}
+
+#rightSide > div{
+	display: inline-block;
+	vertical-align: top;
+}
 
 
 
@@ -123,7 +138,6 @@
 
 
 .inputContainer{
-	min-width           :500px;
 	margin              : 15px;
 	padding             : 8px;
 
@@ -148,7 +162,6 @@
 
 
 .outputContainer{
-	min-width           :500px;
 	margin              : 15px;
 	padding             : 8px;
 
@@ -163,12 +176,13 @@
 		background-color: #eee;
 	}
 
+/*
 .tableContainer{
 	float    :left;
 
 	margin   : 15px;
 }
-
+*/
 
 
 .input{
@@ -236,8 +250,8 @@
 
 
 .table{
-	display         : inline-block;
-	vertical-align  : top;
+	/*display         : inline-block;
+	vertical-align  : top;*/
 
 	margin-right    : 15px;
 	padding         : 20px;
@@ -282,7 +296,7 @@
 
 
 	.table__data{
-		overflow-y: scroll;
+		overflow-y: auto;
 		overflow-x: hidden;
 		max-height: 500px;
 	}
