@@ -4,7 +4,7 @@ Presto = {
 	{
 		var self = this;
 
-		this.calculatorModel     = new Presto_Model_Calculator();
+		this.calculatorModel     = new XO.Model();
 		this.calculatorBlueprint = new Presto_Model_CalculatorBlueprint({
 			id : document.URL.split('/').last()
 		});
@@ -60,10 +60,8 @@ Presto = {
 	{
 		//TODO: Add a name/global collision check
 		var newModule = Presto_Module.extend(moduleObject);
-		if(newModule.global){
-			delete window[newModule.global];
-		}
 		newModule.initialize();
+		//TODO: Maybe add global init here as well?
 		this.modules[moduleObject.name] = newModule;
 		return this;
 	},
@@ -79,13 +77,14 @@ Presto = {
 		this.removeModules();
 
 		_.each(this.modules, function(module, moduleName){
+			if(module.global){
+				window[module.global] = {};
+			}
 			if(self.calculatorModel.has(moduleName)){
 				self.modules[moduleName].render(self.calculatorModel.get(moduleName));
 			}
 		});
-
-		//maybe call update in here
-		self.update();
+		this.update();
 		return this;
 	},
 

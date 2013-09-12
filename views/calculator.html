@@ -20,8 +20,6 @@
 		</div>
 	</div>
 
-
-
 	<!-- Code Editor -->
 	<div class='codeEditor' xo-block='codeEditor' style='display:none'>
 		<div class='codeEditor__topbar title' xo-element='topbar'>
@@ -49,9 +47,6 @@
 		</div>
 	</div>
 </body>
-
-
-
 
 
 
@@ -98,9 +93,6 @@
 
 
 
-
-
-
 <!-- Libraries -->
 <script type="text/javascript" src="../libs/jq.js"></script>
 <script type="text/javascript" src="../libs/underscore.js"></script>
@@ -109,12 +101,10 @@
 <script type="text/javascript" src="../libs/archetype.js"></script>
 <script type="text/javascript" src="../libs/jquery.flot.min.js"></script>
 <link rel="Stylesheet" type="text/css" href="../libs/hint.css" />
-
 <!-- remote
 <link href="../http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 <link href='../http://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'>
 -->
-
 <!-- local -->
 <link href='../libs/lato/lato.css' rel='stylesheet' type='text/css'>
 <link href='../libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
@@ -125,10 +115,10 @@
 <link  href="../libs/codemirror/cm.css" rel="stylesheet">
 <script src="../libs/codemirror/javascript.js"></script>
 
-
 <!-- MVC -->
 <script type="text/javascript" src="../libs/backbone.js"></script>
 <script type="text/javascript" src="../libs/xo.js"></script>
+
 
 <!-- Style -->
 <link rel="Stylesheet" type="text/css" href="../style/reset.css" />
@@ -137,43 +127,37 @@
 
 
 
-<!-- Scripts -->
-<script type="text/javascript" src="../js/App.js"></script>
-
-<script type="text/javascript" src="../js/CalculatorBlueprintModel.js"></script>
-<script type="text/javascript" src="../js/CalculatorModel.js"></script>
-
-<script type="text/javascript" src="../js/CodeEditorBlock.js"></script>
 
 
 
-<script type="text/javascript" src="../js/Module.js"></script>
-<script type="text/javascript" src="../js/OutputModule.js"></script>
-<script type="text/javascript" src="../js/InputModule.js"></script>
-<script type="text/javascript" src="../js/TableModule.js"></script>
-<script type="text/javascript" src="../js/ChartModule.js"></script>
-<script type="text/javascript" src="../js/GlobalModule.js"></script>
-
-<script type="text/javascript" src="../js/CalculatorBlock.js"></script>
-
-<script type="text/javascript" src="../js/Types.js"></script>
 
 
+
+<!-- Engine -->
+<script type="text/javascript" src="../js/Presto.js"></script>
+<script type="text/javascript" src="../js/engine/Prototypes.js"></script>
+<script type="text/javascript" src="../js/engine/CalculatorBlueprintModel.js"></script>
+<script type="text/javascript" src="../js/engine/CodeEditorBlock.js"></script>
+<script type="text/javascript" src="../js/engine/ModuleBlueprint.js"></script>
+<script type="text/javascript" src="../js/engine/OverlayBlock.js"></script>
+
+
+
+<!-- Modules -->
+<script type="text/javascript" src="../js/modules/Inputs.js"></script>
+<script type="text/javascript" src="../js/modules/Outputs.js"></script>
+<script type="text/javascript" src="../js/modules/Tables.js"></script>
+<script type="text/javascript" src="../js/modules/Charts.js"></script>
+<script type="text/javascript" src="../js/modules/Global.js"></script>
 
 
 <script>
-
 	$(document).ready(function(){
 		Presto.start();
 
-
-		$.plot($(".chart__graph"), [ [[0, 0], [1, 1]] ], { yaxis: { max: 1 } });
+		//$.plot($(".chart__graph"), [ [[0, 0], [1, 1]] ], { yaxis: { max: 1 } });
 	});
-
-
 </script>
-
-
 
 
 
