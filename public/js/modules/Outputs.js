@@ -48,8 +48,7 @@ Presto.registerModule({
 		render : function()
 		{
 			var self = this;
-			this.dom.title.text(this.model.get('title'));
-			this.dom.description.text(this.model.get('description'));
+
 			if(!this.model.get('description')){
 				this.dom.description.hide();
 			}
@@ -57,7 +56,10 @@ Presto.registerModule({
 		},
 		update : function()
 		{
-			var outputValue = Presto.evalue(this.model.get('value'));
+			var outputValue = _.evalue(this.model.get('value'));
+
+			this.dom.title.text(_.evalue(this.model.get('title')));
+			this.dom.description.text(_.evalue(this.model.get('description')));
 
 			this.model.get('type').renderer(outputValue, this.dom.value);
 			Outputs[this.name] = outputValue;

@@ -23,6 +23,20 @@
 	}
 
 
+	.errorBar{
+		display: none;
+		position: absolute;
+		bottom  : 0px;
+
+		width   : 100%;
+		color : white;
+
+		padding : 15px;
+		font-size: 1.3em;
+		background-color:#E74C3C;
+	}
+
+
 .topbar{
 	z-index         :1000;
 
@@ -70,6 +84,40 @@
 	.topbar.grey  {background-color:#7F8C8D;}
 
 
+
+
+
+.moduleContainer > div{
+	margin              : 15px;
+	background-color    : white;
+}
+
+.staticContainer{
+	display: inline-block;
+	vertical-align: top;
+	width : 100%;
+	max-width:540px;
+	min-width:300px;
+}
+
+.flowContainer{
+	display: inline-block;
+	vertical-align: top;
+	min-width:300px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Module Styles below */
 
 
 
@@ -192,7 +240,7 @@
 	vertical-align  : top;
 
 	margin-right    : 15px;
-	padding         :20px;
+	padding         : 20px;
 
 	background-color: white;
 }
@@ -401,16 +449,3 @@
 		}
 
 
-
-.errorBar{
-	display: none;
-	position: absolute;
-	bottom  : 0px;
-
-	width   : 100%;
-	color : white;
-
-	padding : 15px;
-	font-size: 1.3em;
-	background-color:#E74C3C;
-}

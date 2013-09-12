@@ -49,7 +49,7 @@ Presto.registerModule({
 		render : function()
 		{
 			var self = this;
-			this.dom.title.text(this.model.get('title'));
+
 
 			this.dom.moreRowsButton.click(function(event){
 				//if the user clicks on the textbox, doesn't fire the add rows event
@@ -96,6 +96,8 @@ Presto.registerModule({
 				return [column.name, column.cellValues];
 			}));
 
+			this.dom.title.text(_.evalue(this.model.get('title')));
+
 			//then update the bottom values
 			/*
 			_.each(this.columns, function(column){
@@ -123,7 +125,6 @@ Presto.registerModule({
 		{
 			var self = this;
 			this.cells = [];
-			this.dom.title.text(this.model.get('title'));
 
 			//this.dom.bottom.hide()
 			//if(this.def.bottom) this.dom.bottom.show();
@@ -156,13 +157,15 @@ Presto.registerModule({
 			var cellValue;
 			this.cellValues = _.map(self.cells, function(cell, index){
 				if(index === 0){
-					cellValue = Presto.evalue(self.model.get('firstCell'));
+					cellValue = _.evalue(self.model.get('firstCell'));
 				} else {
 					cellValue = self.model.get('generator')(cellValue, index);
 				}
 				self.model.get('type').renderer(cellValue, cell);
 				return cellValue;
 			});
+
+			this.dom.title.text(_.evalue(this.model.get('title')));
 
 			return this;
 		},

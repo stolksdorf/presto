@@ -140,6 +140,13 @@ Array.prototype.filter = function(fn){
 	},[]);
 };
 
+_.mixin({
+	evalue : function(obj){
+		if(typeof obj === 'function') return obj();
+		return obj;
+	}
+});
+
 
 //maybe remove
 jQuery.fn.getSchematic = function(schematicName){

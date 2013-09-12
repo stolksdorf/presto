@@ -50,7 +50,7 @@ Presto.registerModule({
 		{
 			var self = this;
 			this.widget = this.dom.value.widget({
-				value : this.model.get('initialValue'),
+				value : _.evalue(this.model.get('initialValue')),
 				renderer : this.model.get('type').renderer,
 				onChange : function(newVal){
 					if(self.model.get('type').isNumerical){
@@ -61,7 +61,11 @@ Presto.registerModule({
 				},
 			});
 
+			if(!this.model.get('description')){
+				this.dom.description.hide();
+			}
 
+			Inputs[self.name] = _.evalue(this.model.get('initialValue'));
 			return this;
 		},
 
@@ -69,12 +73,9 @@ Presto.registerModule({
 		{
 			var self = this;
 
-			this.dom.title.text(this.model.get('title'));
-			this.dom.description.text(this.model.get('description'));
-			if(!this.model.get('description')){
-				this.dom.description.hide();
-			}
-			Inputs[self.name] = this.model.get('initialValue')
+			this.dom.title.text(_.evalue(this.model.get('title')));
+			this.dom.description.text(_.evalue(this.model.get('description')));
+
 			return this;
 		},
 	}),
