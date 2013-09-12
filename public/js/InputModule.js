@@ -1,65 +1,28 @@
-Presto_Module_Input = XO.Block.extend({
-	schematic : 'inputContainer',
+Presto.registerModule({
+	name   : 'inputs',
+	global : 'Inputs',
 
-	initialize : function(subModel, calcModel)
+	initialize : function()
 	{
-		this.model = calcModel;
-		this.def = subModel;
-
-		Inputs = {};
-
-		this._setup();
+		this.inputContainer = new XO.Block();
 		return this;
 	},
 
-	render : function()
+	render : function(moduleData)
 	{
 		var self = this;
-		this.inputs = makeViews(this.def, Presto_Block_Input, this.model, self.dom.block);
-		return this;
-	},
 
+		console.log('rendering input', moduleData);
 
-	//called whnever the calcualtor wants to update with new data
-	update  : function()
-	{
+		this.inputContainer.schematic = 'inputContainer';
+		this.inputContainer.injectInto($('#leftSide')); //<-- fix this later
 
-		return this;
-	},
-
-});
-
-
-
-
-
-Presto_Block_Input = XO.Block.extend({
-	schematic : 'input',
-
-	render : function()
-	{
-		var self = this;
-		this.widget = this.dom.value.widget({
-			value : this.def.initialValue,
-			renderer : this.def.type.renderer,
-			onChange : function(newVal){
-				if(self.def.type.isNumerical){
-					newVal = newVal * 1;
-				}
-				Inputs[self.name] = newVal;
-				self.model.update();
-			},
+		this.inputs = _.map(moduleData, function(inputData, inputName){
+			var newInput = new self.InputBlock(inputData);
+			newInput.name = inputName;
+			return newInput.injectInto(self.inputContainer.dom.block);
 		});
 
-		this.dom.title.text(this.def.title);
-
-		this.dom.description.text(this.def.description);
-		if(!this.def.description){
-			this.dom.description.hide();
-		}
-
-
-		Inputs[self.name] = this.def.initialValue;
 		return this;
 	},
 
@@ -68,5 +31,43 @@ Presto_Block_Input = XO.Block.extend({
 		return this;
 	},
 
-});
+	remove : function()
+	{
+		this.inputContainer.remove();
+		return this;
+	},
 
+
+	/**
+	 * Module Blocks
+	 */
+	InputBlock : XO.Block.extend({
+		schematic : 'input',
+		render : function()
+		{
+			console.log('rendering', this.model);
+			var self = this;
+			this.widget = this.dom.value.widget({
+				value : this.model.get('initialValue'),
+				renderer : this.model.get('type').renderer,
+				onChange : function(newVal){
+					if(self.model.get('type').isNumerical){
+						newVal = newVal * 1;
+					}
+					Inputs[self.name] = newVal;
+					Presto.update();
+				},
+			});
+
+			this.dom.title.text(this.model.get('title'));
+			this.dom.description.text(this.model.get('description'));
+			if(!this.model.get('description')){
+				this.dom.description.hide();
+			}
+			Inputs[self.name] = this.model.get('initialValue')
+			return this;
+		},
+	}),
+
+
+});

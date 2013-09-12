@@ -19,6 +19,8 @@
 			this.dom = this.dom || {};
 			if(model instanceof Backbone.Model){
 				this.model = model;
+			} else {
+				this.model = new XO.Model(model);
 			}
 			if(this.block !== ''){
 				this.dom.block = jQuery('[xo-block="' + this.block + '"]');
@@ -69,7 +71,7 @@
 
 		remove : function()
 		{
-			this.dom.block.remove();
+			if(this.dom.block) this.dom.block.remove();
 			this.stopListening();
 			return this;
 		}

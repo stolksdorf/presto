@@ -61,7 +61,7 @@ Presto_Block_Table = XO.Block.extend({
 		});
 
 		//check for bottom value definitions
-		hasBottom = _.reduce(this.columns, function(memo, column){
+		var hasBottom = _.reduce(this.columns, function(memo, column){
 				if(column.def.bottom) return true;
 				return memo;
 		}, false);

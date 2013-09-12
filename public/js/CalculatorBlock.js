@@ -1,12 +1,8 @@
-var mod_map = {
-	global  : Presto_Module_Global,
-	inputs  : Presto_Module_Input,
-	tables  : Presto_Module_Table,
-	outputs : Presto_Module_Output,
-};
 
-Presto_Block_Calculator = XO.Block.extend({
-	block : 'calculator',
+
+
+Presto_Block_Overlay = XO.Block.extend({
+	block : 'calculator', //TODO update to overlay
 
 	render : function()
 	{
@@ -32,12 +28,14 @@ Presto_Block_Calculator = XO.Block.extend({
 		this.dom.launchEditorButton.click(function(){
 			self.trigger('showEditor');
 		});
+
+
 		//TODO: remove later after beta
 		if(document.URL.indexOf('beta') !== -1){
 			this.dom.launchEditorButton.hide();
 		}
 
-
+/*
 		//Model events
 		this.model.on('change', function(){
 			self.gen();
@@ -46,11 +44,12 @@ Presto_Block_Calculator = XO.Block.extend({
 		this.model.on('update', function(){
 			self.update();
 		});
-
+*/
 
 		return this;
 	},
 
+/*
 	gen : function()
 	{
 		var self = this;
@@ -86,5 +85,5 @@ Presto_Block_Calculator = XO.Block.extend({
 
 		return this;
 	},
-
+*/
 })

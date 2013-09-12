@@ -1,75 +1,122 @@
 Presto = {
+	modules : {},
 	start  : function()
 	{
 		var self = this;
 
-
-
 		this.calculatorModel     = new Presto_Model_Calculator();
-		this.calculatorBlueprint = new Presto_Model_CalculatorBlueprint();
+		this.calculatorBlueprint = new Presto_Model_CalculatorBlueprint({
+			id : document.URL.split('/').last()
+		});
+		this.overlayBlock = new Presto_Block_Overlay(this.calculatorModel);
+		this.codeEditor  = new Presto_Block_CodeEditor(this.calculatorBlueprint);
 
-		this.calcBlock = new Presto_Block_Calculator(this.calculatorModel);
+		this.setupEvents();
 
-		//
+		this.calculatorBlueprint.retrieve(); //get the blueprint from the server
+		return this;
+	},
 
-		//get Calcualtor ID from URL
-		var calcId = document.URL.split('/').last();
-		this.fetchCalculatorData(calcId);
+	setupEvents : function()
+	{
+		var self = this;
+		//Whenever the blueprint is executed, update the model with changes
+		this.calculatorBlueprint.on('execute', function(newCalcModel){
+			self.calculatorModel.set(newCalcModel);
+		});
+
+		//whenever the model updates, re-render the modules
+		this.calculatorModel.on('change', function(){
+			self.renderModules()
+		});
+
+		this.overlayBlock.on('showEditor', function(){
+			self.codeEditor.show();
+		});
 
 		return this;
 	},
 
+	/**
+	 * A facade for modules to call to update all other modules
+	 */
+	update : function()
+	{
+		this.updateModules();
+		return this;
+	},
 
-	fetchCalculatorData : function(calculatorId)
+
+
+	//
+	// MODULE JUNK
+	//
+
+
+	/**
+	 * Creates a new module and adds it to the list
+	 */
+	registerModule : function(moduleObject)
+	{
+		//TODO: Add a name/global collision check
+		var newModule = Presto_Module.extend(moduleObject);
+		if(newModule.global){
+			delete window[newModule.global];
+		}
+		newModule.initialize();
+		this.modules[moduleObject.name] = newModule;
+		return this;
+	},
+
+	/**
+	 * Takes the blueprint, executes it, then renders the calculator using the model
+	 */
+	renderModules : function()
 	{
 		var self = this;
-		$.get('/api/calculator/' + calculatorId, function(response){
-			self.setupEditor();
-			//TODO: check for errors later
-			self.loadCalculator(response);
 
+		//remove any old modules first
+		this.removeModules();
 
+		_.each(this.modules, function(module, moduleName){
+			if(self.calculatorModel.has(moduleName)){
+				self.modules[moduleName].render(self.calculatorModel.get(moduleName));
+			}
+		});
 
+		//maybe call update in here
+		self.update();
+		return this;
+	},
+
+	/**
+	 * When called updates each module, utilizing the updated Globals
+	 */
+	updateModules : function()
+	{
+		console.log('Upating Presto');
+		_.each(this.modules, function(module){
+			module.update();
 		});
 		return this;
 	},
 
-
-	loadCalculator : function(calcBlueprint)
+	removeModules : function()
 	{
-		this.calculatorBlueprint.set(calcBlueprint);
-		this.calculatorBlueprint.run();
-		return this;
-	},
-
-	setupEditor : function()
-	{
-		var self = this;
-
-		this.editor    = new Presto_Block_CodeEditor();
-
-		this.calcBlock.on('showEditor', function(){
-			self.editor.show();
+		_.each(this.modules, function(module){
+			if(module.global){
+				delete window[module.global];
+			}
+			module.remove();
 		});
-
-
 		return this;
 	},
-
-	addModule : function(moduleName, moduleDefinition)
-	{
-		this.modules[moduleName] = Presto_Module.extend(moduleDefinition);
-		return this;
-	},
-
-
 };
 
 
 
 
 //TODO: move to modules later
-
 makeViews = function(collection, Block, Model, target){
 	return _.map(collection, function(def, name){
 

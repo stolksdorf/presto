@@ -1,5 +1,5 @@
 /*
-
+`
 	This is where I'm keeping all my ideas for the module object
 
 
@@ -21,28 +21,33 @@
 
 
 
-
-
-
-
 */
 
 Presto_Module = Archetype.extend({
 
+	//Called when the module is registered
+	initialize : function()
+	{
 
+		return this;
+	},
 
-
-	/**
-	 * Called whenever the module needs to update it's global references
-	 * @return {[type]} [description]
-	 */
-	update : function()
+	//Called when the calculator definition has been updated
+	render : function()
 	{
 
 		return this;
 	},
 
 
+	//Called when the calculator data has been updated
+	update : function()
+	{
+
+		return this;
+	},
+
+/*
 	addViews : function(collection, Block, Model, injectionPoint){
 		return _.map(collection, function(def, name){
 			var newView = new Block(Model);
@@ -52,9 +57,50 @@ Presto_Module = Archetype.extend({
 			return newView;
 		});
 	},
+*/
+
+
+	//Cleans up all globals and UI
+	remove : function()
+	{
+		return this;
+	},
 
 
 
 
 
 });
+
+
+/**
+ * Adding a new module test
+ *
+
+Presto.addModule('tables', {
+	global : 'tables',
+
+	initialize : function()
+	{
+
+		this.addView({
+			name : 'newView',
+			injectionPoint : Presto.views.left,
+			html : link_to_schematic,
+			render : function(model)
+			{
+
+				return this;
+			}
+		});
+
+
+
+		return this;
+	},
+
+
+
+})
+
+*/

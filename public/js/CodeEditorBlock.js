@@ -26,21 +26,22 @@ Presto_Block_CodeEditor = XO.Block.extend({
 		});
 
 		this.dom.runButton.click(function(){
-			Presto.calculatorBlueprint.set('script', self.getCode());
-			Presto.calculatorBlueprint.run();
+			self.model.set('script', self.getCode());
+			self.model.execute();
 			self.showMessage('Updated calculator', 'success');
 		});
 
 		this.dom.uploadButton.click(function(){
 			self.showMessage('Uploading to server...', 'info');
-			Presto.calculatorBlueprint.set('script', self.getCode());
-			Presto.calculatorBlueprint.uploadToServer(function(){
+			self.model.set('script', self.getCode());
+			self.model.upload(function(){
 				self.showMessage('Upload Successful!', 'success');
 				alert('Uploaded');
 			});
 		});
 
-		Presto.calculatorBlueprint.onChange('script', function(newScript){
+		this.model.onChange('script', function(newScript){
+			console.log('updating editor with blueprint');
 			self.setCode(newScript);
 		});
 
