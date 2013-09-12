@@ -16,10 +16,10 @@ Presto.registerModule({
 		this.outputContainer.schematic = 'outputContainer';
 		this.outputContainer.injectInto($('#leftSide')); //<-- fix this later
 
-		this.outputs = _.map(moduleData, function(outputData, outputName){
-			var newOutput = new self.OutputBlock(outputData);
-			newOutput.name = outputName;
-			return newOutput.injectInto(self.outputContainer.dom.block);
+		this.outputs = Presto.createBlocks({
+			data      : moduleData,
+			block     : this.OutputBlock,
+			container : this.outputContainer.dom.block
 		});
 
 		return this;

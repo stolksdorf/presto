@@ -158,6 +158,9 @@ Presto = {
 	/**
 	 * Takes a value, if a function, executes, and returns value
 	 * if not function, returns value
+	 *
+	 * TODO: Maybe might this extend the Object prototype
+	 *
 	 */
 	evalue : function(val)
 	{
@@ -166,8 +169,6 @@ Presto = {
 		}
 		return val;
 	},
-
-
 
 };
 

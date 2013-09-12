@@ -116,6 +116,7 @@
 
 
 	XO.Collection = Backbone.Collection.extend({
+		model : XO.Model,
 		//Adds a new model model to the collection and saves it to the server
 		addNew : function(newModel)
 		{

@@ -13,7 +13,7 @@ Presto.registerModule({
 	{
 		var self = this;
 
-		this.tables = this.createBlocks({
+		this.tables = Presto.createBlocks({
 			data      : moduleData,
 			block     : this.TableBlock,
 			container : $('#rightSide')
