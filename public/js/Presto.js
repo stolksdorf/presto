@@ -94,9 +94,9 @@ Presto = {
 
 		//TODO: Add a name/global collision check
 		var newModule = Presto_Module.extend(moduleObject);
-		if(newModule.global){
-			window[newModule.global] = {};
-		}
+		//if(newModule.global){
+		//	window[newModule.global] = {};
+		//}
 
 		newModule.initialize();
 
