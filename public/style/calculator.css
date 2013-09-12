@@ -402,3 +402,15 @@
 
 
 
+.errorBar{
+	display: none;
+	position: absolute;
+	bottom  : 0px;
+
+	width   : 100%;
+	color : white;
+
+	padding : 15px;
+	font-size: 1.3em;
+	background-color:#E74C3C;
+}

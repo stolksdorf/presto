@@ -30,60 +30,30 @@ Presto_Block_Overlay = XO.Block.extend({
 		});
 
 
-		//TODO: remove later after beta
-		if(document.URL.indexOf('beta') !== -1){
+		if(!Presto.options.show_editor){
 			this.dom.launchEditorButton.hide();
 		}
 
-/*
-		//Model events
-		this.model.on('change', function(){
-			self.gen();
-		});
-
-		this.model.on('update', function(){
-			self.update();
-		});
-*/
-
-		return this;
-	},
-
-/*
-	gen : function()
-	{
-		var self = this;
-		console.log('---firing gen---');
-
-		_.each(this.modules, function(module){
-			module.remove();
-		});
-		this.modules = {};
-
-		_.each(mod_map, function(module, moduleName){
-			var temp = new module(self.model.get(moduleName), self.model);
-
-			if(moduleName === 'tables' || moduleName === 'charts' ){
-				temp.injectInto(self.dom.rightSide);
-			} else if(temp.schematic){
-				temp.injectInto(self.dom.leftSide);
+		Presto.on('error', function(error, fileName, lineNumber){
+			if(Presto.options.show_errorbar){
+				self.dom.errorBar.show();
+				self.dom.errorBar.find('span').text('line ' + lineNumber + ' : ' + error);
 			}
-			self.modules[moduleName] = temp;
 		});
 
-		this.update();
+		Presto.on('render', function(){
+			self.dom.errorBar.hide();
+		});
 
 		return this;
 	},
 
-	update : function()
+	showError : function(erorrObj)
 	{
-		console.log('---updating---');
-		_.each(this.modules, function(module){
-			module.update();
-		});
 
 		return this;
 	},
-*/
-})
+
+});
+
+

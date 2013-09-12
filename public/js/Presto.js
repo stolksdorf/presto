@@ -1,7 +1,10 @@
 Presto = {
 	modules : {},
 	defaultOptions : {
-		disabled_modules : []
+		disabled_modules : [],
+		show_errorbar : true,
+		is_beta       : false,
+		show_editor   : true,
 	},
 
 	start  : function(opts)
@@ -13,6 +16,15 @@ Presto = {
 		this.calculatorBlueprint = new Presto_Model_CalculatorBlueprint({
 			id : document.URL.split('/').last()
 		});
+
+
+		//TODO: Remove later
+		if(document.URL.indexOf('beta') !== -1){
+			this.options.show_editor = false;
+			this.options.is_beta = true;
+		}
+
+
 
 		//When the page loads render the calculator
 		$(document).ready(function(){
@@ -101,6 +113,7 @@ Presto = {
 	renderModules : function()
 	{
 		var self = this;
+		this.trigger('render');
 		this.removeModules(); //remove any old modules first
 
 		_.each(this.sortModules(), function(module){
@@ -176,4 +189,13 @@ Presto = {
 
 };
 
+//TODO: Fix
+//Add archetype events
+Presto.on = Archetype.on;
+Presto.off = Archetype.off;
+Presto.trigger = Archetype.trigger;
 
+
+window.onerror = function(error, fileName, lineNumber){
+	Presto.trigger('error', error, fileName, lineNumber);
+};

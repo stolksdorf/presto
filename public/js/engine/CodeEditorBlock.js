@@ -25,6 +25,9 @@ Presto_Block_CodeEditor = XO.Block.extend({
 		});
 
 		this.dom.runButton.click(function(){
+
+			Presto.options.show_errorbar = false;
+
 			self.model.set('script', self.getCode());
 			self.model.execute();
 			self.showMessage('Updated calculator', 'success');
@@ -44,7 +47,7 @@ Presto_Block_CodeEditor = XO.Block.extend({
 		});
 
 		//Catches any eval errors
-		window.onerror = function(error, fileName, lineNumber){
+		Presto.on('error', function(error, fileName, lineNumber){
 			if(Presto_CodeEditor_ErrorMap[error]){
 				error = Presto_CodeEditor_ErrorMap[error];
 			}
@@ -58,7 +61,7 @@ Presto_Block_CodeEditor = XO.Block.extend({
 			}
 			self.showMessage(error, 'error');
 			return;
-		};
+		});
 
 
 		this.addWindowTraits(this.dom.block, this.dom.topbar)
