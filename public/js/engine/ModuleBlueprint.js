@@ -1,28 +1,3 @@
-/*
-`
-	This is where I'm keeping all my ideas for the module object
-
-
-	addViewPort
-		Decide tile size here
-
-	addView({
-		html : html to inject
-		render : fn that fires after the view has been added
-		update : fn that fire whenever the calc wants to update
-	})
-
-
-	addGlobal
-		add/updates a the alloted Global for this module
-
-	moduleDefinition
-		Raw object from the PML
-
-
-
-*/
-
 Presto_Module = Archetype.extend({
 
 	//Called when the module is registered
@@ -47,60 +22,22 @@ Presto_Module = Archetype.extend({
 		return this;
 	},
 
-/*
-	addViews : function(collection, Block, Model, injectionPoint){
-		return _.map(collection, function(def, name){
-			var newView = new Block(Model);
-			newView.name = name;
-			newView.def = def;
-			newView.injectInto(injectionPoint);
-			return newView;
-		});
-	},
-*/
-
-
 	//Cleans up all globals and UI
 	remove : function()
 	{
 		return this;
 	},
 
-
-
-
-
-});
-
-
-/**
- * Adding a new module test
- *
-
-Presto.addModule('tables', {
-	global : 'tables',
-
-	initialize : function()
+	/**
+	 * takes data, block, and container to create a new block for each bit of data
+	 */
+	createBlocks : function(args)
 	{
-
-		this.addView({
-			name : 'newView',
-			injectionPoint : Presto.views.left,
-			html : link_to_schematic,
-			render : function(model)
-			{
-
-				return this;
-			}
+		return _.map(args.data, function(data, dataName){
+			var newBlock = new args.block(data);
+			newBlock.name = dataName;
+			return newBlock.injectInto(args.container);
 		});
-
-
-
-		return this;
 	},
 
-
-
-})
-
-*/
+});

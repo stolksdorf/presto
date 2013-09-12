@@ -2,6 +2,8 @@ Presto.registerModule({
 	name   : 'inputs',
 	global : 'Inputs',
 
+	order : 100,
+
 	initialize : function()
 	{
 		this.inputContainer = new XO.Block();
@@ -17,10 +19,10 @@ Presto.registerModule({
 		this.inputContainer.schematic = 'inputContainer';
 		this.inputContainer.injectInto($('#leftSide')); //<-- fix this later
 
-		this.inputs = _.map(moduleData, function(inputData, inputName){
-			var newInput = new self.InputBlock(inputData);
-			newInput.name = inputName;
-			return newInput.injectInto(self.inputContainer.dom.block);
+		this.inputs = this.createBlocks({
+			data      : moduleData,
+			block     : this.InputBlock,
+			container : this.inputContainer.dom.block
 		});
 
 		return this;

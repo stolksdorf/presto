@@ -14,7 +14,7 @@
 		<!-- Main Area -->
 		<div class='container' xo-element='container'>
 			<div style='float:left; width:540px;' xo-element='leftSide' id="leftSide"></div>
-			<div style='float:left;' xo-element='rightSide'></div>
+			<div style='float:left;' xo-element='rightSide' id="rightSide"></div>
 			<div style='clear:both'></div>
 
 		</div>
@@ -142,6 +142,17 @@
 <script type="text/javascript" src="../js/engine/OverlayBlock.js"></script>
 
 
+<script>
+
+	Presto.start({
+		//disabled_modules : ['tables']
+	});
+
+</script>
+
+
+
+
 
 <!-- Modules -->
 <script type="text/javascript" src="../js/modules/Inputs.js"></script>
@@ -149,17 +160,5 @@
 <script type="text/javascript" src="../js/modules/Tables.js"></script>
 <script type="text/javascript" src="../js/modules/Charts.js"></script>
 <script type="text/javascript" src="../js/modules/Global.js"></script>
-
-
-<script>
-	$(document).ready(function(){
-		Presto.start();
-
-		//$.plot($(".chart__graph"), [ [[0, 0], [1, 1]] ], { yaxis: { max: 1 } });
-	});
-</script>
-
-
-
 
 </html>

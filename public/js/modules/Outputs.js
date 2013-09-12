@@ -2,6 +2,8 @@ Presto.registerModule({
 	name   : 'outputs',
 	global : 'Outputs',
 
+	order : 300,
+
 	initialize : function()
 	{
 		this.outputContainer = new XO.Block();
@@ -64,9 +66,9 @@ Presto.registerModule({
 			if(typeof outputValue === 'function'){
 				outputValue = outputValue();
 			}
-			console.log('Updating output', outputValue);
+			console.log('Updating output', outputValue, this.name);
 			this.model.get('type').renderer(outputValue, this.dom.value);
-			Outputs[this.name] = val;
+			Outputs[this.name] = outputValue;
 			return this;
 		},
 	}),
