@@ -1,36 +1,13 @@
-Presto_Module_Global = XO.Block.extend({
-	initialize : function(subModel, calcModel)
+Presto.registerModule({
+	name   : 'global',
+	global : 'Global',
+	order : 010,
+
+	render : function(moduleData)
 	{
-
-		this.model = calcModel;
-		this.def = subModel;
-
-		this.update();
+		_.extend(Global, moduleData);
 		return this;
 	},
-
-	update : function()
-	{
-
-		var self = this;
-		_.each(this.def, function(fn, fnName){
-			window[fnName] = fn;
-		});
-		return this;
-	},
-
-	injectInto : function()
-	{
-
-		return this;
-	},
-
-	remove : function()
-	{
-
-		return this;
-	},
-
 
 
 });
