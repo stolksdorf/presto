@@ -148,6 +148,29 @@ _.mixin({
 });
 
 
+//Generator Arrays Test
+Array.prototype.get = function(index){
+	if(this.length > index){
+		return this[index];
+	}else if(typeof this.generator === 'function'){
+		if(this.length===0) this.push(this.initial);
+		while(this.length - 1 < index){
+			this.push(this.generator(this[this.length - 1], this.length - 1));
+		}
+		return this[index];
+	}
+};
+
+
+var test = [];
+test.initial = 3;
+test.generator = function(value){return value + 1;};
+
+
+
+
+
+
 //maybe remove
 jQuery.fn.getSchematic = function(schematicName){
 	var schematicElement = jQuery('[xo-schematic="' + schematicName + '"]');
