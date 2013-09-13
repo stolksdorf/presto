@@ -58,7 +58,7 @@ Presto.registerModule({
 					return false;
 				}
 				self.addRows(self.dom.moreRowsInput.val());
-				self.update();
+				Presto.update();
 				//Scroll to bottom of table
 				self.dom.columnContainer.scrollTop(self.dom.columnContainer[0].scrollHeight);
 			});
