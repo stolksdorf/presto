@@ -83,6 +83,10 @@ Presto.registerModule({
 			}
 			*/
 
+			if(!this.model.get('description')){
+				this.dom.description.hide();
+			}
+
 			this.addRows(this.model.get('rows') || 20);
 			return this;
 		},
@@ -97,6 +101,7 @@ Presto.registerModule({
 			}));
 
 			this.dom.title.text(_.evalue(this.model.get('title')));
+			this.dom.description.text(_.evalue(this.model.get('description')));
 
 
 			//Use heights to see if we need a scrollbar

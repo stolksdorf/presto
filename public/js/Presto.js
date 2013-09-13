@@ -124,6 +124,7 @@ Presto = {
 				module.render(self.calculatorModel.get(module.name));
 			}
 		});
+
 		this.update();
 		return this;
 	},
