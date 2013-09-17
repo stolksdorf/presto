@@ -164,7 +164,15 @@ Array.prototype.get = function(index){
 
 var test = [];
 test.initial = 3;
-test.generator = function(value){return value + 1;};
+test.generator = function(prevValue){
+	return prevValue + 1;
+};
+
+test.get(3); //returns 6
+test         //returns [3,4,5,6]
+test[2]      //return 5
+
+
 
 
 
