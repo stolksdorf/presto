@@ -11,7 +11,7 @@ body{
 
 .container{
 	width        : 500px;
-	margin-top   : 10%;
+	margin-top   : 8%;
 	margin-right : auto;
 	margin-left  : auto;
 	padding      : 20px;
@@ -26,15 +26,18 @@ body{
 	}
 
 
+.logo{
+	font-size: 3em;
+}
+
 
 .logo img{
-	height : 150px;
+	height : 100px;
 }
 
 
 
-.logo{
-}
+
 
 .tagline{
 	font-size      : 1.3em;

@@ -26,7 +26,7 @@
 
 		<div class='logo'>
 			<img src="assets/rabbit hat.png">
-			<h1>Presto</h1>
+			Presto
 		</div>
 
 		<div class='tagline'>
@@ -92,40 +92,43 @@
 	<script>
 		$(document).ready(function(){
 
+			$('#email').keyup(function (e) {
+				if (e.keyCode == 13) {
+					sendEmail();
+				}
+			});
 
 			$('.button').click(function(){
-				var email = $('#email').val();
-
-				//$('.button').html("<i class='icon-refresh'></i>");
-
-				$('.error').fadeOut();
-
-				$.ajax({
-					type : 'POST',
-					url : '/signup',
-					data : {email : email},
-					success : function(){
-						$('.promos').fadeIn();
-					},
-					error  : function(err, t){
-						if(err.resonseText === 'invalid'){
-							$('.error').text("That's not a valid email, sorry");
-						}else {
-							$('.error').text("Something went wrong. Try agian?");
-						}
-						$('.error').stop().fadeIn();
-					},
-					complete : function(){
-						//$('.button').html("Go");
-					},
-				});
-
-
-			})
-
-
-
+				sendEmail();
+			});
 		})
+
+		var sendEmail = function(){
+			var email = $('#email').val();
+
+
+			$('.error').fadeOut();
+
+			$.ajax({
+				type : 'POST',
+				url : '/signup',
+				data : {email : email},
+				success : function(){
+					$('.promos').fadeIn();
+				},
+				error  : function(err, t){
+					if(err.resonseText === 'invalid'){
+						$('.error').text("That's not a valid email, sorry");
+					}else {
+						$('.error').text("Something went wrong. Try agian?");
+					}
+					$('.error').stop().fadeIn();
+				},
+				complete : function(){
+					//$('.button').html("Go");
+				},
+			});
+		}
 
 
 
