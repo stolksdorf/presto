@@ -142,7 +142,7 @@ Presto.registerModule({
 				_.each(this.model.get('breakeven'), function(seriesPair){
 					var intercepts = Charts[self.name].intercept(seriesPair[0], seriesPair[1]);
 					_.each(intercepts, function(intercept){
-						markings.push({ color: '#000', lineWidth: 2, yaxis: { from: intercept[1], to: intercept[1] } })
+						markings.push({ color: '#000', lineWidth: 2, yaxis: { from: intercept.y, to: intercept.y } })
 					});
 				});
 				this.options.grid.markings = markings;
@@ -204,7 +204,7 @@ Presto.registerModule({
 
 
 					if( (x >= fp1[0] && x >= fp2[0]) && (x <= lp1[0] && x <= lp2[0] ) ){
-						result.push([x,y]);
+						result.push({x:x,y:y});
 					}
 
 					fp1 = lp1;
