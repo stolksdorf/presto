@@ -169,7 +169,7 @@ Presto = {
 		return _.map(args.data, function(data, dataName){
 			var newBlock = new args.block(data);
 			newBlock.name = dataName;
-			return newBlock.injectInto(args.container);
+			return newBlock.injectInto(args.container, {at_top : args.prepend});
 		});
 	},
 

@@ -59,7 +59,8 @@ Presto.registerModule({
 		this.charts = Presto.createBlocks({
 			data      : moduleData,
 			block     : this.ChartBlock,
-			container : Presto.getFlowPanel()
+			container : Presto.getFlowPanel(),
+			prepend  : true
 		});
 		return this;
 	},
@@ -120,7 +121,6 @@ Presto.registerModule({
 			Charts[this.name] = {};
 			this.data = {};
 
-
 			var chartData = _.map(this.model.get('series'), function(series, seriesName){
 				var result = {};
 				var data = _.evalue(series.data);
@@ -134,9 +134,7 @@ Presto.registerModule({
 				return result;
 			});
 
-
 			this.addFuncsToGlobal();
-
 
 			// Add breakeven line
 			if(this.model.get('breakeven')){
@@ -176,7 +174,10 @@ Presto.registerModule({
 
 
 			//Draw that plot!
-			$.plot(this.dom.graph, chartData, this.options);
+			if(chartData){
+				$.plot(this.dom.graph, chartData, this.options);
+			}
+
 			return this;
 		},
 
@@ -185,6 +186,7 @@ Presto.registerModule({
 			var self = this;
 			//Update Global with Functions
 			Charts[self.name].intercept = function(series1, series2){
+				if(!self.data[series1] || !self.data[series2]) return [];
 				var smallSetLength = self.data[series1].length > self.data[series2].length ? self.data[series2].length : self.data[series1].length;
 				var fp1 = self.data[series1][0];
 				var fp2 = self.data[series2][0];
