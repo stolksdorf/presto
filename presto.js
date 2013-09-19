@@ -35,25 +35,76 @@ var CalculatorModel = mongoose.model('CalculatorModel', mongoose.Schema({
 }));
 
 
+var BetaUsers = mongoose.model('BetaUsers', mongoose.Schema({
+	email : String,
+	time : Date
+}));
+
+
 
 
 
 //Routes
 app.get('/', function (req, res) {
-	res.render('home.html');
+	res.redirect('/v0');
 });
 
 app.get('/calc/*', function (req, res) {
-	res.render('calculator.html');
+	res.render('calculator.html',{
+		beta : false,
+		calcId : req.params[0]
+	});
 });
 
-//Beta Routes
+app.get('/v0', function(req, res){
+	res.render('home.html', {beta:false});
+});
+
+
+app.get('/signup', function(req, res){
+	res.render('signup.html');
+});
+
+
+//Beta Routes not working
+/*
 app.get('/beta', function (req, res) {
-	res.render('home.html');
+	res.render('home.html', {beta : true});
 });
 
 app.get('/beta/calc/*', function (req, res) {
-	res.render('calculator.html');
+	res.render('calculator.html',{
+		beta : true,
+		calcId : req.params[0]
+	});
+});
+*/
+
+
+//Promo calcs
+app.get('/promo1', function(req, res){
+	res.render('calculator.html',{
+		beta : true,
+		calcId : '5235efea5b067b0200000001'
+	});
+});
+app.get('/promo2', function(req, res){
+	res.render('calculator.html',{
+		beta : true,
+		calcId : '5224b01edbcf7e0200000002'
+	});
+});
+app.get('/promo3', function(req, res){
+	res.render('calculator.html',{
+		beta : true,
+		calcId : '5225fd4c26539b0200000001'
+	});
+});
+app.get('/promo4', function(req, res){
+	res.render('calculator.html',{
+		beta : true,
+		calcId : '5224a0d9dbcf7e0200000001'
+	});
 });
 
 
@@ -115,33 +166,26 @@ app.delete('/api/calculator/*', function(req, res){
 });
 
 
-app.get('/reset', function(req, res){
-	mongoose.connection.db.dropDatabase();
-	res.send('db dropped');
+
+
+app.post('/signup', function(req, res){
+	if(!/(.+)@(.+){2,}\.(.+){2,}/.test(req.body.email)){
+		return res.send(500, 'invalid');
+	}
+
+	var newUser = new BetaUsers({
+		email : req.body.email,
+		time : new Date()
+	});
+
+	newUser.save(function(error){
+		if(!error){
+			console.log('added new user!');
+			return res.send(200);
+		}
+		return res.send(500);
+	});
 });
-
-
-
-app.get('/add', function(req,res){
-
-	var LTC = new CalculatorModel({
-		title : 'LTC Price Comparison',
-		description : 'Super cool thing',
-		icon : 'icon-plane',
-			color       : 'blue',
-			script      : "{\n		title : 'LTC Price Comparison',\n		description : 'Super cool thing',\n		icon : 'icon-plane',\n\n		inputs : {\n			inflationGuard : {\n				title : 'Inflation Guard (off-claim)',\n				description : 'The estimated inflation rate while off-claim',\n				type : Type.Percent,\n				value : 0.02\n			},\n			onClaim : {\n				title : 'On-Claim',\n				type : Type.Percent,\n				value : 0.03\n			},\n			unguarded : {\n				title : 'Unguarded Benefit',\n				type : Type.Money,\n				value : 650\n			},\n			guarded : {\n				title : 'Guarded Benefit',\n				type : Type.Money,\n				value : 500\n			},\n			age : {\n				title : 'Age',\n				type : Type.Number,\n				value : 25\n			},\n			notes : {\n				title : 'Notes',\n				type : Type.Text,\n				value : 'Cool stuff'\n			}\n		},\n\n		chart : {\n			title : 'LTC Run Down',\n			columns : {\n				age : {\n					title : 'Age',\n					type : Type.Number,\n					value : function(){\n						return Inputs.age;\n					},\n					fn : Functions.Increment()\n				},\n				benefitBase : {\n					title : 'Benefit Base',\n					type : Type.Money,\n					value : function(){\n						return Inputs.guarded;\n					},\n					fn : function(index, previousCellValue){\n						return previousCellValue*(1 + Inputs.inflationGuard);\n					}\n				},\n				onClaim : {\n					title : 'On-Claim',\n					type : Type.Money,\n					value : function(){\n						return Inputs.guarded;\n					},\n					fn : function(index, previousCellValue){\n						return previousCellValue*(1 + Inputs.onClaim);\n					}\n				},\n			}\n		},\n\n		outputs : {\n			breakEvenOff : {\n				title : 'Breakeven (off-claim)',\n				description : 'Age at which youll make back your initial investment',\n				type : Type.Number,\n				value : function(){\n					var breakEvenAge = Chart.age.find(function(index, age){\n						if(Chart.benefitBase[index] > Inputs.unguarded){\n							return true;\n						}\n						return false;\n					});\n					return breakEvenAge;\n				}\n			},\n			breakEvenOn : {\n				title : 'Breakeven (on-claim)',\n				type : Type.Number,\n				value : function(){\n					var breakEvenAge = Chart.age.find(function(index, age){\n						if(Chart.onClaim[index] > Inputs.guarded){\n							return true;\n						}\n						return false;\n					});\n					return breakEvenAge;\n				}\n			}\n		}\n	}",
-			url         : ''
-
-	});
-	if(!LTC.id) LTC.id = LTC._id;
-	LTC.url = '/calc/' + LTC.id;
-	LTC.save(function(error, LTC){
-		res.send(LTC);
-	});
-})
-
-
-
 
 
 

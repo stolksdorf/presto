@@ -14,17 +14,15 @@ Presto = {
 
 		this.calculatorModel     = new XO.Model();
 		this.calculatorBlueprint = new Presto_Model_CalculatorBlueprint({
-			id : document.URL.split('/').last()
+			id : this.options.calcId
 		});
 
 
 		//TODO: Remove later
-		if(document.URL.indexOf('beta') !== -1){
+		if(this.options.is_beta){
 			this.options.show_editor = false;
-			this.options.is_beta = true;
+			this.options.show_errorbar = false;
 		}
-
-
 
 		//When the page loads render the calculator
 		$(document).ready(function(){

@@ -1,13 +1,12 @@
 PrestoHome = {
 
-	start : function()
+	start : function(opts)
 	{
-		var self = this
+		var self = this;
+
+		this.options = opts;
 		$(document).ready(function(){
-
-
 			self.render();
-
 		});
 		return this;
 	},
@@ -44,7 +43,7 @@ Presto_Block_Home = XO.Block.extend({
 		this.dom.newCalculatorButton.click(function(){
 			self.calculatorCollection.addNew();
 		});
-		if(document.URL.indexOf('beta') !== -1){
+		if(PrestoHome.options.is_beta){
 			this.dom.newCalculatorButton.hide();
 		}
 
@@ -55,8 +54,8 @@ Presto_Block_Home = XO.Block.extend({
 	addCalculator : function(calculatorModel)
 	{
 		//TODO: Remove later out of beta
-		if(document.URL.indexOf('beta') !== -1){
-			calculatorModel.set('url', calculatorModel.get('url') + '?beta');
+		if(PrestoHome.options.is_beta){
+			calculatorModel.set('url', "/beta" + calculatorModel.get('url') );
 		}
 		var newBlock = new Presto_Block_CalculatorOption(calculatorModel);
 		newBlock.injectInto(this.dom.container, {at_top:true});
@@ -74,7 +73,6 @@ Presto_Block_CalculatorOption = XO.Block.extend({
 	render : function()
 	{
 		var self = this;
-		console.log('model', this.model);
 
 		this.model.onChange('color', function(){
 			self.dom.block.addClass(self.model.get('color'));
@@ -102,7 +100,7 @@ Presto_Block_CalculatorOption = XO.Block.extend({
 		});
 
 		//TODO: Remove later out of beta
-		if(document.URL.indexOf('beta') !== -1){
+		if(PrestoHome.options.is_beta){
 			this.dom.deleteBtn.hide()
 		}
 

@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<body>
+
+	<!-- Libraries -->
+	<script type="text/javascript" src="libs/jq.js"></script>
+	<script type="text/javascript" src="libs/underscore.js"></script>
+
+
+	<!-- MVC -->
+	<script type="text/javascript" src="libs/backbone.js"></script>
+	<script type="text/javascript" src="libs/xo.js"></script>
+
+	<!-- Style -->
+	<link rel="Stylesheet" type="text/css" href="style/reset.css" />
+	<link rel="Stylesheet" type="text/css" href="style/presto.css" />
+	<link rel="Stylesheet" type="text/css" href="style/signup.css" />
+
+
+	<link href='libs/lato/lato.css' rel='stylesheet' type='text/css'>
+	<link href='libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
+
+
+
+	<div class='container'>
+
+		<div class='logo'>
+			<img src="assets/rabbit hat.png">
+			<h1>Presto</h1>
+		</div>
+
+		<div class='tagline'>
+			<h2>Sexy Calculators for Investing </h2>
+		</div>
+
+		<div class='description'>
+			<h3>Presto takes the guesswork out of working with your clients. Clean </h3>
+
+		</div>
+
+		<div class='signup'>
+
+			<p>Enter your email to be part of our beta and instant access to some promo calculators right now</p>
+
+			<input id='email' type='text' placeholder='mr.moneymustache@smartinvesting.com'></input>
+			<div class='button green'>Go</div>
+			<div class='error'><i>That's not a valid email, sorry</i></div>
+
+		</div>
+
+		<div class='promos'>
+			<h3>Thanks!</h3>
+
+			<p>Here's a teaser of some of the calculators we've already built.</p>
+
+			<div>
+				<div class='promoCalc'>
+					<a href='/promo1' target='_blank'>
+						<div class='tile steel'><i class='icon-sun'></i></div>
+						Solar PV Analyzer
+					</a>
+				</div>
+				<div class='promoCalc'>
+					<a href='/promo2' target='_blank'>
+						<div class='tile red'><i class='icon-fire-extinguisher'></i></div>
+						Debt Repayment
+					</a>
+				</div>
+				<div class='promoCalc'>
+					<a href='/promo3' target='_blank'>
+						<div class='tile orange'><i class='icon-legal'></i></div>
+						Mortgage Buster
+					</a>
+				</div>
+				<div class='promoCalc'>
+					<a href='/promo4' target='_blank'>
+						<div class='tile blue'><i class='icon-road'></i></div>
+						Early Retirement
+					</a>
+				</div>
+
+
+			</div>
+
+
+
+
+		</div>
+
+	</div>
+
+	<script>
+		$(document).ready(function(){
+
+
+			$('.button').click(function(){
+				var email = $('#email').val();
+
+				//$('.button').html("<i class='icon-refresh'></i>");
+
+				$('.error').fadeOut();
+
+				$.ajax({
+					type : 'POST',
+					url : '/signup',
+					data : {email : email},
+					success : function(){
+						$('.promos').fadeIn();
+					},
+					error  : function(err, t){
+						if(err.resonseText === 'invalid'){
+							$('.error').text("That's not a valid email, sorry");
+						}else {
+							$('.error').text("Something went wrong. Try agian?");
+						}
+						$('.error').stop().fadeIn();
+					},
+					complete : function(){
+						//$('.button').html("Go");
+					},
+				});
+
+
+			})
+
+
+
+		})
+
+
+
+	</script>
+
+
+</body>
+</html>

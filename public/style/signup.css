@@ -1,0 +1,128 @@
+
+body{
+	overflow          : hidden;
+
+	background        : url(../assets/coffee2.jpg);
+	background-repeat : no-repeat;
+	background-size   : 100%;
+	background-size   : cover;
+}
+
+
+.container{
+	width        : 500px;
+	margin-top   : 10%;
+	margin-right : auto;
+	margin-left  : auto;
+	padding      : 20px;
+
+	background   : rgba(255,255,255,0.5);
+	color        : black;
+	text-align   : center;
+}
+
+	.container > div{
+		padding-bottom : 30px;
+	}
+
+
+
+.logo img{
+	height : 150px;
+}
+
+
+
+.logo{
+}
+
+.tagline{
+	font-size      : 1.3em;
+	text-transform : uppercase;
+}
+
+.description{
+}
+
+.signup{
+}
+
+	.signup input{
+		width   : 250px;
+		padding : 7px;
+	}
+
+	.signup .button{
+		margin      : 0;
+		margin-top  : 2px;
+		margin-left : -5px;
+
+		font-size   : 0.96em;
+	}
+		.signup .button i{
+			margin-right : 0;
+		}
+
+	.signup .error{
+		display : none;
+		color   : red;
+	}
+
+.promos{
+	display : none;
+}
+
+
+a {
+	color           : inherit;
+	text-decoration : none;
+}
+
+.promoCalc{
+	display        : inline-block;
+	vertical-align : top;
+
+	width          : 200px;
+	padding        : 10px;
+
+	font-size      : 1.2em;
+
+	text-align: left
+}
+
+	.promoCalc:hover{
+		background : rgba(255,255,255,0.8);
+	}
+
+
+.tile{
+	display: inline-block;
+	vertical-align: middle;
+
+	height           : 1.7em;
+	width            : 1.7em;
+	margin-right     : auto;
+	margin-bottom    : 10px;
+	margin-left      : auto;
+	padding          : 0;
+
+	background-color : #3498DB;
+	font-size        : 1.3em;
+	color            : white;
+	line-height      : 1.7em;
+	text-align       : center;
+}
+
+.tile.teal      {background-color:#16A085;}
+.tile.green     {background-color:#27AE60;}
+.tile.blue      {background-color:#2980B9;}
+.tile.purple    {background-color:#8E44AD;}
+.tile.steel     {background-color:#2C3E50;}
+.tile.yellow    {background-color:#F39C12;}
+.tile.orange    {background-color:#D35400;}
+.tile.red       {background-color:#C0392B;}
+.tile.silver    {background-color:#BDC3C7;}
+.tile.grey      {background-color:#7F8C8D;}
+
+
+
