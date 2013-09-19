@@ -127,11 +127,12 @@ The `id` of the column is used in calculations regarding values in the table. `T
 ### Charts
 `title` *(string)* : A display name for the Table
 
-`breakeven` *(array:optional)* : An list of series name pairs in which you wish to draw break even lines. eg `[ ['sample', 'test'], ['sample', 'test2'] ]
+`breakeven` *(array:optional)* : An list of series name pairs in which you wish to draw break even lines. eg `[ ['sample', 'test'], ['sample', 'test2'] ]`
 
 `size` *(string:optional)* : 'big' will make the chart render a much larger size
 
 `hover` *(function:optional)* : A function given x corrdinate, y corrdinate and the label of series when the user hovers on the chart. The function should return an html string to be displayed within the tooltip.
+
 	hover : function(x,y,label){
 		return "<b>$" + y + "</b> at age " + x + "</br>" + label;
 	},
@@ -159,6 +160,31 @@ If their are no intersects, the function will return an empty array. Check for i
 		return; //return nothing
 	}
 	return Math.round(intercepts[0].x);
+
+
+#### Example
+	charts : {
+	  chart1 : {
+	    title : 'Test Chart',
+	    breakeven : [ ['sample', 'test'] ],
+	    size : 'big',
+	    hover : function(x,y,label){
+	      return "<b>$" + y + "</b> at age " + x + "</br>" + label;
+	    },
+	    series : {
+	      sample : {
+	        label :'From Sample Chart',
+	        data : function(){
+	          return Tables.sample.capitalDelta;
+	        }
+	      },
+	      test : {
+	        label :'From Moar Chart',
+	        data : [0,1,2,3,4,5,6,7]
+	      }
+	    }
+	  },
+	},
 
 
 ### Outputs
