@@ -104,6 +104,7 @@ Presto.registerModule({
 
 
 			this.options = _.extend(Presto.modules.charts.defaultOptions, Presto.modules.charts.lineOptions);
+			this.tooltip = $('#chart__tooltip');
 
 			return this;
 		},
@@ -148,6 +149,31 @@ Presto.registerModule({
 				});
 				this.options.grid.markings = markings;
 			}
+
+
+			//Add a hover
+			if(this.model.get('hover')){
+				this.options.grid.hoverable = true;
+				this.dom.graph.bind("plothover", function (event, pos, item) {
+					if(item){
+						var x  = Math.round(item.datapoint[0]);
+						var y  = Math.round(item.datapoint[1]);
+						var label  = item.series.label;
+
+						self.tooltip
+							.html(self.model.get('hover')(x,y,label))
+							.css({
+								top: item.pageY -25,
+								left: item.pageX + 15
+							})
+							.show();
+					} else {
+						self.tooltip.hide();
+					}
+				});
+			}
+
+
 
 			//Draw that plot!
 			$.plot(this.dom.graph, chartData, this.options);

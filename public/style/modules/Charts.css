@@ -1,13 +1,27 @@
 .chart{
-
 }
 
 	.chart__graph{
-		width : 450px;
 		height : 300px;
+		width  : 450px;
 	}
 
 	.chart__graph.big_chart{
-		width : 750px;
 		height : 500px;
+		width  : 750px;
+	}
+
+	#chart__tooltip{
+		position         : absolute;
+		display          : none;
+
+		max-width        : 200px;
+		padding          : 2px;
+		padding          : 10px;
+
+		opacity          : 0.75;
+		background-color : #000;
+		color            : #fff;
+		text-align       : center;
+		border           : 1px solid #fdd;
 	}
