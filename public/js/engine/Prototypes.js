@@ -140,6 +140,18 @@ Array.prototype.filter = function(fn){
 	},[]);
 };
 
+Number.prototype.pow = function(ex){
+	return Math.pow(this, ex);
+}
+
+Number.prototype.round = function(digits) {
+	var digits = digits || 0;
+	if(digits === 0){
+		return Math.round(this);
+	}
+	return Math.round(this * Math.pow(10,digits)) / Math.pow(10,digits);
+};
+
 _.mixin({
 	evalue : function(obj){
 		if(typeof obj === 'function') return obj();

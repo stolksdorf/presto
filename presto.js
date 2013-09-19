@@ -61,8 +61,8 @@ app.get('/v0', function(req, res){
 });
 
 
-app.get('/signup', function(req, res){
-	res.render('signup.html');
+app.get('/launch', function(req, res){
+	res.render('launch.html');
 });
 
 
