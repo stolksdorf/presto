@@ -152,6 +152,14 @@ Number.prototype.round = function(digits) {
 	return Math.round(this * Math.pow(10,digits)) / Math.pow(10,digits);
 };
 
+Number.prototype.ceil = function() {
+	return Math.ceil(this);
+};
+
+Number.prototype.floor = function() {
+	return Math.floor(this);
+};
+
 _.mixin({
 	evalue : function(obj){
 		if(typeof obj === 'function') return obj();
