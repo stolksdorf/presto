@@ -145,6 +145,21 @@ The `id` of the column is used in calculations regarding values in the table. `T
 
 `data` *(array|function)* : An array or a function that returns an array, of values representing the data
 
+#### Intercepts
+You can calculate the intercept between two sets of data using the `intercept` function
+
+	var intercepts = Charts.chartName.intercept('series1', 'series2')
+	intercepts[0].x //gets the x coordinate from the first intersect
+	intercepts[2].y //get the y coordinate from the third intersect
+
+If their are no intersects, the function will return an empty array. Check for it like this.
+
+	var intercepts = Charts.chartName.intercept('series1', 'series2')
+	if(intercepts.length === 0){
+		return; //return nothing
+	}
+	return Math.round(intercepts[0].x);
+
 
 ### Outputs
 Output are very similar to inputs in visuals, but the user can not modify any of the values. Instead you define calculations to determine the value of the outputs.
