@@ -158,18 +158,18 @@
 }
 
 	.codeEditor__topbar{
+		padding          : 8px;
+
 		cursor           : move;
 		background-color : #2C3E50;
 		font-size        : 1.3em;
 		color            : white;
 		border-bottom    : 2px solid #34495E;
-		padding : 8px;
 	}
 
 		.codeEditor__topbar__title{
-			font-size: 1.3em;
-			font-weight: 300;
-
+			font-size   : 1.3em;
+			font-weight : 300;
 		}
 
 		.codeEditor__topbar__close{
@@ -232,5 +232,3 @@
 			text-align : center;
 			border-top : 1px solid #eee;
 		}
-
-

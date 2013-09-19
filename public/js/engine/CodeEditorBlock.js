@@ -17,9 +17,9 @@ Presto_Block_CodeEditor = XO.Block.extend({
 			viewportMargin : Infinity,
 			lineNumbers    : true,
 			matchBrackets  : true,
-			smartIndent: true,
-			indentWithTabs: true,
-			indentUnit : 4
+			smartIndent    : true,
+			indentWithTabs : true,
+			indentUnit     : 4
 		});
 
 		this.dom.closeButton.click(function(){
