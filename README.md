@@ -124,6 +124,28 @@ The `id` of the input is used to identify it in calculations For example if we w
 The `id` of the column is used in calculations regarding values in the table. `Table.benefitBase` will return a array of numbers corresponding to the values in the column. Columns also have many useful functions you can use, such as `sum()` and `filter()`. You can review all available functions here.
 
 
+### Charts
+`title` *(string)* : A display name for the Table
+
+`breakeven` *(array:optional)* : An list of series name pairs in which you wish to draw break even lines. eg `[ ['sample', 'test'], ['sample', 'test2'] ]
+
+`size` *(string:optional)* : 'big' will make the chart render a much larger size
+
+`hover` *(function:optional)* : A function given x corrdinate, y corrdinate and the label of series when the user hovers on the chart. The function should return an html string to be displayed within the tooltip.
+	hover : function(x,y,label){
+		return "<b>$" + y + "</b> at age " + x + "</br>" + label;
+	},
+
+
+`series` *(objects)* : A list of series definitions for the chart
+
+#### Chart Series
+
+`label` *(string)* : Visible label name for the series of data
+
+`data` *(array|function)* : An array or a function that returns an array, of values representing the data
+
+
 ### Outputs
 Output are very similar to inputs in visuals, but the user can not modify any of the values. Instead you define calculations to determine the value of the outputs.
 
