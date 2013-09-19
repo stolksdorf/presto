@@ -98,6 +98,11 @@ Presto.registerModule({
 			}
 
 
+			if(this.model.get('size') === 'big'){
+				this.dom.graph.addClass('big_chart');
+			}
+
+
 			this.options = _.extend(Presto.modules.charts.defaultOptions, Presto.modules.charts.lineOptions);
 
 			return this;

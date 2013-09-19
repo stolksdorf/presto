@@ -6,3 +6,8 @@
 		width : 450px;
 		height : 300px;
 	}
+
+	.chart__graph.big_chart{
+		width : 750px;
+		height : 500px;
+	}
