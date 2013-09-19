@@ -13,11 +13,13 @@ Presto_Block_CodeEditor = XO.Block.extend({
 		this.editor = CodeMirror(this.dom.editor[0],
 		{
 			value          : "",
-			mode           : 'javascript',
+			mode           : {name: "javascript", json: true},
 			viewportMargin : Infinity,
 			lineNumbers    : true,
 			matchBrackets  : true,
-			tabMode        : 'indent'
+			smartIndent: true,
+			indentWithTabs: true,
+			indentUnit : 4
 		});
 
 		this.dom.closeButton.click(function(){
