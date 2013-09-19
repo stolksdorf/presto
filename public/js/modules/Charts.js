@@ -106,7 +106,6 @@ Presto.registerModule({
 		{
 			var self = this;
 
-			console.log(this.name);
 
 			this.dom.title.text(_.evalue(this.model.get('title')));
 			this.dom.description.text(_.evalue(this.model.get('description')));
@@ -130,14 +129,30 @@ Presto.registerModule({
 			});
 
 
+			this.addFuncsToGlobal();
 
 
+			// Add breakeven line
+			if(this.model.get('breakeven')){
+				var markings = [];
+				_.each(this.model.get('breakeven'), function(seriesPair){
+					var intercepts = Charts[self.name].intercept(seriesPair[0], seriesPair[1]);
+					_.each(intercepts, function(intercept){
+						markings.push({ color: '#000', lineWidth: 2, yaxis: { from: intercept[1], to: intercept[1] } })
+					});
+				});
+				this.options.grid.markings = markings;
+			}
+
+			//Draw that plot!
 			$.plot(this.dom.graph, chartData, this.options);
+			return this;
+		},
 
-
-
-			//Update Global
-
+		addFuncsToGlobal : function()
+		{
+			var self = this;
+			//Update Global with Functions
 			Charts[self.name].intercept = function(series1, series2){
 				var smallSetLength = self.data[series1].length > self.data[series2].length ? self.data[series2].length : self.data[series1].length;
 				var fp1 = self.data[series1][0];
@@ -163,15 +178,8 @@ Presto.registerModule({
 					fp2 = lp2;
 				};
 
-				if(result.length == 1){
-					result = result[0];
-				}
 				return result;
 			};
-
-
-
-
 			return this;
 		},
 
