@@ -170,6 +170,7 @@ app.delete('/api/calculator/*', function(req, res){
 
 app.post('/signup', function(req, res){
 	if(!/(.+)@(.+){2,}\.(.+){2,}/.test(req.body.email)){
+		console.log('no good');
 		return res.send(500, 'invalid');
 	}
 
@@ -183,6 +184,7 @@ app.post('/signup', function(req, res){
 			console.log('added new user!');
 			return res.send(200);
 		}
+		console.log('bad save');
 		return res.send(500);
 	});
 });
