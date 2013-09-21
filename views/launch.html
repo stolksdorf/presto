@@ -2,6 +2,8 @@
 <html>
 <body>
 
+	<title>Presto Calculators</title>
+
 	<!-- Libraries -->
 	<script type="text/javascript" src="libs/jq.js"></script>
 	<script type="text/javascript" src="libs/underscore.js"></script>
@@ -57,14 +59,14 @@
 			<div>
 				<a href='/promo1' target='_blank'>
 					<div class='promoCalc'>
-						<div class='tile steel'><i class='icon-sun'></i></div>
-						Solar PV Analyzer
+						<div class='tile blue'><i class='icon-repeat'></i></div>
+						Return of Premium Analyzer
 					</div>
 				</a>
 				<a href='/promo2' target='_blank'>
 					<div class='promoCalc'>
-						<div class='tile red'><i class='icon-fire-extinguisher'></i></div>
-						Debt Repayment
+						<div class='tile orange'><i class='icon-random'></i></div>
+						Fixed vs. Variable Analyzer
 					</div>
 				</a>
 			</div>
@@ -93,17 +95,21 @@
 
 			$('.error').fadeOut();
 
+			$('.signup').fadeTo(100, 0.5);
+
 			$.ajax({
 				type : 'POST',
 				url : '/signup',
 				data : {email : email},
 				success : function(){
-					$('.error').fadeOut(function(){
-						$('.promos').fadeIn();
+					$('.signup').fadeOut(function(){
+						$('.error').fadeOut(function(){
+							$('.promos').fadeIn();
+						});
 					});
 				},
 				error  : function(err, t){
-					console.log(err);
+					$('.signup').fadeTo(600, 1.0);
 					if(err.responseText === 'invalid'){
 						$('.errorMessage').text("That's not a valid email, sorry");
 					}else {
@@ -112,12 +118,23 @@
 					$('.error').stop().fadeIn();
 				},
 				complete : function(){
-					//$('.button').html("Go");
+
 				},
 			});
 		}
 
 
+
+	</script>
+
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-44198332-1', 'prestocalc.com');
+	  ga('send', 'pageview');
 
 	</script>
 

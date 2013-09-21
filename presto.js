@@ -46,7 +46,7 @@ var BetaUsers = mongoose.model('BetaUsers', mongoose.Schema({
 
 //Routes
 app.get('/', function (req, res) {
-	res.redirect('/v0');
+	res.redirect('/launch');
 });
 
 app.get('/calc/*', function (req, res) {
@@ -85,28 +85,17 @@ app.get('/beta/calc/*', function (req, res) {
 app.get('/promo1', function(req, res){
 	res.render('calculator.html',{
 		beta : true,
-		calcId : '5235efea5b067b0200000001'
+		//ROP calc
+		calcId : '52351d5e77bcb70200000001'
 	});
 });
 app.get('/promo2', function(req, res){
 	res.render('calculator.html',{
 		beta : true,
-		calcId : '5224b01edbcf7e0200000002'
+		//Fixed vs variable
+		calcId : '523854d1f0021f0200000001'
 	});
 });
-app.get('/promo3', function(req, res){
-	res.render('calculator.html',{
-		beta : true,
-		calcId : '5225fd4c26539b0200000001'
-	});
-});
-app.get('/promo4', function(req, res){
-	res.render('calculator.html',{
-		beta : true,
-		calcId : '5224a0d9dbcf7e0200000001'
-	});
-});
-
 
 
 
