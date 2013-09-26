@@ -23,15 +23,50 @@ app.use(express.bodyParser());
 app.use(express.static(__dirname + '/public'));
 
 
-var Inked = require('./Inked.js');
-var launch = require('./launch.js');
+var Inked = require('./Inked.js').setup(app, mongoose);
+var sneakpeek = require('./sneakpeek.js');
 
 
-launch.setup(app, mongoose);
+sneakpeek.setup(app, mongoose);
 
 
 
-//Schema
+
+//Schemas
+
+var PrestoUser = mongoose.model('PrestoUser', mongoose.Schema({
+	name : String,
+	email : String,
+	account_type : String,
+	date: { type: Date, default: Date.now },
+}));
+
+
+
+//Routes
+app.get('/calc/*', function (req, res) {
+	res.render('calculator.html',{
+		beta : false,
+		calcId : req.params[0]
+	});
+});
+
+
+//Browser finger printing
+Inked.route('/v0', function(req,res,userId){
+	res.render('home.html', {beta:false});
+});
+
+Inked.setRegister('/register', function(req, res){
+	res.render('register.html');
+});
+
+
+
+/**
+ *  API
+ */
+
 var CalculatorModel = mongoose.model('CalculatorModel', mongoose.Schema({
 	id          : String,
 	title       : String,
@@ -42,45 +77,6 @@ var CalculatorModel = mongoose.model('CalculatorModel', mongoose.Schema({
 	script      : String,
 	last_modified : Date
 }));
-
-var PrestoUser = mongoose.model('PrestoUser', mongoose.Schema({
-	name : String,
-	email : String,
-	account_type : String,
-	date: { type: Date, default: Date.now },
-}));
-
-
-//Routes
-app.get('/', function (req, res) {
-	res.redirect('/launch');
-});
-
-app.get('/calc/*', function (req, res) {
-	res.render('calculator.html',{
-		beta : false,
-		calcId : req.params[0]
-	});
-});
-
-app.get('/v0', function(req, res){
-
-	console.log('v0', req.query);
-
-	res.render('check.html');
-});
-
-app.post('/v0', function(req, res){
-	console.log('v0p', req.body);
-
-
-	res.render('home.html', {beta:false});
-});
-
-
-/**
- *  API
- */
 
 //TODO: Add admin checks
 app.get('/api/calculator', function(req, res){
@@ -143,22 +139,6 @@ app.delete('/api/calculator/*', function(req, res){
  * Experimentation
  *
  */
-
-
-
-
-
-//Browser finger printing
-app.get('/register', function(req, res){
-	res.render('register.html');
-});
-
-app.get('/check', function(req, res){
-	res.render('check.html');
-});
-
-
-
 
 
 app.get('/fp', function(req, res){

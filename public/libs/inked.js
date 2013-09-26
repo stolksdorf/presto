@@ -134,5 +134,3 @@
 	};
 
 })(window);
-
-console.log(Inked);
