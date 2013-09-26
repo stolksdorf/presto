@@ -12,11 +12,93 @@
 <body>
 	<title>Register</title>
 
-	Registering your Fingerprint
+	<div class='message'>Not registered yet</div>
+	<input id='name' type='text' placeholder='username' value='Scott'></input> name<br>
+	<input id='fp' type='text' placeholder='fingerprint'></input> Fingerprint<br>
+	<input id='cc' type='text' placeholder='cookie'></input> Cookie<br>
+	<button id='go'>Register</button>
+	<button id='check'>Check</button>
+
 
 	<script type="text/javascript">
 
-	console.log(Inked);
+		$(document).ready(function(){
+
+			$('#fp').val(Inked.fingerprint);
+			$('#cc').val(Inked.collisionCookie);
+
+
+
+			$.ajax({
+				url : '/fp',
+				type : 'GET',
+				data : {
+					username        : $('#name').val(),
+					collisionCookie : $('#cc').val(),
+					fingerprint     : $('#fp').val()
+				},
+				success : function(data, textStatus, jqXHR ){
+					$('.message').text('Welcome, ' + $('#name').val());
+
+				},
+				error: function(data, textStatus, jqXHR ){
+					console.log('ERROR', data, textStatus);
+				}
+			});
+
+
+			$('#go').click(function(){
+				var username = $('#name').val();
+				console.log('sending off data');
+				$.ajax({
+					url : '/fp',
+					type : 'POST',
+					data : {
+						username        : $('#name').val(),
+						collisionCookie : $('#cc').val(),
+						fingerprint     : $('#fp').val()
+					},
+					success : function(data, textStatus, jqXHR ){
+						console.log('Registered!', data);
+					},
+					error: function(data, textStatus, jqXHR ){
+						console.log('ERROR', data, textStatus);
+					}
+				});
+
+			});
+
+
+			$('#check').click(function(){
+
+				console.log('checking off data');
+				$.ajax({
+					url : '/fp',
+					type : 'GET',
+					data : {
+						username        : $('#name').val(),
+						collisionCookie : $('#cc').val(),
+						fingerprint     : $('#fp').val()
+					},
+					success : function(data, textStatus, jqXHR ){
+						console.log('Checked!', data);
+					},
+					error: function(data, textStatus, jqXHR ){
+						console.log('ERROR', data, textStatus);
+					}
+				});
+
+
+
+
+			});
+
+
+		});
+
+
+
+
 
 
 	</script>

@@ -8,6 +8,7 @@ var mongoUri = process.env.MONGOLAB_URI ||
 
 var mongoose = require('mongoose');
 
+
 mongoose.connect(mongoUri);
 mongoose.connection.on('error', function(){
 	console.log(">>>ERROR: Connect Mongodb ya goof!");
@@ -22,6 +23,14 @@ app.use(express.bodyParser());
 app.use(express.static(__dirname + '/public'));
 
 
+var Inked = require('./Inked.js');
+var launch = require('./launch.js');
+
+
+launch.setup(app, mongoose);
+
+
+
 //Schema
 var CalculatorModel = mongoose.model('CalculatorModel', mongoose.Schema({
 	id          : String,
@@ -34,23 +43,12 @@ var CalculatorModel = mongoose.model('CalculatorModel', mongoose.Schema({
 	last_modified : Date
 }));
 
-
-var BetaUsers = mongoose.model('BetaUsers', mongoose.Schema({
+var PrestoUser = mongoose.model('PrestoUser', mongoose.Schema({
+	name : String,
 	email : String,
-	time : Date
+	account_type : String,
+	date: { type: Date, default: Date.now },
 }));
-
-
-
-
-var Users = mongoose.model('Users', mongoose.Schema({
-	email : String,
-	fingerprint : String,
-	collisionCookie : String
-}));
-
-
-
 
 
 //Routes
@@ -66,51 +64,25 @@ app.get('/calc/*', function (req, res) {
 });
 
 app.get('/v0', function(req, res){
+
+	console.log('v0', req.query);
+
+	res.render('check.html');
+});
+
+app.post('/v0', function(req, res){
+	console.log('v0p', req.body);
+
+
 	res.render('home.html', {beta:false});
 });
 
 
-app.get('/launch', function(req, res){
-	res.render('launch.html');
-});
+/**
+ *  API
+ */
 
-
-
-
-
-//Beta Routes not working
-/*
-app.get('/beta', function (req, res) {
-	res.render('home.html', {beta : true});
-});
-
-app.get('/beta/calc/*', function (req, res) {
-	res.render('calculator.html',{
-		beta : true,
-		calcId : req.params[0]
-	});
-});
-*/
-
-
-//Promo calcs
-app.get('/promo1', function(req, res){
-	res.render('calculator.html',{
-		beta : true,
-		//ROP calc
-		calcId : '52351d5e77bcb70200000001'
-	});
-});
-app.get('/promo2', function(req, res){
-	res.render('calculator.html',{
-		beta : true,
-		//Fixed vs variable
-		calcId : '523854d1f0021f0200000001'
-	});
-});
-
-
-
+//TODO: Add admin checks
 app.get('/api/calculator', function(req, res){
 	CalculatorModel.find(function(err, calculators){
 		res.send(calculators);
@@ -123,7 +95,6 @@ app.get('/api/calculator/*', function(req, res){
 	});
 });
 
-
 //Create a calculator
 app.post('/api/calculator', function(req, res){
 	var newCalc = new CalculatorModel(req.body);
@@ -134,7 +105,6 @@ app.post('/api/calculator', function(req, res){
 		res.send(newCalc);
 	});
 });
-
 
 app.put('/api/calculator/*', function(req, res){
 	var fields = req.body;
@@ -168,28 +138,11 @@ app.delete('/api/calculator/*', function(req, res){
 
 
 
-
-app.post('/signup', function(req, res){
-	if(!/(.+)@(.+){2,}\.(.+){2,}/.test(req.body.email)){
-		console.log('no good');
-		return res.send(500, 'invalid');
-	}
-
-	var newUser = new BetaUsers({
-		email : req.body.email,
-		time : new Date()
-	});
-
-	newUser.save(function(error){
-		if(!error){
-			console.log('added new user!');
-			return res.send(200);
-		}
-		console.log('bad save');
-		return res.send(500);
-	});
-});
-
+/**
+ *
+ * Experimentation
+ *
+ */
 
 
 
@@ -209,13 +162,44 @@ app.get('/check', function(req, res){
 
 
 app.get('/fp', function(req, res){
-	return res.send(200);
+	var un = req.query.username;
+	var fp = req.query.fingerprint;
+	var cc = req.query.collisionCookie;
+
+
+	Inked.get(fp,cc, function(err, user){
+		console.log(err,user);
+		res.send(200, user);
+	});
 
 });
 
 app.post('/fp', function(req, res){
-	return res.send(200);
+	var un = req.body.username;
+	var fp = req.body.fingerprint;
+	var cc = req.body.collisionCookie;
+
+	Inked.add(un,fp,cc, function(err, user){
+		if(err){
+			console.log('ERROR', err);
+			return res.send(500, err);
+		}
+		return res.send(200, user);
+	});
+
 });
+
+app.get('/fpall', function(req, res){
+
+	Inked.all(function(users){
+		res.send(users);
+	});
+
+
+});
+
+
+
 
 
 

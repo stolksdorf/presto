@@ -55,6 +55,11 @@
 		}
 	};
 
+	/**
+	 * Used in case two users have the exact same browser fingerprints
+	 * should be rare, ~3% of the time
+	 * @return {int}
+	 */
 	var getCollisionCookie = function(){
 		var collisionCookie = cookiejar.get('inked-collisioncookie');
 		if(!collisionCookie){
@@ -120,7 +125,7 @@
 		result.push(getPluginsFingerprint())
 		result.push(getCanvasFingerprint());
 		result = murmurhash3(result.join('###'));
-		return result;
+		return result + "";
 	}
 
 	scope.Inked = {
@@ -129,3 +134,5 @@
 	};
 
 })(window);
+
+console.log(Inked);
