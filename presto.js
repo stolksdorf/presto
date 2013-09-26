@@ -43,6 +43,15 @@ var BetaUsers = mongoose.model('BetaUsers', mongoose.Schema({
 
 
 
+var Users = mongoose.model('Users', mongoose.Schema({
+	email : String,
+	fingerprint : String,
+	collisionCookie : String
+}));
+
+
+
+
 
 //Routes
 app.get('/', function (req, res) {
@@ -64,6 +73,9 @@ app.get('/v0', function(req, res){
 app.get('/launch', function(req, res){
 	res.render('launch.html');
 });
+
+
+
 
 
 //Beta Routes not working
@@ -183,30 +195,30 @@ app.post('/signup', function(req, res){
 
 
 
-
-
-
-//Mongoose test
-
-
-/*
-
-app.get('/add', function(req, res){
-	console.log(req.query);
-	var newCat = new Kitten({name : req.query.name});
-
-	newCat.save(function(error, newCat){
-		res.send("added " + newCat.name);
-	});
+//Browser finger printing
+app.get('/register', function(req, res){
+	res.render('register.html');
 });
 
-app.get('/get', function(req, res){
-	Kitten.find(function(err, kittens){
-		res.send(kittens);
-	});
+app.get('/check', function(req, res){
+	res.render('check.html');
 });
 
-*/
+
+
+
+
+app.get('/fp', function(req, res){
+	return res.send(200);
+
+});
+
+app.post('/fp', function(req, res){
+	return res.send(200);
+});
+
+
+
 
 
 
