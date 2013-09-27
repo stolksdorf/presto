@@ -12,10 +12,10 @@ exports.set = function(name, value){
 
 //Schemas
 InkedUser = mongoose.model('InkedUser', mongoose.Schema({
-	userId : String,
-	fingerprint : String,
+	userId          : String,
+	fingerprint     : String,
 	collisionCookie : String,
-	date: { type: Date, default: Date.now },
+	date            : { type: Date, default: Date.now },
 }));
 
 InkedRegisterLink = mongoose.model('InkedRegisterLink', mongoose.Schema({
@@ -131,4 +131,11 @@ exports.setRegisterPage = function(path, render){
 // On clicking the register link, it will add the browser finger print to their account
 exports.createRegisterLink = function(userId){
 
+}
+
+
+exports.clear = function(){
+	InkedUser.remove({}, function(){
+		console.log('Inked userws remove');
+	});
 }

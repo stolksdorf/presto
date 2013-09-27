@@ -25,9 +25,11 @@ Presto_Block_Overlay = XO.Block.extend({
 			self.dom.title.text(newTitle);
 		});
 
-		this.dom.launchEditorButton.click(function(){
-			self.trigger('showEditor');
-		});
+		if(this.dom.launchEditorButton){
+			this.dom.launchEditorButton.click(function(){
+				self.trigger('showEditor');
+			});
+		}
 
 
 		if(!Presto.options.show_editor){

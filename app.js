@@ -37,26 +37,45 @@ UserSchema.methods.isAdmin = function(){
 	return this.account_type === 'admin';
 };
 
+UserSchema.methods.addFingerPrint = function(inkedData){
 
+};
 
 var User = mongoose.model('User', UserSchema);
 
 
 
 //Routes
+/*
 app.get('/calc/*', function (req, res) {
 	res.render('calculator.html',{
 		beta : false,
 		calcId : req.params[0]
 	});
 });
+*/
+
+Inked.route('/calc/*', function(req,res,userId){
+	User.findOne({_id : userId}, function(error, user){
+		console.log('user', user);
+		return res.render('calculator.html', {
+			user : user,
+			calcId : req.params[0]
+		});
+	});
+});
 
 
-//Browser finger printing
-Inked.route('/v0', function(req,res,userId){
-	//TODO: search up for the user here
-	console.log('Showing home', userId);
-	res.render('home.html', {beta:false});
+
+
+Inked.route('/home', function(req,res,userId){
+	User.findOne({_id : userId}, function(error, user){
+		console.log('user', user);
+		return res.render('home.html', {
+			beta : false,
+			user : user
+		});
+	});
 });
 
 Inked.setRegisterPage('/register', function(req, res){
@@ -64,13 +83,20 @@ Inked.setRegisterPage('/register', function(req, res){
 });
 
 
+app.post('/api/user', function(req, res){
+	var newUser = new User({
+		name  : req.body.username,
+		email : req.body.email,
+	});
 
-
-
-
-
-
-
+	newUser.save(function(error, user){
+		if(error){return res.send(500, error);}
+		Inked.add(user._id, req.body.fingerprint, req.body.collisionCookie, function(error, user){
+			if(error){return res.send(500, error);}
+			return res.send(200, user);
+		});
+	});
+});
 
 
 
@@ -153,6 +179,14 @@ app.get('/inkedall', function(req, res){
 	Inked.all(function(users){
 		res.send(users);
 	});
+});
+
+app.get('/clear', function(req, res){
+	User.remove({}, function(){
+		console.log('Presto userws remove');
+	});
+	Inked.clear();
+	res.send(200, "cleared");
 });
 
 

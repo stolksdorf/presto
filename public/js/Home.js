@@ -40,11 +40,10 @@ Presto_Block_Home = XO.Block.extend({
 		});
 
 
-		this.dom.newCalculatorButton.click(function(){
-			self.calculatorCollection.addNew();
-		});
-		if(PrestoHome.options.is_beta){
-			this.dom.newCalculatorButton.hide();
+		if(this.dom.newCalculatorButton){
+			this.dom.newCalculatorButton.click(function(){
+				self.calculatorCollection.addNew();
+			});
 		}
 
 		this.calculatorCollection.fetch();
@@ -53,10 +52,6 @@ Presto_Block_Home = XO.Block.extend({
 
 	addCalculator : function(calculatorModel)
 	{
-		//TODO: Remove later out of beta
-		if(PrestoHome.options.is_beta){
-			calculatorModel.set('url', "/beta" + calculatorModel.get('url') );
-		}
 		var newBlock = new Presto_Block_CalculatorOption(calculatorModel);
 		newBlock.injectInto(this.dom.container, {at_top:true});
 		return this;
@@ -90,18 +85,15 @@ Presto_Block_CalculatorOption = XO.Block.extend({
 			self.dom.link.attr('href', self.model.get('url'));
 		});
 
-		this.dom.deleteBtn.click(function(event){
-			event.preventDefault();
-			var temp = confirm("Are you sure you want to delete this calculator?");
-			if(temp){
-				self.model.destroy();
-				self.remove();
-			}
-		});
-
-		//TODO: Remove later out of beta
-		if(PrestoHome.options.is_beta){
-			this.dom.deleteBtn.hide()
+		if(this.dom.deleteBtn){
+			this.dom.deleteBtn.click(function(event){
+				event.preventDefault();
+				var temp = confirm("Are you sure you want to delete this calculator?");
+				if(temp){
+					self.model.destroy();
+					self.remove();
+				}
+			});
 		}
 
 		return this;

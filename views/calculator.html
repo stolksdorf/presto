@@ -7,7 +7,9 @@
 		<div class='presto__topbar' xo-element='topbar'>
 			<span class='presto__topbar__logo'> <i xo-element='icon'></i> </span>
 			<span class='presto__topbar__title' xo-element='title'></span>
+			<%if (user.account_type == 'admin') { %>
 			<span class='presto__topbar__editor clickable' xo-element='launchEditorButton'> <i class='icon-code'></i> </span>
+			<% } %>
 		</div>
 
 
@@ -27,6 +29,7 @@
 	</div>
 
 	<!-- Code Editor -->
+	<%if (user.account_type == 'admin') { %>
 	<div class='codeEditor' xo-block='codeEditor' style='display:none'>
 		<div class='codeEditor__topbar' xo-element='topbar'>
 			<div class='codeEditor__topbar__close clickable' xo-element='closeButton'><i class='icon-remove card'></i></div>
@@ -52,6 +55,7 @@
 			</div>
 		</div>
 	</div>
+	<% } %>
 
 	<!-- Used to make the tooltip on the chart -->
 	<div id='chart__tooltip'></div>
@@ -150,16 +154,17 @@
 <script type="text/javascript" src="../js/Presto.js"></script>
 <script type="text/javascript" src="../js/engine/Prototypes.js"></script>
 <script type="text/javascript" src="../js/engine/CalculatorBlueprintModel.js"></script>
-<script type="text/javascript" src="../js/engine/CodeEditorBlock.js"></script>
 <script type="text/javascript" src="../js/engine/ModuleBlueprint.js"></script>
 <script type="text/javascript" src="../js/engine/OverlayBlock.js"></script>
 
+<%if (user.account_type == 'admin') { %>
+<script type="text/javascript" src="../js/engine/CodeEditorBlock.js"></script>
+<% } %>
 
 <script>
 
 	Presto.start({
 		//disabled_modules : ['tables'],
-		is_beta : <%= beta %>,
 		calcId : "<%= calcId %>"
 	});
 

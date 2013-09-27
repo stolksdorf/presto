@@ -27,10 +27,7 @@
 	<link href='libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
 
 	<script>
-
-		PrestoHome.start({
-			is_beta : <%= beta %>
-		});
+		PrestoHome.start();
 	</script>
 
 
@@ -80,13 +77,17 @@
 
 	-->
 
-		<div class='calculator newCalculator yellow' xo-element='newCalculatorButton'>
-			<div class='calculator__icon' xo-element='icon'><i class='icon-plus'></i></div>
-			<div class='calculator__info'>
-				<div class='calculator__info__title' xo-element='title'>Create Calculator</div>
-				<div class='calculator__info__description' xo-element='description'>Click here to create a new calculator</div>
+
+		<%if (user.account_type == 'admin') { %>
+			<div class='calculator newCalculator yellow' xo-element='newCalculatorButton'>
+				<div class='calculator__icon' xo-element='icon'><i class='icon-plus'></i></div>
+				<div class='calculator__info'>
+					<div class='calculator__info__title' xo-element='title'>Create Calculator</div>
+					<div class='calculator__info__description' xo-element='description'>Click here to create a new calculator</div>
+				</div>
 			</div>
-		</div>
+		<% } %>
+
 
 		<div class='calculatorContainer' xo-element='container'>
 			<!-- Calculators go here! -->
@@ -102,9 +103,11 @@
 				<div class='calculator__info__title' xo-element='title'></div>
 				<div class='calculator__info__description' xo-element='description'></div>
 			</div>
-			<div class='calculator__delete' xo-element='deleteBtn'>
-				<i class='icon-remove'></i>
-			</div>
+			<%if (user.account_type == 'admin') { %>
+				<div class='calculator__delete' xo-element='deleteBtn'>
+					<i class='icon-remove'></i>
+				</div>
+			<% } %>
 		</a>
 	</div>
 

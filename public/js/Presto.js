@@ -17,13 +17,6 @@ Presto = {
 			id : this.options.calcId
 		});
 
-
-		//TODO: Remove later
-		if(this.options.is_beta){
-			this.options.show_editor = false;
-			this.options.show_errorbar = false;
-		}
-
 		//When the page loads render the calculator
 		$(document).ready(function(){
 			self.render();
@@ -35,7 +28,10 @@ Presto = {
 	{
 		var self = this;
 		this.overlayBlock = new Presto_Block_Overlay(this.calculatorModel);
-		this.codeEditor   = new Presto_Block_CodeEditor(this.calculatorBlueprint);
+
+		if(typeof Presto_Block_CodeEditor !== 'undefined'){
+			this.codeEditor   = new Presto_Block_CodeEditor(this.calculatorBlueprint);
+		}
 
 		this.setupEvents();
 
