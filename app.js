@@ -1,44 +1,45 @@
-var express = require("express");
-var app = express();
-
 var mongoUri = process.env.MONGOLAB_URI ||
 	process.env.MONGOHQ_URL ||
 	'mongodb://localhost/presto';
-
-
-var mongoose = require('mongoose');
-
-
+mongoose = require('mongoose');
 mongoose.connect(mongoUri);
 mongoose.connection.on('error', function(){
 	console.log(">>>ERROR: Connect Mongodb ya goof!");
 });
 
+express = require("express");
+app = express();
 app.set('title', 'Presto');
 app.engine('html', require('ejs').renderFile);
-
-
 app.use(express.bodyParser());
 app.use(express.static(__dirname + '/public'));
 
+//Modules
+Inked         = require('./modules/Inked.js');
+var sneakpeek = require('./modules/sneakpeek.js');
 
-//My Modules
-var Inked     = require('./Inked.js').setup(app, mongoose);
-
-
-
-var sneakpeek = require('./sneakpeek.js').setup(app, mongoose);
+//Models
+require('./modules/models/calculator.js');
+require('./modules/models/user.js');
 
 
 
 
 //Schemas
-var PrestoUser = mongoose.model('PrestoUser', mongoose.Schema({
-	name : String,
+var UserSchema = mongoose.Schema({
+	name  : String,
 	email : String,
-	account_type : String,
-	date: { type: Date, default: Date.now },
-}));
+	account_type : { type: String, default: 'beta'},
+	date  : { type: Date, default: Date.now },
+});
+
+UserSchema.methods.isAdmin = function(){
+	return this.account_type === 'admin';
+};
+
+
+
+var User = mongoose.model('User', UserSchema);
 
 
 
@@ -61,6 +62,15 @@ Inked.route('/v0', function(req,res,userId){
 Inked.setRegisterPage('/register', function(req, res){
 	res.render('register.html');
 });
+
+
+
+
+
+
+
+
+
 
 
 
@@ -132,60 +142,6 @@ app.delete('/api/calculator/*', function(req, res){
 });
 
 
-/**
- * Pass a route and a mongoose schema to REST API
- * @param  {string}          route
- * @param  {Mongoose Schema} Model
- */
-var createAPI = function(route, Model){
-	app.get(route, function(req, res){
-		Model.find(function(err, models){
-			if(err){ return res.send(500,err); }
-			return res.send(200, models);
-		});
-	});
-
-	app.get(route + '/*', function(req, res){
-		Model.find({id : req.params[0]}, function(err, model){
-			if(err){ return res.send(500, err); }
-			return res.send(200, model[0]);
-		});
-	});
-
-	app.post(route, function(req, res){
-		var newModel = new Model(req.body);
-		if(!newModel.id){ newModel.id = newModel._id; }
-		newModel.save(function(err, newModel){
-			if(err){ return res.send(500, err); }
-			return res.send(200, newModel);
-		});
-	});
-
-	app.put(route + '/*', function(req, res){
-		var fields = req.body;
-		delete fields._id;
-		Model.findByIdAndUpdate(req.body.id,
-			{$set: fields},
-			function(err, model){
-				if(err){ return res.send(500, err); }
-				if (!model) {
-					return res.send(404);
-				}
-				return res.send(200, model);
-			}
-		);
-	});
-
-	app.delete(route + '/*', function(req, res){
-		Model.findById(req.params[0], function (err, model) {
-			return model.remove(function (err) {
-				if(err){ return res.send(500, err); }
-				return res.send(200, model);
-			});
-		});
-	});
-}
-
 
 
 /**
@@ -198,6 +154,9 @@ app.get('/inkedall', function(req, res){
 		res.send(users);
 	});
 });
+
+
+
 
 
 

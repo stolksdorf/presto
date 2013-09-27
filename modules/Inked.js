@@ -1,5 +1,4 @@
-var mongoose,
-	app,
+var mongoose = require('mongoose');
 	global = {};
 
 var ErrorCode = {
@@ -11,28 +10,19 @@ exports.set = function(name, value){
 	global[name] = value;
 };
 
-exports.setup = function(g_app, g_mongoose){
-	app = g_app;
-	mongoose = g_mongoose;
+//Schemas
+InkedUser = mongoose.model('InkedUser', mongoose.Schema({
+	userId : String,
+	fingerprint : String,
+	collisionCookie : String,
+	date: { type: Date, default: Date.now },
+}));
 
-	//Schemas
-	InkedUser = mongoose.model('InkedUser', mongoose.Schema({
-		userId : String,
-		fingerprint : String,
-		collisionCookie : String,
-		date: { type: Date, default: Date.now },
-	}));
+InkedRegisterLink = mongoose.model('InkedRegisterLink', mongoose.Schema({
+	//url_key
+	//expires_
 
-
-	InkedRegisterLink = mongoose.model('InkedRegisterLink', mongoose.Schema({
-		url_key
-		expires_
-
-
-
-	}));
-	return this;
-}
+}));
 
 
 var getUserWithCC = function(fingerprint, collisionCookie, callback){
