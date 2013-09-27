@@ -18,22 +18,21 @@ app.set('title', 'Presto');
 app.engine('html', require('ejs').renderFile);
 
 
-
 app.use(express.bodyParser());
 app.use(express.static(__dirname + '/public'));
 
 
-var Inked = require('./Inked.js').setup(app, mongoose);
-var sneakpeek = require('./sneakpeek.js');
+//My Modules
+var Inked     = require('./Inked.js').setup(app, mongoose);
 
 
-sneakpeek.setup(app, mongoose);
+
+var sneakpeek = require('./sneakpeek.js').setup(app, mongoose);
 
 
 
 
 //Schemas
-
 var PrestoUser = mongoose.model('PrestoUser', mongoose.Schema({
 	name : String,
 	email : String,
@@ -54,10 +53,12 @@ app.get('/calc/*', function (req, res) {
 
 //Browser finger printing
 Inked.route('/v0', function(req,res,userId){
+	//TODO: search up for the user here
+	console.log('Showing home', userId);
 	res.render('home.html', {beta:false});
 });
 
-Inked.setRegister('/register', function(req, res){
+Inked.setRegisterPage('/register', function(req, res){
 	res.render('register.html');
 });
 
@@ -66,7 +67,6 @@ Inked.setRegister('/register', function(req, res){
 /**
  *  API
  */
-
 var CalculatorModel = mongoose.model('CalculatorModel', mongoose.Schema({
 	id          : String,
 	title       : String,
@@ -75,7 +75,7 @@ var CalculatorModel = mongoose.model('CalculatorModel', mongoose.Schema({
 	icon        : String,
 	url         : String,
 	script      : String,
-	last_modified : Date
+	last_modified : { type: Date, default: Date.now },
 }));
 
 //TODO: Add admin checks
@@ -123,7 +123,6 @@ app.delete('/api/calculator/*', function(req, res){
 	return CalculatorModel.findById(req.params[0], function (err, calculator) {
 		return calculator.remove(function (err) {
 			if (!err) {
-				console.log("removed");
 				return res.send(200, calculator);
 			} else {
 				return res.send(500, err.message);
@@ -133,49 +132,71 @@ app.delete('/api/calculator/*', function(req, res){
 });
 
 
+/**
+ * Pass a route and a mongoose schema to REST API
+ * @param  {string}          route
+ * @param  {Mongoose Schema} Model
+ */
+var createAPI = function(route, Model){
+	app.get(route, function(req, res){
+		Model.find(function(err, models){
+			if(err){ return res.send(500,err); }
+			return res.send(200, models);
+		});
+	});
+
+	app.get(route + '/*', function(req, res){
+		Model.find({id : req.params[0]}, function(err, model){
+			if(err){ return res.send(500, err); }
+			return res.send(200, model[0]);
+		});
+	});
+
+	app.post(route, function(req, res){
+		var newModel = new Model(req.body);
+		if(!newModel.id){ newModel.id = newModel._id; }
+		newModel.save(function(err, newModel){
+			if(err){ return res.send(500, err); }
+			return res.send(200, newModel);
+		});
+	});
+
+	app.put(route + '/*', function(req, res){
+		var fields = req.body;
+		delete fields._id;
+		Model.findByIdAndUpdate(req.body.id,
+			{$set: fields},
+			function(err, model){
+				if(err){ return res.send(500, err); }
+				if (!model) {
+					return res.send(404);
+				}
+				return res.send(200, model);
+			}
+		);
+	});
+
+	app.delete(route + '/*', function(req, res){
+		Model.findById(req.params[0], function (err, model) {
+			return model.remove(function (err) {
+				if(err){ return res.send(500, err); }
+				return res.send(200, model);
+			});
+		});
+	});
+}
+
+
 
 /**
  *
  * Experimentation
  *
  */
-
-
-app.get('/fp', function(req, res){
-	var un = req.query.username;
-	var fp = req.query.fingerprint;
-	var cc = req.query.collisionCookie;
-
-
-	Inked.get(fp,cc, function(err, user){
-		console.log(err,user);
-		res.send(200, user);
-	});
-
-});
-
-app.post('/fp', function(req, res){
-	var un = req.body.username;
-	var fp = req.body.fingerprint;
-	var cc = req.body.collisionCookie;
-
-	Inked.add(un,fp,cc, function(err, user){
-		if(err){
-			console.log('ERROR', err);
-			return res.send(500, err);
-		}
-		return res.send(200, user);
-	});
-
-});
-
-app.get('/fpall', function(req, res){
-
+app.get('/inkedall', function(req, res){
 	Inked.all(function(users){
 		res.send(users);
 	});
-
-
 });
 
 

@@ -25,10 +25,11 @@ exports.setup = function(g_app, g_mongoose){
 
 
 	InkedRegisterLink = mongoose.model('InkedRegisterLink', mongoose.Schema({
-		userId : String,
-		fingerprint : String,
-		collisionCookie : String,
-		date: { type: Date, default: Date.now },
+		url_key
+		expires_
+
+
+
 	}));
 	return this;
 }
@@ -119,12 +120,13 @@ exports.route = function(route, renderFn){
 			if(error || !user){
 				return res.send(global.registerRedirect, 403);
 			}
-			return renderFn(req,res,user);
+			return renderFn(req,res,user.userId);
 		});
 	});
 };
 
-exports.setRegister = function(path, render){
+//Redirects to this path whenever the fingerprint can not be found
+exports.setRegisterPage = function(path, render){
 	global.registerRedirect = path;
 	app.get(path, function(req,res){
 		res.render('inked.html');
@@ -132,4 +134,11 @@ exports.setRegister = function(path, render){
 	app.post(path, function(req,res){
 		return render(req,res);
 	});
+};
+
+//Creates and stores a register link into the DB for a given user, and returns the url
+// Will expire after a given time period
+// On clicking the register link, it will add the browser finger print to their account
+exports.createRegisterLink = function(userId){
+
 }

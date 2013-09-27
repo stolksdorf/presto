@@ -56,5 +56,5 @@ exports.setup = function(app, mongoose){
 		});
 	});
 
-
+	return this;
 };

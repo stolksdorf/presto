@@ -9,8 +9,10 @@
 	<body>
 		<script type="text/javascript">
 
-			Inked.fingerprint = 'whatever';
-			Inked.collisionCookie = 'yup'
+		console.log(Inked);
+
+			//Inked.fingerprint = 'whatever';
+			//Inked.collisionCookie = 'yup'
 
 			$('body').load(document.URL,{inked : Inked}, function(redirect, textStatus, jqXHR ){
 				if(jqXHR.status === 403 && redirect){
