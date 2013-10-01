@@ -15,7 +15,7 @@
 	/**
 	 * JS Implementation of MurmurHash3 (r136) (as of May 20, 2011)
 	 *
-	 * @author <a href="mailto:gary.court@gmail.com">Gary Court</a>
+	 * @author <a href='mailto:gary.court@gmail.com'>Gary Court</a>
 	 * @see http://github.com/garycourt/murmurhash-js
 	 *
 	 * @param {string} key ASCII only
@@ -30,10 +30,10 @@
 				return;
 			}
 			var start, end;
-			start = document.cookie.indexOf(name + "=");
+			start = document.cookie.indexOf(name + '=');
 			if(start !== -1){
 				start = start + name.length + 1;
-				end = document.cookie.indexOf(";", start);
+				end = document.cookie.indexOf(';', start);
 				if(end === -1){
 					end = document.cookie.length;
 				}
@@ -42,13 +42,13 @@
 			return;
 		},
 		set : function(name, value, daysToExpire){
-			var expires = "";
+			var expires = '';
 			if(daysToExpire){
 				var date = new Date();
 				date.setTime(date.getTime() + (daysToExpire * 24 * 60 * 60 * 1000));
-				expires = "; expires=" + date.toGMTString();
+				expires = '; expires=' + date.toGMTString();
 			}
-			document.cookie = name + "=" + value + expires + "; path=/";
+			document.cookie = name + '=' + value + expires + '; path=/';
 		},
 		remove : function(name){
 			document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -63,7 +63,7 @@
 	var getCollisionCookie = function(){
 		var collisionCookie = cookiejar.get('inked-collisioncookie');
 		if(!collisionCookie){
-			collisionCookie = new Date().getTime() + Math.round(Math.random() * 100) + "";
+			collisionCookie = new Date().getTime() + Math.round(Math.random() * 100) + '';
 			cookiejar.set('inked-collisioncookie', collisionCookie)
 		}
 		return collisionCookie;
@@ -108,14 +108,14 @@
 		}
 		var ctx = canvas.getContext('2d');
 		var txt = 'inked-fingerprinting';
-		ctx.textBaseline = "top";
-		ctx.font = "14px 'Arial'";
-		ctx.textBaseline = "alphabetic";
-		ctx.fillStyle = "#f60";
+		ctx.textBaseline = 'top';
+		ctx.font = '14px Arial';
+		ctx.textBaseline = 'alphabetic';
+		ctx.fillStyle = '#f60';
 		ctx.fillRect(125,1,62,20);
-		ctx.fillStyle = "#069";
+		ctx.fillStyle = '#069';
 		ctx.fillText(txt, 2, 15);
-		ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
+		ctx.fillStyle = 'rgba(102, 204, 0, 0.7)';
 		ctx.fillText(txt, 4, 17);
 		return canvas.toDataURL();
 	}
@@ -125,7 +125,7 @@
 		result.push(getPluginsFingerprint())
 		result.push(getCanvasFingerprint());
 		result = murmurhash3(result.join('###'));
-		return result + "";
+		return result + '';
 	}
 
 	scope.Inked = {

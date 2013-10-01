@@ -9,37 +9,37 @@
 	<title>Register</title>
 
 	<div class='message'>Not registered yet</div>
-	<input id='name' type='text' placeholder='username'></input> name<br>
 	<input id='email' type='text' placeholder='email'></input> email<br>
 	<input id='fp' type='text' placeholder='fingerprint'></input> Fingerprint<br>
 	<input id='cc' type='text' placeholder='cookie'></input> Cookie<br>
 	<button id='go'>Register</button>
-	<button id='check'>Check</button>
-
 
 	<script type="text/javascript">
 
+		console.log(auth);
+
 		$(document).ready(function(){
 
-			$('#fp').val(Inked.fingerprint);
-			$('#cc').val(Inked.collisionCookie);
-
+			$('#fp').val(auth.fingerprint);
+			$('#cc').val(auth.cookie);
 
 			$('#go').click(function(){
 				var username = $('#name').val();
 				console.log('sending off data');
+				$('.message').text('Registering with server...');
 				$.ajax({
-					url : '/api/user',
+					url : '/addLink',
 					type : 'POST',
 					data : {
-						email           : $('#email').val(),
-						username        : $('#name').val(),
-						collisionCookie : $('#cc').val(),
-						fingerprint     : $('#fp').val()
+						email : $('#email').val(),
+						auth  : {
+							fingerprint : $('#fp').val(),
+							cookie      : $('#cc').val()
+						},
 					},
 					success : function(data, textStatus, jqXHR ){
 						alert('Registered');
-						window.location = '/home';
+						$('.message').text('Check your inbox for the activation link');
 					},
 					error: function(data, textStatus, jqXHR ){
 						console.log('ERROR', data, textStatus);
