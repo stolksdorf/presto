@@ -110,7 +110,7 @@ auth_route('/activate/:key', function(req,res){
 
 	ActivationKey.findOne({key : key}, function(err, activation){
 		if(err){ console.log('err', err);}
-		User.findOne({id : activation.user_id}, function(err, user){
+		User.findOne({_id : activation.user_id}, function(err, user){
 			if(err){ console.log('err', err);}
 
 			user.addFingerprint(req.body.auth, function(err, user){
@@ -125,7 +125,7 @@ auth_route('/activate/:key', function(req,res){
 
 
 var sendActivationEmail = function(user, callback){
-	var newActivationKey = new ActivationKey({id : user._id});
+	var newActivationKey = new ActivationKey({user_id : user._id});
 	newActivationKey.save(function(error, newKey){
 		var url = 'http://www.prestocalc.com/activate/' + newKey.key;
 		mail.sendActivationEmail(user, url, callback);
@@ -224,6 +224,12 @@ app.delete('/api/calculator/*', function(req, res){
 app.get('/all', function(req, res){
 	User.find({}, function(err, users){
 		res.send(users);
+	});
+});
+
+app.get('/allkey', function(req, res){
+	ActivationKey.find({}, function(err, keys){
+		res.send(keys);
 	});
 });
 
