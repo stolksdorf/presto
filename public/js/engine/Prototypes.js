@@ -83,6 +83,7 @@ Functions = {
 
 
 /* Prototype mods */
+// Move these all onto generator arrays brah
 Array.prototype.last = function(){
 	return this[this.length-1];
 }
@@ -164,7 +165,22 @@ _.mixin({
 	evalue : function(obj){
 		if(typeof obj === 'function') return obj();
 		return obj;
-	}
+	},
+	evalueObj  : function(obj){
+		return _.keymap(obj, function(val){
+			return _.evalue(val);
+		});
+	},
+	keymap : function(obj, fn){
+		var result = {};
+		for(var propName in obj){
+			if(obj.hasOwnProperty(propName)){ result[propName] = fn(obj[propName], propName); }
+		}
+		return result;
+	},
+	compare : function(obj1, obj2){
+		return JSON.stringify(obj1) === JSON.stringify(obj2)
+	},
 });
 
 
@@ -180,6 +196,11 @@ Array.prototype.get = function(index){
 		return this[index];
 	}
 };
+
+
+var _mapPrototypes = function(){
+	_.each(['map', 'reduce', 'extend'])
+}
 
 /*
 
@@ -199,12 +220,10 @@ test[2]      //return 5
 
 
 
-
-
 //maybe remove
-jQuery.fn.getSchematic = function(schematicName){
+jQuery.getSchematic = function(schematicName){
 	var schematicElement = jQuery('[xo-schematic="' + schematicName + '"]');
 	if(schematicElement.length === 0 ){throw 'ERROR: Could not find schematic with name "' + schematicName + '"';}
-	var schematicCode    = jQuery('<div>').append(schematicElement.clone().removeAttr('xo-schematic')).html();
+	var schematicCode = jQuery('<div>').append(schematicElement.clone().removeAttr('xo-schematic')).html();
 	return jQuery(schematicCode);
 };

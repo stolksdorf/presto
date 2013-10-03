@@ -19,6 +19,12 @@
 			newObj.__super__ = this.__super__ || this;
 			return newObj.initialize.apply(newObj, arguments);
 		},
+		create : function(){
+			var newObj = Object.create(this);
+			//newObj.__super__ = this.__super__ || this;
+			if(arguments.length) newObj.initialize.apply(newObj, arguments);
+			return newObj;
+		},
 		extend : function(methods){
 			return Object.create(this).mixin(methods);
 		},

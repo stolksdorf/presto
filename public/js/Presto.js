@@ -1,4 +1,4 @@
-Presto = {
+Presto = Archetype.extend({
 	modules : {},
 	defaultOptions : {
 		disabled_modules : [],
@@ -17,15 +17,23 @@ Presto = {
 			id : this.options.calcId
 		});
 
+
+
+		this.globalScope = {};
+
 		//When the page loads render the calculator
 		$(document).ready(function(){
+			console.log('UI DRAWN');
 			self.render();
 		});
 		return this;
 	},
 
-	render : function()
+	render : function() //rename to draw
 	{
+		console.log('Modules', this.modules);
+
+
 		var self = this;
 		this.overlayBlock = new Presto_Block_Overlay(this.calculatorModel);
 
@@ -50,22 +58,13 @@ Presto = {
 
 		//whenever the model updates, re-render the modules
 		this.calculatorModel.on('change', function(){
-			self.renderModules()
+			self.initializeModules()
 		});
 
 		this.overlayBlock.on('showEditor', function(){
 			self.codeEditor.show();
 		});
 
-		return this;
-	},
-
-	/**
-	 * A facade for modules to call to update all other modules
-	 */
-	update : function()
-	{
-		this.updateModules();
 		return this;
 	},
 
@@ -85,18 +84,9 @@ Presto = {
 		if(_.contains(Presto.options.disabled_modules, moduleObject.name)){
 			return this;
 		}
+		this.modules[moduleObject.name] = Presto_Module.extend(moduleObject);
 
-		//TODO: Add a name/global collision check
-		var newModule = Presto_Module.extend(moduleObject);
-		//if(newModule.global){
-		//	window[newModule.global] = {};
-		//}
-
-		newModule.initialize();
-
-		//TODO: Maybe add global init here as well?
-
-		this.modules[newModule.name] = newModule;
+		console.log('ADDED:', moduleObject.name);
 
 		return this;
 	},
@@ -104,35 +94,107 @@ Presto = {
 	/**
 	 * Takes the blueprint, executes it, then renders the calculator using the model
 	 */
-	renderModules : function()
+	initializeModules : function()
 	{
 		var self = this;
-		this.trigger('render');
-		this.removeModules(); //remove any old modules first
 
-		_.each(this.sortModules(), function(module){
-			if(module.global){
-				window[module.global] = {};
-			}
-			if(self.calculatorModel.has(module.name)){
-				module.render(self.calculatorModel.get(module.name));
+		//dump defintion into global
+		_.each(this.modules, function(module){
+			var def = self.calculatorModel.get(module.name);
+			try{
+				if(module.global){
+					window[module.global] = module.generate(def);
+				}
+			}catch(e){
+				//nuhing
 			}
 		});
+
+		console.log('loaded globals');
+
+		//Now try to initialize each
+		_.each(this.modules, function(module){
+
+			var def = self.calculatorModel.get(module.name);
+
+			if(module.schematic){
+				module.injectInto(module.target);
+			}
+
+			module.components = module.registerComponents(module);
+
+			module.definition = def;
+			module.def = def;
+			module.initialize(_.evalueObj(module.def));
+
+			window[module.name] = def;
+		});
+
 
 		this.update();
 		return this;
 	},
 
 	/**
+	 * A facade for modules to call to update all other modules
+	 */
+	update : function()
+	{
+		if(this._updating) return;
+		this._updating = true;
+		console.log('---------');
+		var newGlobalScope = {},
+			iterationCount = 0,
+			error;
+		while(1){
+			console.log('running update', iterationCount);
+			error = undefined;
+
+			_.each(this.modules, function(module){
+				try{
+					var temp = module.generate(module.def);
+					if(module.global){
+						newGlobalScope[module.global] = temp;
+						window[module.global] = temp;
+					}
+				}catch(e){
+					console.error('caught an error');
+					error = e;
+				}
+			});
+
+			if(_.compare(this.globalScope, newGlobalScope) || error || iterationCount > 5){
+				break;
+			}
+			this.globalScope = newGlobalScope;
+			iterationCount++;
+		}
+
+		console.log('Update finish', iterationCount, this.globalScope);
+		if(error){
+			throw error;
+		}
+
+		this.drawModules();
+		this._updating = false;
+		return this;
+	},
+
+
+	/**
 	 * When called updates each module, utilizing the updated Globals
 	 */
-	updateModules : function()
+	drawModules : function()
 	{
-		_.each(this.sortModules(), function(module){
-			module.update();
+		console.log('drawing');
+		var self = this;
+		_.each(this.modules, function(module){
+			module.draw(module.def, self.globalScope[module.global]);
 		});
 		return this;
 	},
+
+
 
 	sortModules : function()
 	{
@@ -177,14 +239,7 @@ Presto = {
 		return this.overlayBlock.dom.flowContainer;
 	},
 
-};
-
-//TODO: Fix
-//Add archetype events
-Presto.on = Archetype.on;
-Presto.off = Archetype.off;
-Presto.trigger = Archetype.trigger;
-
+});
 
 window.onerror = function(error, fileName, lineNumber){
 	Presto.trigger('error', error, fileName, lineNumber);

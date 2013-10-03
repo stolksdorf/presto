@@ -1,3 +1,4 @@
+/*
 Presto.registerModule({
 	name   : 'global',
 	global : 'Global',
@@ -10,4 +11,15 @@ Presto.registerModule({
 	},
 
 
+});
+*/
+
+Presto.registerModule({
+	name      : 'global',
+	global    : 'Global',
+
+	generate : function(def)
+	{
+		return def;
+	},
 });

@@ -125,12 +125,12 @@
 			return this._enabled;
 		},
 
-		value : function(newValue)
+		value : function(newValue, silent)
 		{
 			if(typeof newValue === 'undefined'){
 				return this._value;
 			}
-			if(this._value !== newValue){
+			if(this._value !== newValue && !silent){
 				this._value = newValue;
 				for(var i=0; i < this._events.length; i++){
 					this._events[i](this._value, this);
