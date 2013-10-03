@@ -19,7 +19,7 @@ GLOBAL._ = require('underscore');
 var shortId = require('shortid');
 
 
-
+var DEBUG = true;
 
 
 //Modules
@@ -35,6 +35,15 @@ require('./modules/models/user.js');
 
 
 auth_route = function(path, middleware, render){
+	if(DEBUG){
+		return app.get(path, function(req,res){
+			req.user = new User({
+				email : 'scott.tolksdorf@gmail.com',
+				account_type : 'admin'
+			});
+			return render(req,res);
+		});
+	}
 	if(typeof render === 'undefined'){
 		render = middleware;
 		middleware = [];
@@ -233,7 +242,7 @@ app.get('/allkey', function(req, res){
 	});
 });
 
-app.get('/drop', function(req, res){
+auth_route('/drop', [loadUser, adminOnly], function(req, res){
 	User.remove({}, function(err){
 		console.log('All users dropped');
 	});
@@ -244,22 +253,11 @@ app.get('/drop', function(req, res){
 });
 
 
-app.get('/clear', function(req, res){
-	User.remove({}, function(){
-		console.log('Presto userws remove');
+auth_route('/test', [loadUser, adminOnly], function(req,res){
+	User.find({}, function(err, users){
+		res.send(users);
 	});
-	Inked.clear();
-	res.send(200, "cleared");
 });
-
-
-
-
-
-app.get('/mail', function(req,res){
-	mail.test();
-});
-
 
 
 

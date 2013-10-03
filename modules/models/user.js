@@ -32,7 +32,7 @@ UserSchema.methods.isAdmin = function(){
 	return this.account_type === 'admin';
 };
 
-UserSchema.methods.addFingerprint = function(data, callback){
+UserSchema.methods.addFingerprint = function(data, callback){ //TODO: Make into an update
 	this.auth.push({
 		fingerprint : data.fingerprint,
 		cookie      : data.cookie
