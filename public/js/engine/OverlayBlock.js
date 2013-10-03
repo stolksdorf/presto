@@ -8,6 +8,8 @@ Presto_Block_Overlay = XO.Block.extend({
 	{
 		var self = this;
 
+		this.dom.title.text()
+
 		//Setup Topbar
 		this._topbarClasses = this.dom.topbar.attr('class');
 		this.model.onChange('color', function(newColor){
@@ -23,6 +25,7 @@ Presto_Block_Overlay = XO.Block.extend({
 		});
 		this.model.onChange('title', function(newTitle){
 			self.dom.title.text(newTitle);
+			self.dom.windowTitle.text(newTitle);
 		});
 
 		if(this.dom.launchEditorButton){
