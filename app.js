@@ -22,7 +22,7 @@ var shortId = require('shortid');
 app.locals.inspect = require('util').inspect;
 
 
-var DEBUG = true;
+var DEBUG = false;
 
 
 //Modules

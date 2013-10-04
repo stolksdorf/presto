@@ -2,6 +2,10 @@
 	position: relative;
 }
 
+	.chart .title{
+		padding-right: 45px;
+	}
+
 	.chart__graph{
 		height : 500px;
 		width  : 750px;
@@ -12,10 +16,21 @@
 		width  : 450px;
 	}
 
+	.chart__graph.mini{
+		display:none;
+	}
+
 	.chart__resize{
 		display: block;
 		position: absolute;
 		right : 10px;
+		cursor: pointer;
+	}
+
+	.chart__mini{
+		display: block;
+		position: absolute;
+		right : 30px;
 		cursor: pointer;
 	}
 

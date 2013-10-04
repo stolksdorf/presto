@@ -48,8 +48,13 @@ Presto.registerModule({
 					this.tooltip = $('#chart__tooltip');
 
 					this.dom.resize.click(function(){
+						self.dom.graph.removeClass('mini');
 						self.dom.graph.toggleClass('small_chart');
 						self.draw();
+					});
+
+					this.dom.mini.click(function(){
+						self.dom.graph.toggleClass('mini');
 					});
 
 
@@ -227,7 +232,7 @@ Presto.registerModule({
 		line : {
 			series: {
 				lines : { show: true },
-				points: { show: true }
+				points: { show: false }
 			}
 		}
 	},
