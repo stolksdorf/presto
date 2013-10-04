@@ -26,6 +26,14 @@ Presto.registerModule({
 		});
 	},
 
+	remove : function()
+	{
+		_.each(this.charts, function(chart){
+			chart.remove();
+		});
+		return this;
+	},
+
 	registerComponents : function(module){
 		return {
 			chart : Presto_Component.extend({

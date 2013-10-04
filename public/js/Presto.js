@@ -18,10 +18,13 @@ Presto = Archetype.extend({
 			id : this.options.calcId
 		});
 
+		console.log(this.options.calc);
+
+
+		this.calculatorBlueprint = new Presto_Model_CalculatorBlueprint(this.options.calc);
 
 		//When the page loads render the calculator
 		$(document).ready(function(){
-			console.log('UI DRAWN');
 			self.render();
 		});
 		return this;
@@ -42,7 +45,8 @@ Presto = Archetype.extend({
 		this.setupEvents();
 
 		//get the blueprint from the server
-		this.calculatorBlueprint.retrieve();
+		//this.calculatorBlueprint.retrieve();
+		this.calculatorBlueprint.execute();
 		return this;
 	},
 
@@ -102,6 +106,8 @@ Presto = Archetype.extend({
 	initializeModules : function()
 	{
 		var self = this;
+
+		this.removeModules();
 
 		//dump defintion into global
 		_.each(this.modules, function(module){
@@ -209,19 +215,6 @@ Presto = Archetype.extend({
 	},
 
 
-	//Utility Functions
-
-	/**
-	 * takes data, block, and container to create a new block for each bit of data
-	 */
-	createBlocks : function(args)
-	{
-		return _.map(args.data, function(data, dataName){
-			var newBlock = new args.block(data);
-			newBlock.name = dataName;
-			return newBlock.injectInto(args.container, {at_top : args.prepend});
-		});
-	},
 
 	getStaticPanel : function()
 	{
@@ -236,8 +229,5 @@ Presto = Archetype.extend({
 });
 
 window.onerror = function(error, fileName, lineNumber){
-	console.log('ERROR:', error, fileName, lineNumber);
 	Presto.trigger('error', error, fileName, lineNumber);
-
-	return true;
 };

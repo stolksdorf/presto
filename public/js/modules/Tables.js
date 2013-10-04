@@ -26,6 +26,14 @@ Presto.registerModule({
 		});
 	},
 
+	remove : function()
+	{
+		_.each(this.tables, function(table){
+			table.remove();
+		});
+		return this;
+	},
+
 	registerComponents : function(module){
 		return {
 			table : Presto_Component.extend({

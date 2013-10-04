@@ -169,7 +169,8 @@
 
 	Presto.start({
 		disabled_modules : ['coolFunctions'],
-		calcId : "<%= calcId %>"
+		calcId : "<%= calcId %>",
+		calc : <%- inspect(calc) %>
 	});
 
 </script>

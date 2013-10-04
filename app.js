@@ -19,6 +19,9 @@ GLOBAL._ = require('underscore');
 var shortId = require('shortid');
 
 
+app.locals.inspect = require('util').inspect;
+
+
 var DEBUG = true;
 
 
@@ -80,10 +83,22 @@ var loadUser = function(req,res,next){
 
 //Routes
 auth_route('/calc/:calcId', [loadUser], function(req,res){
-	return res.render('calculator.html', {
-		user : req.user,
-		calcId : req.params.calcId
+	CalculatorModel.findOne({id : req.params.calcId}, function(err, calculator){
+
+		var temp = calculator.toObject();
+
+		delete temp._id;
+		delete temp.last_modified;
+
+		console.log(app.locals.inspect(temp));
+
+		return res.render('calculator.html', {
+			user : req.user,
+			calcId : req.params.calcId,
+			calc : temp
+		});
 	});
+
 });
 
 auth_route('/home', [loadUser], function(req,res){

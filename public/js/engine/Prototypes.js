@@ -71,16 +71,6 @@ Type = {
 };
 
 
-
-/* Functions */
-Functions = {
-	Increment : function(diff){
-		return function(index, prevValue){
-			return prevValue + (diff || 1);
-		}
-	}
-}
-
 makeGeneratorArray = function(arr, fn){
 
 	arr.reduce = function(fn, memo){
