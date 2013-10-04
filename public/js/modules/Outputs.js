@@ -1,73 +1,70 @@
 Presto.registerModule({
-	name   : 'outputs',
-	global : 'Outputs',
+	name      : 'outputs',
+	global    : 'Outputs',
 
-	order : 300,
+	schematic : 'outputContainer',
+	target    : $('.staticContainer'), //expose global thigny
 
-	initialize : function()
+
+	initialize : function(def)
 	{
-		this.outputContainer = new XO.Block();
-		return this;
-	},
-
-	render : function(moduleData)
-	{
-		var self = this;
-		this.outputContainer.schematic = 'outputContainer';
-		this.outputContainer.injectInto(Presto.getStaticPanel());
-
-		this.outputs = Presto.createBlocks({
-			data      : moduleData,
-			block     : this.OutputBlock,
-			container : this.outputContainer.dom.block
+		this.outputs = this.createComponents({
+			definition : this.definition,
+			component  : this.components.output,
+			target     : this.dom.block
 		});
 
 		return this;
 	},
 
-	update : function()
+	generate : function(def)
+	{
+		return _.keymap(this.outputs, function(output){
+			return output.generate();
+		});
+	},
+
+	draw : function(def, data)
 	{
 		_.each(this.outputs, function(output){
-			output.update();
+			output.draw(data[output.name]);
 		});
-		return this;
 	},
 
-	remove : function()
-	{
-		this.outputContainer.remove();
-		return this;
-	},
+	registerComponents : function(module){
+		return {
+			output : Presto_Component.extend({
+				schematic : 'output',
 
+				initialize : function()
+				{
+					return this;
+				},
 
-	/**
-	 * Module Blocks
-	 */
-	OutputBlock : XO.Block.extend({
-		schematic : 'output',
-		render : function()
-		{
-			var self = this;
+				generate : function()
+				{
+					return _.evalue(this.definition.value);
+				},
 
-			if(!this.model.get('description')){
-				this.dom.description.hide();
-			}
-			return this;
-		},
-		update : function()
-		{
-			var outputValue = _.evalue(this.model.get('value'));
+				draw : function(data)
+				{
+					this.definition.type.renderer(data, this.dom.value);
 
-			this.dom.title.text(_.evalue(this.model.get('title')));
-			this.dom.description.text(_.evalue(this.model.get('description')));
-
-			this.model.get('type').renderer(outputValue, this.dom.value);
-			Outputs[this.name] = outputValue;
-			return this;
-		},
-	}),
+					if(!_.evalue(this.definition.description)){
+						this.dom.description.hide();
+					}
+					this.dom.description.text(_.evalue(this.definition.description));
+					this.dom.title.text(_.evalue(this.definition.title));
+				},
+			})
+		}
+	}
 
 });
+
+
+
+
 
 
 

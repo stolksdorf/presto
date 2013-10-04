@@ -147,6 +147,7 @@ Presto = Archetype.extend({
 		console.log('running update');
 
 		_.each(this.modules, function(module){
+			console.log('gen', module.name);
 			var temp = module.generate(module.def);
 			if(module.global){
 				newGlobalScope[module.global] = temp;

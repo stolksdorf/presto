@@ -8,9 +8,6 @@ Presto.registerModule({
 
 	initialize : function(def)
 	{
-		//this.inputs = this.createComponents(def, this.components.input, this.dom.block);
-
-
 		this.inputs = this.createComponents({
 			definition : this.definition,
 			component  : this.components.input,
