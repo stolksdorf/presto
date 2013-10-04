@@ -143,6 +143,33 @@ Presto = Archetype.extend({
 		if(this._updating) return;
 		this._updating = true;
 		console.log('---------');
+		var newGlobalScope = {};
+		console.log('running update');
+
+		_.each(this.modules, function(module){
+			var temp = module.generate(module.def);
+			if(module.global){
+				newGlobalScope[module.global] = temp;
+				window[module.global] = temp;
+			}
+		});
+
+		this.globalScope = newGlobalScope;
+
+		console.log('Update finish', this.globalScope);
+
+		this.drawModules();
+		this._updating = false;
+		return this;
+	},
+
+
+
+	updateERROR : function()
+	{
+		if(this._updating) return;
+		this._updating = true;
+		console.log('---------');
 		var newGlobalScope = {},
 			iterationCount = 0,
 			error;
@@ -158,7 +185,7 @@ Presto = Archetype.extend({
 						window[module.global] = temp;
 					}
 				}catch(e){
-					console.error('caught an error');
+					console.error('caught an error', e);
 					error = e;
 				}
 			});
@@ -179,6 +206,7 @@ Presto = Archetype.extend({
 		this._updating = false;
 		return this;
 	},
+
 
 
 	/**

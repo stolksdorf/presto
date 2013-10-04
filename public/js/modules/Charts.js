@@ -1,223 +1,210 @@
 Presto.registerModule({
-	name   : 'charts',
-	global : 'Charts',
+	name      : 'charts',
+	global    : 'Charts',
 
-	order : 250,
-
-	defaultOptions : {
-		xaxis:{
-			font : {
-				weight: "300",
-				family: "Lato",
-				color: "#000"
-			}
-		},
-		yaxis: {
-			font : {
-				weight: "300",
-				family: "Lato",
-				color: "#000"
-			}
-		},
-		grid: {
-			/*
-			show: boolean
-			aboveData: boolean
-			color: color
-			backgroundColor: color/gradient or null
-			margin: number or margin object
-			labelMargin: number
-			axisMargin: number
-			markings: array of markings or (fn: axes -> array of markings)
-			borderWidth: number or object with "top", "right", "bottom" and "left" properties with different widths
-			borderColor: color or null or object with "top", "right", "bottom" and "left" properties with different colors
-			minBorderMargin: number or null
-			clickable: boolean
-			hoverable: boolean
-			autoHighlight: boolean
-			mouseActiveRadius: number
-			*/
-		},
-
-		colors: ['#16A085','#C0392B','#27AE60','#D35400','#2980B9','#8E44AD','#2C3E50','#F39C12','#BDC3C7','#7F8C8D']
-	},
-
-	lineOptions : {
-		series: {
-			lines : { show: true },
-			points: { show: true }
-		},
-	},
-
-	initialize : function()
+	initialize : function(def)
 	{
-		return this;
-	},
-
-	render : function(moduleData)
-	{
-		this.charts = Presto.createBlocks({
-			data      : moduleData,
-			block     : this.ChartBlock,
-			container : Presto.getFlowPanel(),
-			prepend  : true
+		this.charts =  this.createComponents({
+			definition : def,
+			component  : this.components.chart,
+			target     : Presto.getFlowPanel()  //TODO: Fix this
 		});
 		return this;
 	},
 
-	update : function()
+	generate : function(def)
 	{
-		_.each(this.charts, function(chart){
-			chart.update();
+		return _.keymap(this.charts, function(chart){
+			return chart.generate();
 		});
-		return this;
 	},
 
-	remove : function()
+	draw : function(def, data)
 	{
 		_.each(this.charts, function(chart){
-			chart.remove();
-		})
-		return this;
+			chart.draw(data[chart.name]);
+		});
 	},
 
+	registerComponents : function(module){
+		return {
+			chart : Presto_Component.extend({
+				schematic : 'chart',
 
+				initialize : function()
+				{
+					this.options = _.extend(module.options.default, module.options.line);
+					this.tooltip = $('#chart__tooltip');
 
+					this.data = {};
 
+					return this;
+				},
 
+				generate : function()
+				{
+					var self = this;
+					var result = {}
 
+					if(this.definition.table){
+						result = this.getDataFromTable();
+					}
 
-//////////////////////////////////
+					this.data = result;
+					result.intercept = function(){
+						return self.calculateIntercept.apply(self, arguments);
+					};
+					return result;
+				},
 
-	ChartBlock : XO.Block.extend({
-		schematic : 'chart',
-		render : function()
-		{
-			var self = this;
-			if(!this.model.get('description')){
-				this.dom.description.hide();
-			}
+				draw : function(data)
+				{
+					var self = this;
+					this.dom.title.text(_.evalue(this.definition.title));
 
+					if(this.definition.hover){
+						this.addHover();
+					}
 
-			if(this.model.get('size') === 'big'){
-				this.dom.graph.addClass('big_chart');
-			}
+					if(this.definition.breakeven){
+						this.drawBreakevenLines(data);
+					}
 
+					//create flot data from data
+					var chartData = _.reduce(data, function(result, series){
+						if(series.label && series.data){
+							result.push(series);
+						}
+						return result;
+					}, []);
+					$.plot(this.dom.graph, chartData, this.options);
+				},
 
-			this.options = _.extend(Presto.modules.charts.defaultOptions, Presto.modules.charts.lineOptions);
-			this.tooltip = $('#chart__tooltip');
-
-			return this;
-		},
-		update : function()
-		{
-			var self = this;
-
-
-			this.dom.title.text(_.evalue(this.model.get('title')));
-			this.dom.description.text(_.evalue(this.model.get('description')));
-
-
-			Charts[this.name] = {};
-			this.data = {};
-
-			var chartData = _.map(this.model.get('series'), function(series, seriesName){
-				var result = {};
-				var data = _.evalue(series.data);
-				result.data = _.map(data, function(point, index){
-					return [index, point];
-				});
-				result.label = series.label;
-
-				Charts[self.name][seriesName] = data;
-				self.data[seriesName] = result.data;
-				return result;
-			});
-
-			this.addFuncsToGlobal();
-
-			// Add breakeven line
-			if(this.model.get('breakeven')){
-				var markings = [];
-				_.each(this.model.get('breakeven'), function(seriesPair){
-					var intercepts = Charts[self.name].intercept(seriesPair[0], seriesPair[1]);
-					_.each(intercepts, function(intercept){
-						markings.push({ color: '#000', lineWidth: 2, yaxis: { from: intercept.y, to: intercept.y } })
-					});
-				});
-				this.options.grid.markings = markings;
-			}
-
-
-			//Add a hover
-			if(this.model.get('hover')){
-				this.options.grid.hoverable = true;
-				this.dom.graph.bind("plothover", function (event, pos, item) {
-					if(item){
-						var x  = Math.round(item.datapoint[0]);
-						var y  = Math.round(item.datapoint[1]);
-						var label  = item.series.label;
-
-						self.tooltip
-							.html(self.model.get('hover')(x,y,label))
-							.css({
-								top: item.pageY -25,
-								left: item.pageX + 15
+				getDataFromTable : function()
+				{
+					var tableValues = Presto.modules.tables.tables[this.definition.table].columns;
+					var result = {};
+					var xaxis = tableValues[0].generate();
+					for(var i = 1; i< tableValues.length; i++){
+						result[tableValues[i].name] = {
+							label : _.evalue(tableValues[i].definition.title),
+							data : _.map(tableValues[i].generate(), function(point, index){
+								return [xaxis[index], point];
 							})
-							.show();
-					} else {
-						self.tooltip.hide();
+						};
 					}
-				});
-			}
+					return result;
+				},
+
+				addHover : function()
+				{
+					var self = this;
+					this.options.grid.hoverable = true;
+					this.dom.graph.bind("plothover", function (event, pos, item) {
+						if(item){
+							var x  = Math.round(item.datapoint[0]);
+							var y  = Math.round(item.datapoint[1]);
+							var label  = item.series.label;
+
+							self.tooltip
+								.html(self.definition.hover(x,y,label))
+								.css({
+									top: item.pageY -25,
+									left: item.pageX + 15
+								})
+								.show();
+						} else {
+							self.tooltip.hide();
+						}
+					});
+					return this;
+				},
+
+				drawBreakevenLines : function(data)
+				{
+					var lines = _.evalue(this.definition.breakeven);
+					var markings = [];
+					_.each(lines, function(seriesPair){
+						var intercepts = data.intercept(seriesPair[0], seriesPair[1]);
+						_.each(intercepts, function(intercept){
+							markings.push({ color: '#000', lineWidth: 2, yaxis: { from: intercept.y, to: intercept.y } })
+						});
+					});
+					this.options.grid.markings = markings;
+					return this;
+				},
+
+				calculateIntercept : function(series1, series2){
+					if(!this.data[series1] || !this.data[series2]) return [];
+					var smallSetLength = this.data[series1].data.length > this.data[series2].data.length ? this.data[series2].data.length : this.data[series1].data.length;
+					var fp1 = this.data[series1].data[0];
+					var fp2 = this.data[series2].data[0];
+					var result = [];
+					for(var i = 1; i < smallSetLength; i++){
+						var lp1 = this.data[series1].data[i];
+						var lp2 = this.data[series2].data[i];
+						var x=((fp1[0]*lp1[1]-fp1[1]*lp1[0])*(fp2[0]-lp2[0])-(fp1[0]-lp1[0])*(fp2[0]*lp2[1]-fp2[1]*lp2[0]))/((fp1[0]-lp1[0])*(fp2[1]-lp2[1])-(fp1[1]-lp1[1])*(fp2[0]-lp2[0]));
+						var y=((fp1[0]*lp1[1]-fp1[1]*lp1[0])*(fp2[1]-lp2[1])-(fp1[1]-lp1[1])*(fp2[0]*lp2[1]-fp2[1]*lp2[0]))/((fp1[0]-lp1[0])*(fp2[1]-lp2[1])-(fp1[1]-lp1[1])*(fp2[0]-lp2[0]));
+						if( (x >= fp1[0] && x >= fp2[0]) && (x <= lp1[0] && x <= lp2[0] ) ){
+							result.push({x:x,y:y});
+						}
+						fp1 = lp1;
+						fp2 = lp2;
+					};
+					return result;
+				}
+			})
+		}
+	},
 
 
+	//Flot Options
+	options : {
+		default : {
+			xaxis:{
+				font : {
+					weight: "300",
+					family: "Lato",
+					color: "#000"
+				}
+			},
+			yaxis: {
+				font : {
+					weight: "300",
+					family: "Lato",
+					color: "#000"
+				}
+			},
+			grid: {
+				/*
+				show: boolean
+				aboveData: boolean
+				color: color
+				backgroundColor: color/gradient or null
+				margin: number or margin object
+				labelMargin: number
+				axisMargin: number
+				markings: array of markings or (fn: axes -> array of markings)
+				borderWidth: number or object with "top", "right", "bottom" and "left" properties with different widths
+				borderColor: color or null or object with "top", "right", "bottom" and "left" properties with different colors
+				minBorderMargin: number or null
+				clickable: boolean
+				hoverable: boolean
+				autoHighlight: boolean
+				mouseActiveRadius: number
+				*/
+			},
 
-			//Draw that plot!
-			if(chartData){
-				$.plot(this.dom.graph, chartData, this.options);
-			}
-
-			return this;
+			colors: ['#16A085','#C0392B','#27AE60','#D35400','#2980B9','#8E44AD','#2C3E50','#F39C12','#BDC3C7','#7F8C8D']
 		},
 
-		addFuncsToGlobal : function()
-		{
-			var self = this;
-			//Update Global with Functions
-			Charts[self.name].intercept = function(series1, series2){
-				if(!self.data[series1] || !self.data[series2]) return [];
-				var smallSetLength = self.data[series1].length > self.data[series2].length ? self.data[series2].length : self.data[series1].length;
-				var fp1 = self.data[series1][0];
-				var fp2 = self.data[series2][0];
-
-				var result = [];
-
-				for(var i = 1; i < smallSetLength; i++){
-
-					var lp1 = self.data[series1][i];
-					var lp2 = self.data[series2][i];
-
-
-					var x=((fp1[0]*lp1[1]-fp1[1]*lp1[0])*(fp2[0]-lp2[0])-(fp1[0]-lp1[0])*(fp2[0]*lp2[1]-fp2[1]*lp2[0]))/((fp1[0]-lp1[0])*(fp2[1]-lp2[1])-(fp1[1]-lp1[1])*(fp2[0]-lp2[0]));
-					var y=((fp1[0]*lp1[1]-fp1[1]*lp1[0])*(fp2[1]-lp2[1])-(fp1[1]-lp1[1])*(fp2[0]*lp2[1]-fp2[1]*lp2[0]))/((fp1[0]-lp1[0])*(fp2[1]-lp2[1])-(fp1[1]-lp1[1])*(fp2[0]-lp2[0]));
-
-
-					if( (x >= fp1[0] && x >= fp2[0]) && (x <= lp1[0] && x <= lp2[0] ) ){
-						result.push({x:x,y:y});
-					}
-
-					fp1 = lp1;
-					fp2 = lp2;
-				};
-
-				return result;
-			};
-			return this;
-		},
-
-	}),
+		line : {
+			series: {
+				lines : { show: true },
+				points: { show: true }
+			}
+		}
+	},
 
 });
-
 

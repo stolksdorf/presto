@@ -81,66 +81,72 @@ Functions = {
 	}
 }
 
+makeGeneratorArray = function(arr, fn){
 
-/* Prototype mods */
-// Move these all onto generator arrays brah
-Array.prototype.last = function(){
-	return this[this.length-1];
-}
+	arr.reduce = function(fn, memo){
+		for(var i=0; i < this.length; i++){
+			memo = fn(memo, this[i], i);
+		}
+		return memo;
+	};
 
-Array.prototype.map = function(fn){
-	var result = [];
-	for(var propName in this){
-		if(this.hasOwnProperty(propName)){ result.push(fn(this[propName], propName)); }
+	arr.map = function(fn){
+		var result = [];
+		for(var i=0; i < this.length; i++){
+			result.push(fn(this[i], i));
+		}
+		return makeGeneratorArray(result);
 	}
-	return result;
-}
 
-Array.prototype.reduce = function(fn, memo){
-	for(var propName in this){
-		if(this.hasOwnProperty(propName)){ memo = fn(memo, this[propName], propName); }
+	arr.sum = function(){
+		return this.reduce(function(memo,num){
+			return memo + num;
+		},0);
+	};
+
+	arr.last = function(){
+		return this[this.length-1];
 	}
-	return memo;
-}
 
-Array.prototype.max = function(){
-	return this.reduce(function(memo, num){
-		if(num > memo || !memo) return num;
-		return memo;
-	});
+	arr.max = function(){
+		return this.reduce(function(memo, num){
+			if(num > memo || !memo) return num;
+			return memo;
+		});
+	};
+
+	arr.min = function(){
+		return this.reduce(function(memo, num){
+			if(num < memo || !memo) return num;
+			return memo;
+		});
+	};
+
+	arr.delta = function(){
+		return this.max() - this.min();
+	};
+
+	arr.find = function(fn){
+		return this.reduce(function(memo,obj, index){
+			if(fn(obj,index) && !memo) return obj;
+			return memo;
+		});
+	};
+
+	arr.filter = function(fn){
+		return this.reduce(function(memo,obj, index){
+			if(fn(obj,index)) memo.push(obj);
+			return memo;
+		},[]);
+	};
+
+	return arr;
 };
 
-Array.prototype.min = function(){
-	return this.reduce(function(memo, num){
-		if(num < memo || !memo) return num;
-		return memo;
-	});
-};
 
-Array.prototype.delta = function(){
-	return this.max() - this.min();
-};
-
-Array.prototype.sum = function(){
-	return this.reduce(function(memo,num){
-		return memo + num;
-	},0);
-};
-
-Array.prototype.find = function(fn){
-	return this.reduce(function(memo,obj, index){
-		if(fn(obj,index) && !memo) return obj;
-		return memo;
-	});
-};
-
-Array.prototype.filter = function(fn){
-	return this.reduce(function(memo,obj, index){
-		if(fn(obj,index)) memo.push(obj);
-		return memo;
-	},[]);
-};
-
+/**
+ * Number Prototypes
+ */
 Number.prototype.pow = function(ex){
 	return Math.pow(this, ex);
 }
@@ -161,6 +167,9 @@ Number.prototype.floor = function() {
 	return Math.floor(this);
 };
 
+/**
+ * Underscore Mixins
+ */
 _.mixin({
 	evalue : function(obj){
 		if(typeof obj === 'function') return obj();
@@ -185,6 +194,7 @@ _.mixin({
 
 
 //Generator Arrays Test
+/*
 Array.prototype.get = function(index){
 	if(this.length > index){
 		return this[index];
@@ -196,34 +206,22 @@ Array.prototype.get = function(index){
 		return this[index];
 	}
 };
-
-
-var _mapPrototypes = function(){
-	_.each(['map', 'reduce', 'extend'])
-}
-
-/*
-
-
-var test = [];
-test.initial = 3;
-test.generator = function(prevValue){
-	return prevValue + 1;
-};
-
-test.get(3); //returns 6
-test         //returns [3,4,5,6]
-test[2]      //return 5
 */
 
 
 
-
-
-//maybe remove
 jQuery.getSchematic = function(schematicName){
 	var schematicElement = jQuery('[xo-schematic="' + schematicName + '"]');
 	if(schematicElement.length === 0 ){throw 'ERROR: Could not find schematic with name "' + schematicName + '"';}
 	var schematicCode = jQuery('<div>').append(schematicElement.clone().removeAttr('xo-schematic')).html();
 	return jQuery(schematicCode);
 };
+
+jQuery.fn.toggleClass = function(classname){
+	if(this.hasClass(classname)){
+		this.removeClass(classname);
+	} else {
+		this.addClass(classname);
+	}
+	return this;
+}

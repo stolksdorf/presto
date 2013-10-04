@@ -36,17 +36,7 @@ xo_view = Archetype.extend({
 });
 
 
-Presto_Component = Archetype.extend({
-	generate : function(defintion, data)
-	{
-		return;
-	},
 
-	draw : function(defintion, data)
-	{
-		return this;
-	}
-}).mixin(xo_view);
 
 
 
@@ -57,29 +47,30 @@ Presto_Module = Archetype.extend({
 	schematic : undefined,
 	target    : undefined,
 
-	generate : function(defintion, data)
+	generate : function(definition, data)
 	{
 		return;
 	},
 
-	draw : function(defintion, data)
+	draw : function(definition, data)
 	{
 		return this;
 	},
 
-	createComponents : function(defintion, component, target)
+	createComponents : function(args)
 	{
-		return _.keymap(defintion, function(def, name){
-			var newComponent = component.create();
+		var iterator = _.keymap;
+		if(args.as_array) iterator = _.map
+		return iterator(args.definition, function(def, name){
+			var newComponent = args.component.create();
 
 			newComponent.name = name;
-			if(target){
-				newComponent.injectInto(target);
+			if(args.target){
+				newComponent.injectInto(args.target);
 			}
 
 			newComponent.definition = def;
-			newComponent.def = def;
-			newComponent.initialize(_.evalueObj(newComponent.def));
+			newComponent.initialize();
 			return newComponent;
 		});
 	},
@@ -89,21 +80,24 @@ Presto_Module = Archetype.extend({
 		return {};
 	},
 
-	generateComponents : function(components)
+/*
+	generateComponents : function(components, def)
 	{
-		var self = this;
 		return _.keymap(components, function(component, componentName){
-			return component.generate(_.evalueObj(self.def[componentName]));
+			return component.generate(_.evalueObj(def[componentName]));
 		});
 	},
 
-	drawComponents : function(components, data)
+	drawComponents : function(components, def, data)
 	{
-		var self = this;
 		return _.keymap(components, function(component, componentName){
-			return component.draw(_.evalueObj(self.def[componentName]), data[componentName]);
+			return component.draw(_.evalueObj(def[componentName]), data[componentName]);
 		});
 	},
-
+*/
 
 }).mixin(xo_view);
+
+Presto_Component = Presto_Module.extend({
+
+});
