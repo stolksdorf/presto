@@ -6,7 +6,7 @@ Presto.registerModule({
 	target    : $('.staticContainer'), //expose global thigny
 
 
-	initialize : function(def)
+	initialize : function()
 	{
 		this.inputs = this.createComponents({
 			definition : this.definition,
@@ -17,14 +17,14 @@ Presto.registerModule({
 		return this;
 	},
 
-	generate : function(def)
+	generate : function()
 	{
 		return _.keymap(this.inputs, function(input){
 			return input.generate();
 		});
 	},
 
-	draw : function(def, data)
+	draw : function(data)
 	{
 		_.each(this.inputs, function(input){
 			input.draw(data[input.name]);
@@ -36,7 +36,7 @@ Presto.registerModule({
 			input : Presto_Component.extend({
 				schematic : 'input',
 
-				initialize : function(def)
+				initialize : function()
 				{
 					var self = this;
 					this.widget = this.dom.value.widget({
@@ -50,7 +50,7 @@ Presto.registerModule({
 					return this;
 				},
 
-				generate : function(def)
+				generate : function()
 				{
 					if(this.definition.type.isNumerical){
 						return this.widget.value() * 1;

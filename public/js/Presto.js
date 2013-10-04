@@ -5,6 +5,7 @@ Presto = Archetype.extend({
 		show_errorbar : true,
 		is_beta       : false,
 		show_editor   : true,
+		max_update_iterations : 5
 	},
 
 	start  : function(opts)
@@ -17,9 +18,6 @@ Presto = Archetype.extend({
 			id : this.options.calcId
 		});
 
-
-
-		this.globalScope = {};
 
 		//When the page loads render the calculator
 		$(document).ready(function(){
@@ -69,10 +67,17 @@ Presto = Archetype.extend({
 	},
 
 
+	update : function()
+	{
+		if(this._updating) return;
+		this._updating = true;
 
-	//
-	// MODULE JUNK
-	//
+		this.updateModules();
+		this.drawModules();
+
+		this._updating = false;
+		return this;
+	},
 
 
 	/**
@@ -110,7 +115,6 @@ Presto = Archetype.extend({
 			}
 		});
 
-		console.log('loaded globals');
 
 		//Now try to initialize each
 		_.each(this.modules, function(module){
@@ -135,79 +139,42 @@ Presto = Archetype.extend({
 		return this;
 	},
 
-	/**
-	 * A facade for modules to call to update all other modules
-	 */
-	update : function()
+	updateModules : function()
 	{
-		if(this._updating) return;
-		this._updating = true;
-		console.log('---------');
-		var newGlobalScope = {};
-		console.log('running update');
-
-		_.each(this.modules, function(module){
-			console.log('gen', module.name);
-			var temp = module.generate(module.def);
-			if(module.global){
-				newGlobalScope[module.global] = temp;
-				window[module.global] = temp;
-			}
-		});
-
-		this.globalScope = newGlobalScope;
-
-		console.log('Update finish', this.globalScope);
-
-		this.drawModules();
-		this._updating = false;
-		return this;
-	},
-
-
-
-	updateERROR : function()
-	{
-		if(this._updating) return;
-		this._updating = true;
-		console.log('---------');
-		var newGlobalScope = {},
-			iterationCount = 0,
-			error;
+		var self = this;
+		this.globals = {};
+		var iterationCount = 0;
 		while(1){
-			console.log('running update', iterationCount);
-			error = undefined;
-
-			_.each(this.modules, function(module){
+			var newGlobals = {},
+				thrownError = false;
+			_.each(self.modules, function(module){
 				try{
-					var temp = module.generate(module.def);
-					if(module.global){
-						newGlobalScope[module.global] = temp;
-						window[module.global] = temp;
-					}
+					var temp = module.generate();
 				}catch(e){
-					console.error('caught an error', e);
-					error = e;
+					thrownError = true;
+					if(iterationCount > Presto.options.max_update_iterations){
+						module.generate(); //Just cause the error again
+					}
+				}
+				if(module.global){
+					newGlobals[module.global] = temp;
+					window[module.global] = temp;
 				}
 			});
 
-			if(_.compare(this.globalScope, newGlobalScope) || error || iterationCount > 5){
+			if(iterationCount > Presto.options.max_update_iterations){
+				throw 'Circular dependacy';
+			}
+			if(!thrownError){//} && _.compare(newGlobals, this.globals)){
 				break;
 			}
-			this.globalScope = newGlobalScope;
+
+			this.globals = newGlobals;
 			iterationCount++;
 		}
 
-		console.log('Update finish', iterationCount, this.globalScope);
-		if(error){
-			throw error;
-		}
-
-		this.drawModules();
-		this._updating = false;
 		return this;
 	},
-
 
 
 	/**
@@ -215,10 +182,8 @@ Presto = Archetype.extend({
 	 */
 	drawModules : function()
 	{
-		console.log('drawing');
-		var self = this;
 		_.each(this.modules, function(module){
-			module.draw(module.def, self.globalScope[module.global]);
+			module.draw(window[module.global]);
 		});
 		return this;
 	},
@@ -271,5 +236,8 @@ Presto = Archetype.extend({
 });
 
 window.onerror = function(error, fileName, lineNumber){
+	console.log('ERROR:', error, fileName, lineNumber);
 	Presto.trigger('error', error, fileName, lineNumber);
+
+	return true;
 };

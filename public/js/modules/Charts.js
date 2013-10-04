@@ -2,24 +2,24 @@ Presto.registerModule({
 	name      : 'charts',
 	global    : 'Charts',
 
-	initialize : function(def)
+	initialize : function()
 	{
 		this.charts =  this.createComponents({
-			definition : def,
+			definition : this.definition,
 			component  : this.components.chart,
 			target     : Presto.getFlowPanel()  //TODO: Fix this
 		});
 		return this;
 	},
 
-	generate : function(def)
+	generate : function()
 	{
 		return _.keymap(this.charts, function(chart){
 			return chart.generate();
 		});
 	},
 
-	draw : function(def, data)
+	draw : function(data)
 	{
 		_.each(this.charts, function(chart){
 			chart.draw(data[chart.name]);

@@ -2,24 +2,24 @@ Presto.registerModule({
 	name      : 'tables',
 	global    : 'Tables',
 
-	initialize : function(def)
+	initialize : function()
 	{
 		this.tables =  this.createComponents({
-			definition : def,
+			definition : this.definition,
 			component  : this.components.table,
 			target     : Presto.getFlowPanel()  //TODO: Fix this
 		});
 		return this;
 	},
 
-	generate : function(def)
+	generate : function()
 	{
 		return _.keymap(this.tables, function(table){
 			return table.generate();
 		});
 	},
 
-	draw : function(def, data)
+	draw : function(data)
 	{
 		_.each(this.tables, function(table){
 			table.draw(data[table.name]);
@@ -40,6 +40,8 @@ Presto.registerModule({
 						target     : this.dom.columnContainer,
 						as_array   : true
 					});
+
+					this.definition.rows = this.definition.rows || 20;
 					return this;
 				},
 

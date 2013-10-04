@@ -6,7 +6,7 @@ Presto.registerModule({
 	target    : $('.staticContainer'), //expose global thigny
 
 
-	initialize : function(def)
+	initialize : function()
 	{
 		this.outputs = this.createComponents({
 			definition : this.definition,
@@ -17,14 +17,14 @@ Presto.registerModule({
 		return this;
 	},
 
-	generate : function(def)
+	generate : function()
 	{
 		return _.keymap(this.outputs, function(output){
 			return output.generate();
 		});
 	},
 
-	draw : function(def, data)
+	draw : function(data)
 	{
 		_.each(this.outputs, function(output){
 			output.draw(data[output.name]);
