@@ -1,15 +1,24 @@
 .chart{
+	position: relative;
 }
 
 	.chart__graph{
+		height : 500px;
+		width  : 750px;
+	}
+
+	.chart__graph.small_chart{
 		height : 300px;
 		width  : 450px;
 	}
 
-	.chart__graph.big_chart{
-		height : 500px;
-		width  : 750px;
+	.chart__resize{
+		display: block;
+		position: absolute;
+		right : 10px;
+		cursor: pointer;
 	}
+
 
 	#chart__tooltip{
 		position         : absolute;

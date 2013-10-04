@@ -90,8 +90,6 @@ auth_route('/calc/:calcId', [loadUser], function(req,res){
 		delete temp._id;
 		delete temp.last_modified;
 
-		console.log(app.locals.inspect(temp));
-
 		return res.render('calculator.html', {
 			user : req.user,
 			calcId : req.params.calcId,

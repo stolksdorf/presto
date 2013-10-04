@@ -3,7 +3,7 @@ Presto.registerModule({
 	global    : 'Inputs',
 
 	schematic : 'inputContainer',
-	target    : $('.staticContainer'), //expose global thigny
+	target    : Presto.getStaticPanel,
 
 
 	initialize : function()

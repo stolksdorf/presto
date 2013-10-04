@@ -1,7 +1,7 @@
 Presto = Archetype.extend({
 	modules : {},
 	defaultOptions : {
-		disabled_modules : [],
+		//disabled_modules : [],
 		show_errorbar : true,
 		is_beta       : false,
 		show_editor   : true,
@@ -25,6 +25,7 @@ Presto = Archetype.extend({
 
 		//When the page loads render the calculator
 		$(document).ready(function(){
+			console.log('READY');
 			self.render();
 		});
 		return this;
@@ -90,9 +91,11 @@ Presto = Archetype.extend({
 	registerModule : function(moduleObject)
 	{
 		//Check for disabled
+		/*
 		if(_.contains(Presto.options.disabled_modules, moduleObject.name)){
 			return this;
 		}
+		*/
 		this.modules[moduleObject.name] = Presto_Module.extend(moduleObject);
 
 		console.log('ADDED:', moduleObject.name);
@@ -121,14 +124,13 @@ Presto = Archetype.extend({
 			}
 		});
 
-
 		//Now try to initialize each
-		_.each(this.modules, function(module){
+		_.each(this.sortedModules(), function(module){
 
 			var def = self.calculatorModel.get(module.name);
 
 			if(module.schematic){
-				module.injectInto(module.target);
+				module.injectInto(module.target.call(self));
 			}
 
 			module.components = module.registerComponents(module);
@@ -188,7 +190,7 @@ Presto = Archetype.extend({
 	 */
 	drawModules : function()
 	{
-		_.each(this.modules, function(module){
+		_.each(this.sortedModules(), function(module){
 			module.draw(window[module.global]);
 		});
 		return this;
@@ -196,10 +198,10 @@ Presto = Archetype.extend({
 
 
 
-	sortModules : function()
+	sortedModules : function()
 	{
 		return _.sortBy(this.modules, function(module){
-			return module.order || 100000; //TODO: Fix later
+			return module.drawOrder || 100000; //TODO: Fix later
 		});
 	},
 

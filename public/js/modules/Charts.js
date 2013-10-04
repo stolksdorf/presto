@@ -2,6 +2,8 @@ Presto.registerModule({
 	name      : 'charts',
 	global    : 'Charts',
 
+	drawOrder : 100,
+
 	initialize : function()
 	{
 		this.charts =  this.createComponents({
@@ -41,11 +43,17 @@ Presto.registerModule({
 
 				initialize : function()
 				{
+					var self = this;
 					this.options = _.extend(module.options.default, module.options.line);
 					this.tooltip = $('#chart__tooltip');
 
-					this.data = {};
+					this.dom.resize.click(function(){
+						self.dom.graph.toggleClass('small_chart');
+						self.draw();
+					});
 
+
+					this.data = {};
 					return this;
 				},
 
@@ -75,11 +83,11 @@ Presto.registerModule({
 					}
 
 					if(this.definition.breakeven){
-						this.drawBreakevenLines(data);
+						this.drawBreakevenLines(this.data);
 					}
 
 					//create flot data from data
-					var chartData = _.reduce(data, function(result, series){
+					var chartData = _.reduce(this.data, function(result, series){
 						if(series.label && series.data){
 							result.push(series);
 						}

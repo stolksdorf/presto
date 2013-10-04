@@ -2,6 +2,8 @@ Presto.registerModule({
 	name      : 'tables',
 	global    : 'Tables',
 
+	drawOrder : 200,
+
 	initialize : function()
 	{
 		this.tables =  this.createComponents({

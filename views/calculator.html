@@ -1,6 +1,82 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
+<head>
+
+
+	<!-- Libraries -->
+	<script type="text/javascript" src="../libs/jq.js"></script>
+	<script type="text/javascript" src="../libs/underscore.js"></script>
+	<script type="text/javascript" src="../libs/moment.js"></script>
+	<script type="text/javascript" src="../libs/widget.js"></script>
+	<script type="text/javascript" src="../libs/archetype.js"></script>
+	<script type="text/javascript" src="../libs/jquery.flot.min.js"></script>
+	<link rel="Stylesheet" type="text/css" href="../libs/hint.css" />
+	<!-- remote
+	<link href="../http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+	<link href='../http://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'>
+	-->
+	<!-- local -->
+	<link href='../libs/lato/lato.css' rel='stylesheet' type='text/css'>
+	<link href='../libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
+
+
+	<!-- CodeMirror -->
+	<script src="../libs/codemirror/cm.js"></script>
+	<link  href="../libs/codemirror/cm.css" rel="stylesheet">
+	<script src="../libs/codemirror/javascript.js"></script>
+
+
+	<!-- MVC -->
+	<script type="text/javascript" src="../libs/backbone.js"></script>
+	<script type="text/javascript" src="../libs/xo.js"></script>
+
+
+	<!-- Style -->
+	<link rel="Stylesheet" type="text/css" href="../style/reset.css" />
+	<link rel="Stylesheet" type="text/css" href="../style/presto.css" />
+	<link rel="Stylesheet" type="text/css" href="../style/calculator.css" />
+
+
+
+	<!--
+		PRESTO
+	-->
+
+
+
+	<!-- Engine -->
+	<script type="text/javascript" src="../js/Presto.js"></script>
+	<script type="text/javascript" src="../js/engine/Prototypes.js"></script>
+	<script type="text/javascript" src="../js/engine/CalculatorBlueprintModel.js"></script>
+	<script type="text/javascript" src="../js/engine/ModuleBlueprint.js"></script>
+	<script type="text/javascript" src="../js/engine/OverlayBlock.js"></script>
+
+	<%if (user.account_type == 'admin') { %>
+	<script type="text/javascript" src="../js/engine/CodeEditorBlock.js"></script>
+	<% } %>
+
+
+
+
+</head>
+
+
 <body>
+
+	<script>
+
+
+		console.log(Presto);
+
+		Presto.start({
+			calcId : "<%= calcId %>",
+			calc : <%- inspect(calc) %>
+		});
+
+	</script>
+
+
+
 	<div class='presto' xo-block='calculator'>
 
 		<title xo-element='windowTitle'></title>
@@ -18,8 +94,11 @@
 		<!-- Main Area -->
 		<div class='presto__main' xo-element='main'>
 			<div class='staticContainer' xo-element='staticContainer'></div>
-			<div class='flowContainer'>
+			<!--<div class='flowContainer'>
 				<div class='flowContainer__tiles' xo-element='flowContainer'></div>
+			</div>
+		-->
+			<div class='flowContainer' xo-element='flowContainer'>
 			</div>
 		</div>
 
@@ -90,11 +169,13 @@
 	<div class='title' xo-element='title'></div>
 	<div class='table__description' xo-element='description'></div>
 	<div class='table__data' xo-element='columnContainer'></div>
+	<!--
 	<div class='table__moreRowsButton' xo-element='moreRowsButton'>
 		<i class='icon-plus'></i>
 		 Add more
 		 <input class='table__moreRowsButton__input' xo-element='moreRowsInput' type='text' value='20'></input> rows
 	</div>
+	-->
 </div>
 <div class='table__column' xo-schematic='tableColumn'>
 	<div class='table__column__title' xo-element='title'></div>
@@ -104,6 +185,7 @@
 
 
 <div class='chart PrestoTile' xo-schematic='chart'>
+	<div class='chart__resize' xo-element='resize'><i class='icon-fullscreen'></i></div>
 	<div class='title' xo-element='title'></div>
 	<div class='chart__description' xo-element='description'></div>
 	<div class='chart__graph' xo-element='graph'></div>
@@ -113,67 +195,22 @@
 
 
 
-<!-- Libraries -->
-<script type="text/javascript" src="../libs/jq.js"></script>
-<script type="text/javascript" src="../libs/underscore.js"></script>
-<script type="text/javascript" src="../libs/moment.js"></script>
-<script type="text/javascript" src="../libs/widget.js"></script>
-<script type="text/javascript" src="../libs/archetype.js"></script>
-<script type="text/javascript" src="../libs/jquery.flot.min.js"></script>
-<link rel="Stylesheet" type="text/css" href="../libs/hint.css" />
-<!-- remote
-<link href="../http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-<link href='../http://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'>
--->
-<!-- local -->
-<link href='../libs/lato/lato.css' rel='stylesheet' type='text/css'>
-<link href='../libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
-
-
-<!-- CodeMirror -->
-<script src="../libs/codemirror/cm.js"></script>
-<link  href="../libs/codemirror/cm.css" rel="stylesheet">
-<script src="../libs/codemirror/javascript.js"></script>
-
-
-<!-- MVC -->
-<script type="text/javascript" src="../libs/backbone.js"></script>
-<script type="text/javascript" src="../libs/xo.js"></script>
-
-
-<!-- Style -->
-<link rel="Stylesheet" type="text/css" href="../style/reset.css" />
-<link rel="Stylesheet" type="text/css" href="../style/presto.css" />
-<link rel="Stylesheet" type="text/css" href="../style/calculator.css" />
+<!-- Modules -->
+<script type="text/javascript"             src="../js/modules/Inputs.js"></script>
+<link rel="Stylesheet" type="text/css" href="../style/modules/Inputs.css" />
+<script type="text/javascript"             src="../js/modules/Outputs.js"></script>
+<link rel="Stylesheet" type="text/css" href="../style/modules/Outputs.css" />
+<script type="text/javascript"             src="../js/modules/Tables.js"></script>
+<link rel="Stylesheet" type="text/css" href="../style/modules/Tables.css" />
+<script type="text/javascript"             src="../js/modules/Charts.js"></script>
+<link rel="Stylesheet" type="text/css" href="../style/modules/Charts.css" />
+<script type="text/javascript"             src="../js/modules/Global.js"></script>
+<script type="text/javascript"             src="../js/modules/CoolFunctions.js"></script>
 
 
 
-<!--
-	PRESTO
--->
 
 
-
-<!-- Engine -->
-<script type="text/javascript" src="../js/Presto.js"></script>
-<script type="text/javascript" src="../js/engine/Prototypes.js"></script>
-<script type="text/javascript" src="../js/engine/CalculatorBlueprintModel.js"></script>
-<script type="text/javascript" src="../js/engine/ModuleBlueprint.js"></script>
-<script type="text/javascript" src="../js/engine/OverlayBlock.js"></script>
-
-<%if (user.account_type == 'admin') { %>
-<script type="text/javascript" src="../js/engine/CodeEditorBlock.js"></script>
-<% } %>
-
-<script>
-
-	Presto.start({
-		disabled_modules : ['coolFunctions'],
-		calcId : "<%= calcId %>",
-		calc : <%- inspect(calc) %>
-	});
-
-</script>
 
 
 <script>
@@ -188,16 +225,5 @@
 </script>
 
 
-<!-- Modules -->
-<script type="text/javascript"             src="../js/modules/Inputs.js"></script>
-<link rel="Stylesheet" type="text/css" href="../style/modules/Inputs.css" />
-<script type="text/javascript"             src="../js/modules/Outputs.js"></script>
-<link rel="Stylesheet" type="text/css" href="../style/modules/Outputs.css" />
-<script type="text/javascript"             src="../js/modules/Tables.js"></script>
-<link rel="Stylesheet" type="text/css" href="../style/modules/Tables.css" />
-<script type="text/javascript"             src="../js/modules/Charts.js"></script>
-<link rel="Stylesheet" type="text/css" href="../style/modules/Charts.css" />
-<script type="text/javascript"             src="../js/modules/Global.js"></script>
-<script type="text/javascript"             src="../js/modules/CoolFunctions.js"></script>
 
 </html>
