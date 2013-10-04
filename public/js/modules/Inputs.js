@@ -58,9 +58,9 @@ Presto.registerModule({
 					return this.widget.value();
 				},
 
-				draw : function(data)
+				draw : function()
 				{
-					this.widget.value(data, true);
+					this.widget.value(this.data, true);
 
 					if(!_.evalue(this.definition.description)){
 						this.dom.description.hide();

@@ -69,6 +69,13 @@ Presto_Module = Archetype.extend({
 				newComponent.injectInto(args.target);
 			}
 
+			var genStore = newComponent.generate;
+			newComponent.generate = function(){
+				var result = genStore.apply(newComponent, arguments);
+				newComponent.data = result;
+				return result;
+			};
+
 			newComponent.definition = def;
 			newComponent.initialize();
 			return newComponent;

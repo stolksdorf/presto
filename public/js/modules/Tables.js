@@ -52,25 +52,48 @@ Presto.registerModule({
 					});
 
 					this.definition.rows = this.definition.rows || 20;
+
+
+					this.dom.moreRowsButton.click(function(event){
+						//if the user clicks on the textbox, doesn't fire the add rows event
+						if(event.target.type === 'text'){
+							event.stopPropagation();
+							return false;
+						}
+						self.generate(self.rowCount + self.dom.moreRowsInput.val()*1);
+						self.draw();
+						//Scroll to bottom of table
+						self.dom.columnContainer.scrollTop(self.dom.columnContainer[0].scrollHeight);
+					});
+
+
 					return this;
 				},
 
-				generate : function()
+				generate : function(rowCount)
 				{
-					var rowCount = _.evalue(this.definition.rows);
+					var self = this;
+					this.rowCount = rowCount || _.evalue(this.definition.rows);
 					return _.reduce(this.columns, function(result, column){
-						column.rowCount = rowCount;
+						column.rowCount = self.rowCount;
 						result[column.name] = column.generate();
 						return result;
 					}, {});
 				},
 
-				draw : function(data)
+				draw : function()
 				{
+					var self = this;
 					this.dom.title.text(_.evalue(this.definition.title));
 					_.each(this.columns, function(column){
-						column.draw(data[column.name]);
+						column.draw(self.data[column.name]);
 					});
+
+					if(this.dom.columnContainer.height() < this.columns[0].dom.block.height()){
+						this.dom.columnContainer.css({"overflow-y" : "scroll"});
+					} else {
+						this.dom.columnContainer.css({"overflow-y" : "hidden"});
+					}
 				},
 			}),
 
@@ -94,12 +117,12 @@ Presto.registerModule({
 					return makeGeneratorArray(result);
 				},
 
-				draw : function(data)
+				draw : function()
 				{
 					var self = this;
 					this.clearCells();
 
-					_.each(data, function(val){
+					_.each(this.data, function(val){
 						self.addCell(val);
 					})
 

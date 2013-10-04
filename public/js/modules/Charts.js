@@ -66,14 +66,24 @@ Presto.registerModule({
 						result = this.getDataFromTable();
 					}
 
-					this.data = result;
+					if(this.definition.series){
+						result = _.keymap(this.definition.series, function(series, seriesName){
+							return {
+								label : _.evalue(series.label),
+								data  : _.map(_.evalue(series.data), function(point, index){
+									return [index, point];
+								})
+							}
+						});
+					}
+
 					result.intercept = function(){
 						return self.calculateIntercept.apply(self, arguments);
 					};
 					return result;
 				},
 
-				draw : function(data)
+				draw : function()
 				{
 					var self = this;
 					this.dom.title.text(_.evalue(this.definition.title));
