@@ -22,9 +22,9 @@
 
 
 	.topbar__home{
-		font-size: 2em;
-		margin-left: 10px;
-		margin-right: 10px;
+		margin-right : 10px;
+		margin-left  : 10px;
+		font-size    : 2em;
 	}
 
 
@@ -53,13 +53,13 @@
 
 
 		.flowContainer{
-			overflow  : hidden;
-			height    : 100%;
-			min-width : 250px;
+			overflow   : hidden;
 			overflow-y : auto;
+			height     : 100%;
+			min-width  : 250px;
 		}
 
-		.flowContainer .PrestoTile{
+		.flowContainer .tile{
 			display        : inline-block;
 			vertical-align : top;
 		}
@@ -77,7 +77,7 @@
 				white-space : nowrap;
 			}
 
-				.flowContainer__tiles .PrestoTile{
+				.flowContainer__tiles .tile{
 					display        : inline-block;
 					vertical-align : top;
 				}
@@ -87,19 +87,80 @@
 
 
 
-.PrestoTile{
+.tile{
 	margin           : 15px;
 	padding          : 15px;
 	background-color : white;
 }
-	.PrestoTile > .title{
-		padding-bottom : 15px;
-		font-size      : 1.8em;
-		font-weight    : 300;
+
+	.tile__topbar{
+		height        : 40px;
+		margin-bottom : 10px;
 	}
 
+		.tile__title{
+			display        : inline-block;
+			vertical-align : top;
+
+			padding-right  : 10px;
+
+			font-size      : 1.8em;
+			font-weight    : 300;
+			line-height    : 40px;
+		}
+
+		.tile__buttons{
+			float       : right;
+			opacity     : 0;
+			line-height : 40px;
+		}
+			.tile__buttons > div{
+				float         : left;
+
+				padding-right : 5px;
+				padding-left  : 5px;
+
+				cursor        : pointer;
+				opacity       : 0.3;
+				line-height   : 40px;
+			}
+
+				.tile__buttons > div:hover{
+					opacity : 1;
+				}
+
+		.tile__topbar:hover .tile__buttons{
+			opacity : 1;
+		}
+
+
+
+/*
+
+	.tile__button{
+		display        : none;
+		vertical-align : top;
+		float          : right;
+
+		padding-right  : 5px;
+		padding-left   : 5px;
+
+		cursor         : pointer;
+		opacity        : 0.3;
+		line-height    : 40px;
+	}
+
+			.tile__button:hover{
+				opacity : 1;
+			}
+
+			.tile__topbar:hover .tile__button{
+				display : inline-block;
+			}
+*/
+
 	/* TODO: Fix and implement later */
-	.PrestoTile > .divider{
+	.tile > .divider{
 		height           : 2px;
 		width            : 65%;
 		margin-left      : 45px;

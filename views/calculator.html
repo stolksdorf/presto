@@ -54,6 +54,20 @@
 		<script type="text/javascript" src="../js/engine/CodeEditorBlock.js"></script>
 	<% } %>
 
+	<!-- Modules -->
+	<script type="text/javascript"             src="../js/modules/Inputs.js"></script>
+	<link rel="Stylesheet" type="text/css" href="../style/modules/Inputs.css" />
+	<script type="text/javascript"             src="../js/modules/Outputs.js"></script>
+	<link rel="Stylesheet" type="text/css" href="../style/modules/Outputs.css" />
+	<script type="text/javascript"             src="../js/modules/Tables.js"></script>
+	<link rel="Stylesheet" type="text/css" href="../style/modules/Tables.css" />
+	<script type="text/javascript"             src="../js/modules/Charts.js"></script>
+	<link rel="Stylesheet" type="text/css" href="../style/modules/Charts.css" />
+	<script type="text/javascript"             src="../js/modules/Global.js"></script>
+	<script type="text/javascript"             src="../js/modules/CoolFunctions.js"></script>
+
+
+
 
 </head>
 
@@ -125,31 +139,31 @@
 
 	<!-- Code Editor -->
 	<%if (user.account_type == 'admin') { %>
-	<div class='codeEditor' xo-block='codeEditor' style='display:none'>
-		<div class='codeEditor__topbar' xo-element='topbar'>
-			<div class='codeEditor__topbar__close clickable' xo-element='closeButton'><i class='icon-remove card'></i></div>
-			<span class='codeEditor__topbar__title'>Code Editor</span>
-			<a class='codeEditor__topbar__docsLink' href="https://github.com/stolksdorf/Presto/blob/master/README.md" target='_blank'>View Documentation</a>
-		</div>
-		<div class='codeEditor__editor' xo-element='editor'></div>
-		<div class='codeEditor__footer'>
-			<div class='codeEditor__footer__messages'>
-				<div class='codeEditor__footer__messages__success' xo-element='success'>
-					<i class='icon-ok'></i> <span></span>
+		<div class='codeEditor' xo-block='codeEditor' style='display:none'>
+			<div class='codeEditor__topbar' xo-element='topbar'>
+				<div class='codeEditor__topbar__close clickable' xo-element='closeButton'><i class='icon-remove card'></i></div>
+				<span class='codeEditor__topbar__title'>Code Editor</span>
+				<a class='codeEditor__topbar__docsLink' href="https://github.com/stolksdorf/Presto/blob/master/README.md" target='_blank'>View Documentation</a>
+			</div>
+			<div class='codeEditor__editor' xo-element='editor'></div>
+			<div class='codeEditor__footer'>
+				<div class='codeEditor__footer__messages'>
+					<div class='codeEditor__footer__messages__success' xo-element='success'>
+						<i class='icon-ok'></i> <span></span>
+					</div>
+					<div class='codeEditor__footer__messages__error' xo-element='error'>
+						<i class='icon-exclamation-sign'></i> <span></span>
+					</div>
+					<div class='codeEditor__footer__messages__info' xo-element='info'>
+						<i class='icon-cogs'></i> <span></span>
+					</div>
 				</div>
-				<div class='codeEditor__footer__messages__error' xo-element='error'>
-					<i class='icon-exclamation-sign'></i> <span></span>
-				</div>
-				<div class='codeEditor__footer__messages__info' xo-element='info'>
-					<i class='icon-cogs'></i> <span></span>
+				<div class='codeEditor__footer__buttons'>
+					<div class='button green' xo-element='runButton'><i class='icon-play'></i> Run</div>
+					<div class='button orange' xo-element='uploadButton'><i class='icon-cloud-upload '></i> Upload</div>
 				</div>
 			</div>
-			<div class='codeEditor__footer__buttons'>
-				<div class='button green' xo-element='runButton'><i class='icon-play'></i> Run</div>
-				<div class='button orange' xo-element='uploadButton'><i class='icon-cloud-upload '></i> Upload</div>
-			</div>
 		</div>
-	</div>
 	<% } %>
 
 	<!-- Used to make the tooltip on the chart -->
@@ -159,8 +173,8 @@
 
 
 <!-- Schematics -->
-<div class='inputContainer PrestoTile' xo-schematic="inputContainer">
-	<div class='title'>Inputs</div>
+<div class='inputContainer tile' xo-schematic="inputContainer">
+	<div class='tile__title'>Inputs</div>
 </div>
 <div class='input ' xo-schematic='input'>
 	<div class='input__value' ><span xo-element='value'></span></div>
@@ -168,8 +182,8 @@
 	<div class='input__description' xo-element='description'></div>
 </div>
 
-<div class='outputContainer PrestoTile' xo-schematic='outputContainer'>
-	<div class='title'>Outputs</div>
+<div class='outputContainer tile' xo-schematic='outputContainer'>
+	<div class='tile__title'>Outputs</div>
 </div>
 <div class='output' xo-schematic='output'>
 	<div class='output__value' ><span xo-element='value'></span></div>
@@ -179,8 +193,8 @@
 
 
 
-<div class='table PrestoTile' xo-schematic='table'>
-	<div class='title' xo-element='title'></div>
+<div class='table tile' xo-schematic='table'>
+	<div class='tile__title' xo-element='title'></div>
 	<div class='table__description' xo-element='description'></div>
 	<div class='table__data' xo-element='columnContainer'></div>
 
@@ -197,13 +211,24 @@
 </div>
 
 
-<div class='chart PrestoTile' xo-schematic='chart'>
+<div class='chart tile' xo-schematic='chart'>
 
-	<div class='chart__resize' xo-element='resize'><i class='icon-resize-full'></i></div>
-	<div class='chart__mini' xo-element='mini'><i class='icon-minus'></i></div>
+	<div class='tile__topbar'>
+		<div class='tile__buttons'>
+			<div class='tile__button' data-hint='Minify' xo-element='mini'>
+				<i class='icon-minus'></i>
+			</div>
+			<div class='tile__button' data-hint='Small' xo-element='small'>
+				<i class='icon-resize-small'></i>
+			</div>
+			<div class='tile__button' data-hint='Large' xo-element='big'>
+				<i class='icon-picture'></i>
+			</div>
+		</div>
 
+		<div class='tile__title' xo-element='title'></div>
+	</div>
 
-	<div class='title' xo-element='title'></div>
 	<div class='chart__description' xo-element='description'></div>
 	<div class='chart__graph' xo-element='graph'></div>
 </div>
@@ -211,18 +236,6 @@
 
 
 
-
-<!-- Modules -->
-<script type="text/javascript"             src="../js/modules/Inputs.js"></script>
-<link rel="Stylesheet" type="text/css" href="../style/modules/Inputs.css" />
-<script type="text/javascript"             src="../js/modules/Outputs.js"></script>
-<link rel="Stylesheet" type="text/css" href="../style/modules/Outputs.css" />
-<script type="text/javascript"             src="../js/modules/Tables.js"></script>
-<link rel="Stylesheet" type="text/css" href="../style/modules/Tables.css" />
-<script type="text/javascript"             src="../js/modules/Charts.js"></script>
-<link rel="Stylesheet" type="text/css" href="../style/modules/Charts.css" />
-<script type="text/javascript"             src="../js/modules/Global.js"></script>
-<script type="text/javascript"             src="../js/modules/CoolFunctions.js"></script>
 
 
 

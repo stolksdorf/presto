@@ -47,18 +47,39 @@ Presto.registerModule({
 					this.options = _.extend(module.options.default, module.options.line);
 					this.tooltip = $('#chart__tooltip');
 
-					this.dom.resize.click(function(){
+
+
+					//Resizing buttons
+					this.dom.small.click(function(){
+						self.dom.small.hide();
+						self.dom.mini.show();
+						self.dom.big.show();
+
 						self.dom.graph.removeClass('mini');
-						self.dom.graph.toggleClass('small_chart');
+						self.dom.graph.addClass('small_chart');
 						self.draw();
 					});
 
 					this.dom.mini.click(function(){
+						self.dom.small.show();
+						self.dom.mini.hide();
+						self.dom.big.show();
+
 						self.dom.graph.toggleClass('mini');
 					});
 
+					this.dom.big.click(function(){
+						self.dom.small.show();
+						self.dom.mini.show();
+						self.dom.big.hide();
 
-					this.data = {};
+						self.dom.graph.removeClass('mini');
+						self.dom.graph.removeClass('small_chart');
+						self.draw();
+					}).hide();
+
+
+
 					return this;
 				},
 
