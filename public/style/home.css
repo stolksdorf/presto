@@ -1,5 +1,6 @@
 .topbar{
 	position         : fixed;
+	z-index          : 1000;
 
 	height           : 50px;
 	width            : 100%;
@@ -11,35 +12,38 @@
 	.topbar > div{
 		display        : inline-block;
 		vertical-align : top;
+		line-height : 50px;
 	}
 
 	.topbar__title{
 		font-size   : 2em;
 		font-weight : 300;
-		line-height : 50px;
+
 	}
 
 
 
 	.topbar__home{
-
 	}
 		.topbar__home img{
 			height : 45px;
 		}
 
 
-	.topbar__logout{
+	.topbar__admin{
+		margin-left: 50px;
 	}
 
 
+
 	.topbar__button{
+		float         : right;
+
 		padding-right : 10px;
 		padding-left  : 10px;
 
 		cursor        : pointer;
 		line-height   : 50px;
-		float: right;
 	}
 
 		.topbar__button:hover{
@@ -75,9 +79,11 @@
 
 
 .content{
-	overflow-y  : scroll;
-	height      : 100%;
-	padding-top : 50px;
+	height       : 100%;
+	max-width    : 1260px;
+	margin-right : auto;
+	margin-left  : auto;
+	padding-top  : 50px;
 }
 
 	.content__title{
@@ -118,12 +124,15 @@
 
 .calculator{
 	position       : relative;
+	display        : inline-block;
+	vertical-align : top;
 
+	width          : 400px;
+	margin         : 10px;
 	padding-top    : 25px;
 	padding-bottom : 25px;
 
 	cursor         : pointer;
-	border-bottom  : 1px solid #eee;
 }
 	.calculator a{
 		color           : inherit;

@@ -28,10 +28,9 @@
 
 
 
-<body>
+<body xo-block='home'>
 
 	<title>Presto Calculators</title>
-
 
 	<script>
 		PrestoHome.start();
@@ -44,6 +43,12 @@
 
 		<div class='topbar__title'>Presto</div>
 
+		<%if (user.account_type == 'admin') { %>
+			<div class='topbar__admin'>
+				<i class='icon-rocket'></i> ADMIN MODE
+			</div>
+		<% } %>
+
 
 
 		<div class='topbar__logout topbar__button'>
@@ -53,6 +58,12 @@
 		<div class='topbar__account topbar__button'>
 			<%= user.email %>
 		</div>
+
+		<%if (user.account_type == 'admin') { %>
+			<div class='topbar__newCalc topbar__button' xo-element='newCalculatorButton'>
+				<i class='icon-plus'></i> New Calculator
+			</div>
+		<% } %>
 
 	</div>
 
@@ -64,7 +75,7 @@
 	</div>
 -->
 
-	<div class='content' xo-block='home'>
+	<div class='content'>
 		<!--
 		<div class='content__title'>Presto Calculators</div>
 
@@ -102,18 +113,16 @@
 
 	-->
 
-		<%if (user.account_type == 'admin') { %>
-			<div class='calculator newCalculator yellow' xo-element='newCalculatorButton'>
-				<div class='calculator__icon' xo-element='icon'><i class='icon-plus'></i></div>
-				<div class='calculator__info'>
-					<div class='calculator__info__title' xo-element='title'>Create Calculator</div>
-					<div class='calculator__info__description' xo-element='description'>Click here to create a new calculator</div>
-				</div>
-			</div>
-		<% } %>
+
+
+
 
 
 		<div class='calculatorContainer' xo-element='container'>
+
+
+
+
 			<!-- Calculators go here! -->
 		</div>
 	</div>

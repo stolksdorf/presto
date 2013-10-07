@@ -53,7 +53,7 @@ Presto_Block_Home = XO.Block.extend({
 	addCalculator : function(calculatorModel)
 	{
 		var newBlock = new Presto_Block_CalculatorOption(calculatorModel);
-		newBlock.injectInto(this.dom.container, {at_top:true});
+		newBlock.injectInto(this.dom.container);
 		return this;
 	},
 
