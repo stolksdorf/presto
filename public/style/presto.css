@@ -93,6 +93,18 @@ input{
 		}
 
 
+.adminbox{
+	position : absolute;
+	bottom: 0px;
+	left: 0px;
+	background-color: #C0392B;
+	color : white;
+	padding : 10px;
+	z-index : 1500;
+}
+	.adminbox i{
+		font-size: 1.3em;
+	}
 
 
 

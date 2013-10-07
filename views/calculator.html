@@ -97,15 +97,6 @@
 			<div class='topbar__title' xo-element='title'></div>
 
 			<%if (user.account_type == 'admin') { %>
-				<div class='topbar__admin'>
-					<i class='icon-rocket'></i> ADMIN MODE
-				</div>
-			<% } %>
-
-
-
-
-			<%if (user.account_type == 'admin') { %>
 				<div class='topbar__editCalc topbar__button' xo-element='launchEditorButton'>
 					<i class='icon-code'></i>
 				</div>
@@ -168,6 +159,12 @@
 
 	<!-- Used to make the tooltip on the chart -->
 	<div id='chart__tooltip'></div>
+
+	<%if (user.account_type == 'admin') { %>
+		<div class='adminbox'>
+			<i class='icon-rocket'></i> ADMIN MODE
+		</div>
+	<% } %>
 
 </body>
 

@@ -43,12 +43,6 @@
 
 		<div class='topbar__title'>Presto</div>
 
-		<%if (user.account_type == 'admin') { %>
-			<div class='topbar__admin'>
-				<i class='icon-rocket'></i> ADMIN MODE
-			</div>
-		<% } %>
-
 		<div class='topbar__logout topbar__button'>
 			<i class='icon-share-alt'></i>
 		</div>
@@ -137,6 +131,13 @@
 			<% } %>
 		</a>
 	</div>
+
+
+	<%if (user.account_type == 'admin') { %>
+		<div class='adminbox'>
+			<i class='icon-rocket'></i> ADMIN MODE
+		</div>
+	<% } %>
 
 
 </body>
