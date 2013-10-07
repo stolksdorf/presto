@@ -91,3 +91,73 @@ input{
 		.button.disabled:hover{
 			background-color : #BDC3C7;
 		}
+
+
+
+
+
+
+.topbar{
+	position         : fixed;
+	z-index          : 1000;
+
+	height           : 50px;
+	width            : 100%;
+
+	background-color : #2980B9;
+	color            : white;
+}
+
+	.topbar > div{
+		display        : inline-block;
+		vertical-align : top;
+		line-height    : 50px;
+	}
+
+	.topbar__title{
+		font-size   : 2em;
+		font-weight : 300;
+	}
+
+	.topbar__admin{
+		margin-left : 50px;
+	}
+
+
+	.topbar__button{
+		float         : right;
+
+		padding-right : 10px;
+		padding-left  : 10px;
+
+		cursor        : pointer;
+		line-height   : 50px;
+	}
+		.topbar__button:hover{
+			background-color : #3498DB;
+		}
+
+	/* Topbar Colors */
+	.topbar.teal  {background-color:#16A085;}
+	.topbar.green {background-color:#27AE60;}
+	.topbar.blue  {background-color:#2980B9;}
+	.topbar.purple{background-color:#8E44AD;}
+	.topbar.steel {background-color:#2C3E50;}
+	.topbar.yellow{background-color:#F39C12;}
+	.topbar.orange{background-color:#D35400;}
+	.topbar.red   {background-color:#C0392B;}
+	.topbar.silver{background-color:#BDC3C7;}
+	.topbar.grey  {background-color:#7F8C8D;}
+
+		.topbar.teal .topbar__button:hover    {background-color:#1ABC9C;}
+		.topbar.green .topbar__button:hover   {background-color:#2ECC71;}
+		.topbar.blue .topbar__button:hover    {background-color:#3498DB;}
+		.topbar.purple .topbar__button:hover  {background-color:#9B59B6;}
+		.topbar.steel .topbar__button:hover   {background-color:#34495E;}
+		.topbar.yellow .topbar__button:hover  {background-color:#F1C40F;}
+		.topbar.orange .topbar__button:hover  {background-color:#E67E22;}
+		.topbar.red .topbar__button:hover     {background-color:#E74C3C;}
+		.topbar.silver .topbar__button:hover  {background-color:#ECF0F1;}
+		.topbar.grey .topbar__button:hover    {background-color:#95A5A6;}
+
+

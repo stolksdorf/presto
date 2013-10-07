@@ -21,58 +21,17 @@
 	}
 
 
-	.presto__topbar{
-		z-index          : 1000;
-
-		height           : 40px;
-		width            : 100%;
-
-		background-color : #7F8C8D;
-		color            : white;
+	.topbar__home{
+		font-size: 2em;
+		margin-left: 10px;
+		margin-right: 10px;
 	}
-		.presto__topbar__logo{
-			display     : inline-block;
-
-			width       : 40px;
-
-			font-size   : 30px;
-			line-height : 40px;
-			text-align  : center;
-		}
-		.presto__topbar__title{
-			font-size   : 30px;
-			font-weight : 300;
-		}
-
-		.presto__topbar__editor{
-			display     : inline-block;
-			float       : right;
-
-			width       : 40px;
-
-			cursor      : pointer;
-			font-size   : 30px;
-			line-height : 40px;
-			text-align  : center;
-		}
-
-		.presto__topbar.teal  {background-color:#16A085;}
-		.presto__topbar.green {background-color:#27AE60;}
-		.presto__topbar.blue  {background-color:#2980B9;}
-		.presto__topbar.purple{background-color:#8E44AD;}
-		.presto__topbar.steel {background-color:#2C3E50;}
-		.presto__topbar.yellow{background-color:#F39C12;}
-		.presto__topbar.orange{background-color:#D35400;}
-		.presto__topbar.red   {background-color:#C0392B;}
-		.presto__topbar.silver{background-color:#BDC3C7;}
-		.presto__topbar.grey  {background-color:#7F8C8D;}
-
 
 
 
 	.presto__main{
 		position   : absolute;
-		top        : 40px;
+		top        : 50px;
 		bottom     : 0;
 
 		overflow   : hidden;

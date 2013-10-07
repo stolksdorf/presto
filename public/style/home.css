@@ -1,57 +1,6 @@
-.topbar{
-	position         : fixed;
-	z-index          : 1000;
-
-	height           : 50px;
-	width            : 100%;
-
-	background-color : #2980B9;
-	color            : white;
+.topbar__home img{
+	height : 45px;
 }
-
-	.topbar > div{
-		display        : inline-block;
-		vertical-align : top;
-		line-height : 50px;
-	}
-
-	.topbar__title{
-		font-size   : 2em;
-		font-weight : 300;
-
-	}
-
-
-
-	.topbar__home{
-	}
-		.topbar__home img{
-			height : 45px;
-		}
-
-
-	.topbar__admin{
-		margin-left: 50px;
-	}
-
-
-
-	.topbar__button{
-		float         : right;
-
-		padding-right : 10px;
-		padding-left  : 10px;
-
-		cursor        : pointer;
-		line-height   : 50px;
-	}
-
-		.topbar__button:hover{
-			background-color : #3498DB;
-		}
-
-
-
 
 
 .sidebar{

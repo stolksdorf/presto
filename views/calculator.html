@@ -43,7 +43,6 @@
 	-->
 
 
-
 	<!-- Engine -->
 	<script type="text/javascript" src="../js/Presto.js"></script>
 	<script type="text/javascript" src="../js/engine/Prototypes.js"></script>
@@ -52,10 +51,8 @@
 	<script type="text/javascript" src="../js/engine/OverlayBlock.js"></script>
 
 	<%if (user.account_type == 'admin') { %>
-	<script type="text/javascript" src="../js/engine/CodeEditorBlock.js"></script>
+		<script type="text/javascript" src="../js/engine/CodeEditorBlock.js"></script>
 	<% } %>
-
-
 
 
 </head>
@@ -65,11 +62,7 @@
 
 	<script>
 
-
-		console.log(Presto);
-
 		Presto.start({
-			calcId : "<%= calcId %>",
 			calc : <%- inspect(calc) %>
 		});
 
@@ -81,14 +74,35 @@
 
 		<title xo-element='windowTitle'></title>
 
-		<!-- Top Bar -->
-		<div class='presto__topbar' xo-element='topbar'>
-			<span class='presto__topbar__logo'> <i xo-element='icon'></i> </span>
-			<span class='presto__topbar__title' xo-element='title'></span>
+
+		<div class='topbar' xo-element='topbar'>
+			<div class='topbar__home'>
+				<i xo-element='icon'></i>
+			</div>
+
+			<div class='topbar__title' xo-element='title'></div>
+
 			<%if (user.account_type == 'admin') { %>
-			<span class='presto__topbar__editor clickable' xo-element='launchEditorButton'> <i class='icon-code'></i> </span>
+				<div class='topbar__admin'>
+					<i class='icon-rocket'></i> ADMIN MODE
+				</div>
 			<% } %>
+
+
+
+
+			<%if (user.account_type == 'admin') { %>
+				<div class='topbar__editCalc topbar__button' xo-element='launchEditorButton'>
+					<i class='icon-code'></i>
+				</div>
+			<% } %>
+
+			<div class='topbar__account topbar__button'>
+				<%= user.email %>
+			</div>
+
 		</div>
+
 
 
 		<!-- Main Area -->
