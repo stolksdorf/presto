@@ -111,7 +111,7 @@
 
 		.tile__buttons{
 			float       : right;
-			opacity     : 0;
+			opacity     : 1;
 			line-height : 40px;
 		}
 			.tile__buttons > div{
@@ -133,40 +133,6 @@
 			opacity : 1;
 		}
 
-
-
-/*
-
-	.tile__button{
-		display        : none;
-		vertical-align : top;
-		float          : right;
-
-		padding-right  : 5px;
-		padding-left   : 5px;
-
-		cursor         : pointer;
-		opacity        : 0.3;
-		line-height    : 40px;
-	}
-
-			.tile__button:hover{
-				opacity : 1;
-			}
-
-			.tile__topbar:hover .tile__button{
-				display : inline-block;
-			}
-*/
-
-	/* TODO: Fix and implement later */
-	.tile > .divider{
-		height           : 2px;
-		width            : 65%;
-		margin-left      : 45px;
-
-		background-color : #eee;
-	}
 
 
 

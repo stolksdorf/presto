@@ -168,6 +168,7 @@
 
 	<!-- Used to make the tooltip on the chart -->
 	<div id='chart__tooltip'></div>
+
 </body>
 
 
@@ -194,10 +195,17 @@
 
 
 <div class='table tile' xo-schematic='table'>
-	<div class='tile__title' xo-element='title'></div>
+	<div class='tile__topbar'>
+		<div class='tile__buttons'>
+			<div data-hint='Download CSV' xo-element='downloadCSV'>
+				<i class='icon-download-alt'></i>
+			</div>
+		</div>
+
+		<div class='tile__title' xo-element='title'></div>
+	</div>
 	<div class='table__description' xo-element='description'></div>
 	<div class='table__data' xo-element='columnContainer'></div>
-
 	<div class='table__moreRowsButton' xo-element='moreRowsButton'>
 		<i class='icon-plus'></i>
 		 Add more
@@ -212,20 +220,18 @@
 
 
 <div class='chart tile' xo-schematic='chart'>
-
 	<div class='tile__topbar'>
 		<div class='tile__buttons'>
-			<div class='tile__button' data-hint='Minify' xo-element='mini'>
+			<div data-hint='Minify' xo-element='mini'>
 				<i class='icon-minus'></i>
 			</div>
-			<div class='tile__button' data-hint='Small' xo-element='small'>
+			<div data-hint='Small' xo-element='small'>
 				<i class='icon-resize-small'></i>
 			</div>
-			<div class='tile__button' data-hint='Large' xo-element='big'>
+			<div data-hint='Large' xo-element='big'>
 				<i class='icon-picture'></i>
 			</div>
 		</div>
-
 		<div class='tile__title' xo-element='title'></div>
 	</div>
 

@@ -67,6 +67,12 @@ Presto.registerModule({
 					});
 
 
+					this.dom.downloadCSV.click(function(){
+						window.location = '/csv/' + self.definition.title +
+							 '.csv?data=' + JSON.stringify(self.getCSV());
+					});
+
+
 					return this;
 				},
 
@@ -94,6 +100,13 @@ Presto.registerModule({
 					} else {
 						this.dom.columnContainer.css({"overflow-y" : "hidden"});
 					}
+				},
+
+				getCSV : function()
+				{
+					return _.zip.apply(_, _.map(this.columns, function(column){
+						return _.flatten([column.definition.title, column.data], true);
+					}));
 				},
 			}),
 

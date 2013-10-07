@@ -18,6 +18,7 @@ app.use(express.static(__dirname + '/public'));
 GLOBAL._ = require('underscore');
 
 var shortId = require('shortid');
+var csv = require('csv');
 
 
 app.locals.inspect = require('util').inspect;
@@ -173,6 +174,11 @@ app.post('/addLink', function(req,res){
 			return res.send(200);
 		});
 	})
+});
+
+app.get('/csv/:name', function(req,res){
+	res.contentType('text/csv');
+	return csv().from(JSON.parse(req.query.data)).to(res)
 });
 
 

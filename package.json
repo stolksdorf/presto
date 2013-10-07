@@ -6,7 +6,8 @@
     "mongodb": "1.1.11",
     "shortid": "~2.0.0",
     "underscore": "~1.5.2",
-    "util": "~0.4.9"
+    "util": "~0.4.9",
+    "csv": "~0.3.6"
   },
   "engines": {
     "node": "0.10.x",
