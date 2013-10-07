@@ -38,29 +38,6 @@ require('./modules/models/calculator.js');
 require('./modules/models/user.js');
 
 
-/*
-auth_route = function(path, middleware, render){
-	if(DEBUG){
-		return app.get(path, function(req,res){
-			req.user = new User({
-				email : 'scott.tolksdorf@gmail.com',
-				account_type : 'admin'
-			});
-			return render(req,res);
-		});
-	}
-	if(typeof render === 'undefined'){
-		render = middleware;
-		middleware = [];
-	}
-	app.get(path, function(req,res){
-		return res.render('auth.html');
-	});
-	app.post(path, middleware, render);
-};
-*/
-
-
 //Middleware
 var adminOnly = function(req,res,next){
 	if(req.user){
@@ -74,12 +51,12 @@ var adminOnly = function(req,res,next){
 var loadUser = function(req,res,next){
 	var cookie = req.cookies.presto_auth;
 	if(!cookie){
-		return res.send('/register');
+		return res.redirect('/register');
 	}
 	User.findOne({'auth.cookie' : cookie}, function(err, user){
-		if(err){
+		if(err || !user){
 			console.log('ERR', err);
-			return res.send('/register', 403);
+			return res.redirect('/register');
 		}
 		req.user = user;
 		console.log('user', user);
@@ -150,8 +127,8 @@ app.get('/activate/:key', function(req,res){
 			});
 		});
 	});
-
 });
+
 
 
 var sendActivationEmail = function(user, callback){
@@ -258,19 +235,19 @@ app.delete('/api/calculator/*', function(req, res){
  * Experimentation
  *
  */
-app.get('/all', function(req, res){
+app.get('/all', [loadUser, adminOnly], function(req, res){
 	User.find({}, function(err, users){
 		res.send(users);
 	});
 });
 
-app.get('/allkey', function(req, res){
+app.get('/allkey', [loadUser, adminOnly], function(req, res){
 	ActivationKey.find({}, function(err, keys){
 		res.send(keys);
 	});
 });
 
-app.get('/drop', [loadUser, adminOnly], function(req, res){
+app.get('/drop', [loadUser, adminOnly], [loadUser, adminOnly], function(req, res){
 	User.remove({}, function(err){
 		console.log('All users dropped');
 	});
