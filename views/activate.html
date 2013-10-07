@@ -1,6 +1,165 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
+	<script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+
+	<link href='libs/lato/lato.css' rel='stylesheet' type='text/css'>
+	<link href='libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
+
+	<link rel="Stylesheet" type="text/css" href="style/reset.css" />
+	<link rel="Stylesheet" type="text/css" href="style/presto.css" />
+
+	<style>
+		body{
+			overflow          : hidden;
+
+			background        : url(../assets/coffee2.jpg);
+			background-repeat : no-repeat;
+			background-size   : 100%;
+			background-size   : cover;
+		}
+
+		.content{
+			width        : 500px;
+			margin-top   : 8%;
+			margin-right : auto;
+			margin-left  : auto;
+			padding      : 20px;
+
+			background   : rgba(255,255,255,0.6);
+			color        : black;
+			text-align   : left;
+		}
+
+		input{
+			width      : 350px;
+			margin-top : 20px;
+			padding    : 7px;
+			font-size: 1.1em;
+		}
+
+		h1{
+			font-weight: 300;
+			font-size: 3em;
+			text-align: left;
+			margin-bottom: 10px;
+		}
+
+		.button{
+			margin         : 0;
+			margin-top     : 20px;
+			margin-left    : -5px;
+			padding-top    : 0.6em;
+			padding-right  : 1em;
+			padding-bottom : 0.6em;
+
+			font-size: 1.12em;
+		}
+
+	</style>
+
+
+
+
+</head>
+<body>
+	<title>Activated</title>
+
+
+	<div class='content'>
+
+		<h1>Register</h1>
+
+		<p>Blah blah blah</p>
+
+
+		<input id='email' type='text' placeholder='mr.moneymustache@smartinvesting.com'></input>
+		<div id='go' class='button green'>Sign up</div>
+	</div>
+
+
+	<script type="text/javascript">
+
+
+		$(document).ready(function(){
+			$('#go').click(function(){
+				//add presto cookie to browser
+				var cookie = cookiejar.get('presto_auth');
+				if(!cookie){
+					cookie = new Date().getTime() + Math.round(Math.random() * 100) + '';
+					cookiejar.set('presto_auth', cookie)
+				}
+
+				$.ajax({
+					url : '/addLink',
+					type : 'POST',
+					data : {
+						email : $('#email').val(),
+					},
+					success : function(data, textStatus, jqXHR ){
+						alert('Registered');
+						$('.message').text('Check your inbox for the activation link');
+					},
+					error: function(data, textStatus, jqXHR ){
+						console.log('ERROR', data, textStatus);
+					}
+				});
+			});
+
+		});
+	</script>
+
+	<script>
+	//Simple implementation of getting and setting cookies
+	var cookiejar = {
+		get : function(name){
+			if(!document.cookie.length){
+				return;
+			}
+			var start, end;
+			start = document.cookie.indexOf(name + '=');
+			if(start !== -1){
+				start = start + name.length + 1;
+				end = document.cookie.indexOf(';', start);
+				if(end === -1){
+					end = document.cookie.length;
+				}
+				return unescape(document.cookie.substring(start, end));
+			}
+			return;
+		},
+		set : function(name, value, daysToExpire){
+			var expires = '';
+			if(daysToExpire){
+				var date = new Date();
+				date.setTime(date.getTime() + (daysToExpire * 24 * 60 * 60 * 1000));
+				expires = '; expires=' + date.toGMTString();
+			}
+			document.cookie = name + '=' + value + expires + '; path=/';
+		},
+		remove : function(name){
+			document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+		}
+	};
+	</script>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
 
 	<!-- Libraries -->
 	<script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>

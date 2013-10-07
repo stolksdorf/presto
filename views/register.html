@@ -2,66 +2,125 @@
 <html>
 <head>
 	<script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+
+	<link href='libs/lato/lato.css' rel='stylesheet' type='text/css'>
+	<link href='libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
+
+	<link rel="Stylesheet" type="text/css" href="style/reset.css" />
+	<link rel="Stylesheet" type="text/css" href="style/presto.css" />
+
+	<style>
+		body{
+			overflow          : hidden;
+
+			background        : url(../assets/coffee2.jpg);
+			background-repeat : no-repeat;
+			background-size   : 100%;
+			background-size   : cover;
+		}
+
+		.content{
+			width        : 500px;
+			margin-top   : 8%;
+			margin-right : auto;
+			margin-left  : auto;
+			padding      : 20px;
+
+			background   : rgba(255,255,255,0.6);
+			color        : black;
+			text-align   : left;
+		}
+
+		input{
+			width      : 350px;
+			margin-top : 20px;
+			padding    : 7px;
+			font-size: 1.1em;
+		}
+
+		h1{
+			font-weight: 300;
+			font-size: 3em;
+			text-align: left;
+			margin-bottom: 10px;
+		}
+
+		.button{
+			margin         : 0;
+			margin-top     : 20px;
+			margin-left    : -5px;
+			padding-top    : 0.6em;
+			padding-right  : 1em;
+			padding-bottom : 0.6em;
+
+			font-size: 1.12em;
+		}
+		.message{
+			font-size: 1.3em;
+			display: none;
+			margin-top:15px;
+		}
+
+	</style>
+
+
+
+
 </head>
 <body>
 	<title>Register</title>
+	<div class='content'>
 
-	<div class='message'>Not registered yet</div>
-	<input id='email' type='text' placeholder='email'></input> email<br>
+		<h1>Register</h1>
 
+		<p>Super amazing copy will go here</p>
+		<input id='email' type='text' placeholder='mr.moneymustache@smartinvesting.com'></input>
+		<div id='go' class='button green'>Sign up</div>
 
+		<div class='message'>Check your inbox for an activation link</div>
+	</div>
 
-	<button id='go'>Register</button>
 
 	<script type="text/javascript">
 
 
 		$(document).ready(function(){
 
+			$('#email').keyup(function (e) {
+				if (e.keyCode == 13) {
+					sendEmail();
+				}
+			});
 
 			$('#go').click(function(){
+				sendEmail();
+			});
 
-
-				//add presto cookie to browser
+			sendEmail = function(){
+				$('#go').html("<i class='icon-gear'></i>");
 				var cookie = cookiejar.get('presto_auth');
 				if(!cookie){
 					cookie = new Date().getTime() + Math.round(Math.random() * 100) + '';
 					cookiejar.set('presto_auth', cookie)
 				}
-				console.log('set cookie as', cookie);
 
-
-
-				$('.message').text('Registering with server...');
 				$.ajax({
 					url : '/addLink',
 					type : 'POST',
 					data : {
 						email : $('#email').val(),
-						/*auth  : {
-							fingerprint : $('#fp').val(),
-							cookie      : $('#cc').val()
-						},*/
 					},
 					success : function(data, textStatus, jqXHR ){
 						alert('Registered');
-						$('.message').text('Check your inbox for the activation link');
+						$('.message').show();
 					},
 					error: function(data, textStatus, jqXHR ){
 						console.log('ERROR', data, textStatus);
 					}
 				});
-				console.log('sending off data');
-
-			});
+			};
 
 		});
-
-
-
-
-
-
 	</script>
 
 	<script>
