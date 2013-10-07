@@ -22,7 +22,11 @@
 
 
 	.topbar__home{
+
 	}
+		.topbar__home img{
+			height : 45px;
+		}
 
 
 	.topbar__logout{

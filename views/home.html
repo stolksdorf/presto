@@ -39,13 +39,10 @@
 
 	<div class='topbar'>
 		<div class='topbar__home'>
-			<i class='icon-magic'></i>
+			<img src='/assets/logo_100w.png'></img>
 		</div>
 
 		<div class='topbar__title'>Presto</div>
-
-
-
 
 
 
@@ -54,7 +51,7 @@
 		</div>
 
 		<div class='topbar__account topbar__button'>
-			scott.tolksdorf@gmail.com
+			<%= user.email %>
 		</div>
 
 	</div>
@@ -104,7 +101,6 @@
 </div>
 
 	-->
-	<div style='font-size:'> <%= user.email %> </div>
 
 		<%if (user.account_type == 'admin') { %>
 			<div class='calculator newCalculator yellow' xo-element='newCalculatorButton'>
