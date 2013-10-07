@@ -1,3 +1,50 @@
+.topbar{
+	position         : fixed;
+
+	height           : 50px;
+	width            : 100%;
+
+	background-color : #2980B9;
+	color            : white;
+}
+
+	.topbar > div{
+		display        : inline-block;
+		vertical-align : top;
+	}
+
+	.topbar__title{
+		font-size   : 2em;
+		font-weight : 300;
+		line-height : 50px;
+	}
+
+
+
+	.topbar__home{
+	}
+
+
+	.topbar__logout{
+	}
+
+
+	.topbar__button{
+		padding-right : 10px;
+		padding-left  : 10px;
+
+		cursor        : pointer;
+		line-height   : 50px;
+		float: right;
+	}
+
+		.topbar__button:hover{
+			background-color : #3498DB;
+		}
+
+
+
+
 
 .sidebar{
 	float            : left;
@@ -24,8 +71,9 @@
 
 
 .content{
-	overflow-y : scroll;
-	height     : 100%;
+	overflow-y  : scroll;
+	height      : 100%;
+	padding-top : 50px;
 }
 
 	.content__title{

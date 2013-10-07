@@ -20,7 +20,6 @@ UserSchema = mongoose.Schema({
 	email : String,
 	account_type : { type: String, default: 'beta'},
 	auth : [{
-		fingerprint : String,
 		cookie      : String
 	}],
 	date  : { type: Date, default: Date.now },
@@ -32,10 +31,10 @@ UserSchema.methods.isAdmin = function(){
 	return this.account_type === 'admin';
 };
 
-UserSchema.methods.addFingerprint = function(data, callback){ //TODO: Make into an update
+UserSchema.methods.addCookie = function(cookieSignature, callback){ //TODO: Make into an update
+	console.log('adding new cookie', cookieSignature);
 	this.auth.push({
-		fingerprint : data.fingerprint,
-		cookie      : data.cookie
+		cookie      : cookieSignature
 	});
 	this.save(callback);
 };
@@ -43,6 +42,7 @@ UserSchema.methods.addFingerprint = function(data, callback){ //TODO: Make into 
 
 //Statics
 
+/*
 //Finds a user based on the fingerprint, then cookie
 UserSchema.statics.get = function(data, callback){
 	if(typeof data.fingerprint === 'undefined'){
@@ -83,6 +83,7 @@ UserSchema.statics.match = function(data, callback){
 		}
 	);
 };
+*/
 
 //Adds a new user, checks if we should make them an admin
 UserSchema.statics.add = function(data, callback){

@@ -3,22 +3,7 @@
 <head>
 
 	<!-- Libraries -->
-	<script type="text/javascript" src="libs/jq.js"></script>
-	<script type="text/javascript" src="libs/underscore.js"></script>
-
-
-	<!-- MVC -->
-	<script type="text/javascript" src="libs/backbone.js"></script>
-	<script type="text/javascript" src="libs/xo.js"></script>
-
-	<!-- Style -->
-	<link rel="Stylesheet" type="text/css" href="style/reset.css" />
-	<link rel="Stylesheet" type="text/css" href="style/presto.css" />
-	<!--<link rel="Stylesheet" type="text/css" href="style/activate.css" />-->
-
-	<link href='libs/lato/lato.css' rel='stylesheet' type='text/css'>
-	<link href='libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
-
+	<script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
 
 </head>
 <body>
@@ -26,7 +11,20 @@
 	<title>Activate</title>
 
 
-	Yo dawg, this browser is now linked with your account. Head over to the <a href='/home'>home page</a> to see the action.
+	<h1> Activated! </h1>
+	We're redirecting you in a few seconds to the home page.
+
+	<script>
+
+		$(document).ready(function(){
+
+			setTimeout(function(){
+				window.location = '/home';
+			}, 2000);
+
+		})
+
+	</script>
 
 
 </body>

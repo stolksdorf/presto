@@ -1,41 +1,47 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-	<!-- Libraries -->
-	<script type="text/javascript" src="libs/jq.js"></script>
-	<script type="text/javascript" src="libs/underscore.js"></script>
+	<script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
 </head>
 <body>
 	<title>Register</title>
 
 	<div class='message'>Not registered yet</div>
 	<input id='email' type='text' placeholder='email'></input> email<br>
-	<input id='fp' type='text' placeholder='fingerprint'></input> Fingerprint<br>
-	<input id='cc' type='text' placeholder='cookie'></input> Cookie<br>
+
+
+
 	<button id='go'>Register</button>
 
 	<script type="text/javascript">
 
-		console.log(auth);
 
 		$(document).ready(function(){
 
-			$('#fp').val(auth.fingerprint);
-			$('#cc').val(auth.cookie);
 
 			$('#go').click(function(){
-				var username = $('#name').val();
-				console.log('sending off data');
+
+
+				//add presto cookie to browser
+				var cookie = cookiejar.get('presto_auth');
+				if(!cookie){
+					cookie = new Date().getTime() + Math.round(Math.random() * 100) + '';
+					cookiejar.set('presto_auth', cookie)
+				}
+				console.log('set cookie as', cookie);
+
+
+
 				$('.message').text('Registering with server...');
 				$.ajax({
 					url : '/addLink',
 					type : 'POST',
 					data : {
 						email : $('#email').val(),
-						auth  : {
+						/*auth  : {
 							fingerprint : $('#fp').val(),
 							cookie      : $('#cc').val()
-						},
+						},*/
 					},
 					success : function(data, textStatus, jqXHR ){
 						alert('Registered');
@@ -45,6 +51,7 @@
 						console.log('ERROR', data, textStatus);
 					}
 				});
+				console.log('sending off data');
 
 			});
 
@@ -55,6 +62,40 @@
 
 
 
+	</script>
+
+	<script>
+	//Simple implementation of getting and setting cookies
+	var cookiejar = {
+		get : function(name){
+			if(!document.cookie.length){
+				return;
+			}
+			var start, end;
+			start = document.cookie.indexOf(name + '=');
+			if(start !== -1){
+				start = start + name.length + 1;
+				end = document.cookie.indexOf(';', start);
+				if(end === -1){
+					end = document.cookie.length;
+				}
+				return unescape(document.cookie.substring(start, end));
+			}
+			return;
+		},
+		set : function(name, value, daysToExpire){
+			var expires = '';
+			if(daysToExpire){
+				var date = new Date();
+				date.setTime(date.getTime() + (daysToExpire * 24 * 60 * 60 * 1000));
+				expires = '; expires=' + date.toGMTString();
+			}
+			document.cookie = name + '=' + value + expires + '; path=/';
+		},
+		remove : function(name){
+			document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+		}
+	};
 	</script>
 
 

@@ -12,6 +12,7 @@ app = express();
 app.set('title', 'Presto');
 app.engine('html', require('ejs').renderFile);
 app.use(express.bodyParser());
+app.use(express.cookieParser());
 app.use(express.static(__dirname + '/public'));
 
 GLOBAL._ = require('underscore');
@@ -36,7 +37,7 @@ require('./modules/models/calculator.js');
 require('./modules/models/user.js');
 
 
-
+/*
 auth_route = function(path, middleware, render){
 	if(DEBUG){
 		return app.get(path, function(req,res){
@@ -56,6 +57,8 @@ auth_route = function(path, middleware, render){
 	});
 	app.post(path, middleware, render);
 };
+*/
+
 
 //Middleware
 var adminOnly = function(req,res,next){
@@ -68,21 +71,24 @@ var adminOnly = function(req,res,next){
 };
 
 var loadUser = function(req,res,next){
-	User.get(req.body.auth, function(err, user){
+	var cookie = req.cookies.presto_auth;
+	if(!cookie){
+		return res.send('/register');
+	}
+	User.findOne({'auth.cookie' : cookie}, function(err, user){
 		if(err){
 			console.log('ERR', err);
 			return res.send('/register', 403);
 		}
 		req.user = user;
 		console.log('user', user);
-		delete req.body.auth; //TODO: Change to auth later
 		next();
 	});
 }
 
 
 //Routes
-auth_route('/calc/:calcId', [loadUser], function(req,res){
+app.get('/calc/:calcId', [loadUser], function(req,res){
 	CalculatorModel.findOne({id : req.params.calcId}, function(err, calculator){
 
 		var temp = calculator.toObject();
@@ -99,13 +105,13 @@ auth_route('/calc/:calcId', [loadUser], function(req,res){
 
 });
 
-auth_route('/home', [loadUser], function(req,res){
+app.get('/home', [loadUser], function(req,res){
 	return res.render('home.html', {
 		user : req.user
 	});
 });
 
-auth_route('/register', function(req, res){
+app.get('/register', function(req, res){
 	res.render('register.html');
 });
 
@@ -125,35 +131,38 @@ ActivationKeySchema = mongoose.Schema({
 ActivationKey = mongoose.model('ActivationKey', ActivationKeySchema);
 
 
-auth_route('/activate/:key', function(req,res){
+app.get('/activate/:key', function(req,res){
 	var key = req.params.key;
+	var cookie = req.cookies.presto_auth;
+
 	console.log('key', key);
-	console.log('auth', req.body.auth);
+	console.log('auth', req.cookies.presto_auth);
 
 	ActivationKey.findOne({key : key}, function(err, activation){
 		if(err){ console.log('err', err);}
 		User.findOne({_id : activation.user_id}, function(err, user){
 			if(err){ console.log('err', err);}
 
-			user.addFingerprint(req.body.auth, function(err, user){
-				console.log('added fingerprint');
+			user.addCookie(cookie, function(err, user){
+				console.log('added cookie');
 				return res.render('activate.html');
 			});
 		});
 	});
+
 });
-
-
 
 
 var sendActivationEmail = function(user, callback){
 	var newActivationKey = new ActivationKey({user_id : user._id});
 	newActivationKey.save(function(error, newKey){
 		var url = 'http://www.prestocalc.com/activate/' + newKey.key;
+
+		url = 'http://localhost:5000/activate/' + newKey.key;
+
 		mail.sendActivationEmail(user, url, callback);
 	});
 };
-
 
 app.post('/addLink', function(req,res){
 	var email = req.body.email;
@@ -255,7 +264,7 @@ app.get('/allkey', function(req, res){
 	});
 });
 
-auth_route('/drop', [loadUser, adminOnly], function(req, res){
+app.get('/drop', [loadUser, adminOnly], function(req, res){
 	User.remove({}, function(err){
 		console.log('All users dropped');
 	});
@@ -265,12 +274,6 @@ auth_route('/drop', [loadUser, adminOnly], function(req, res){
 	res.send(200, 'Dropped');
 });
 
-
-auth_route('/test', [loadUser, adminOnly], function(req,res){
-	User.find({}, function(err, users){
-		res.send(users);
-	});
-});
 
 
 
