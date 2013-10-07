@@ -136,7 +136,7 @@ var sendActivationEmail = function(user, callback){
 	newActivationKey.save(function(error, newKey){
 		var url = 'http://www.prestocalc.com/activate/' + newKey.key;
 
-		url = 'http://localhost:5000/activate/' + newKey.key;
+		//url = 'http://localhost:5000/activate/' + newKey.key;
 
 		mail.sendActivationEmail(user, url, callback);
 	});
