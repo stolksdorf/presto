@@ -1,3 +1,7 @@
+body{
+	background-color : #BDC3C7;
+}
+
 .topbar__home img{
 	height : 45px;
 }
@@ -70,29 +74,36 @@
 
 
 	.content__search{
-		font-size: 1.8em;
-		margin-top: 20px;
-		margin-left: 26px;
-		color : #444;
+		display          : inline-block;
+
+		width            : 380px;
+		margin-top       : 20px;
+		margin-left      : 10px;
+		padding-left     : 20px;
+
+		background-color : white;
+		font-size        : 1.8em;
+		color            : #444;
 	}
 		.content__search i{
-			margin-right: 10px;
+			margin-right : 10px;
 		}
 
 		.content__search input{
-			font-size: 1.1em;
-			font-weight: 300;
-			padding: 15px;
-			border: 1px solid #ddd;
+			width       : 300px;
+			padding     : 15px;
 
+			font-size   : 1.1em;
+			font-weight : 300;
+			border      : 1px solid #fff;
 		}
 
 
 
 
 .calculatorContainer{
+	height     : 100%;
 	margin-top : 20px;
-	height : 100%;
 }
 
 
@@ -100,15 +111,16 @@
 
 
 .calculator{
-	position       : relative;
-	display        : inline-block;
-	vertical-align : top;
+	display          : inline-block;
+	vertical-align   : top;
 
-	width          : 400px;
-	padding-top    : 25px;
-	padding-bottom : 25px;
+	width            : 400px;
+	margin           : 10px;
+	padding-top      : 25px;
+	padding-bottom   : 25px;
 
-	cursor         : pointer;
+	cursor           : pointer;
+	background-color : white;
 }
 	.calculator a{
 		color           : inherit;

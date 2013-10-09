@@ -143,8 +143,8 @@
 
 .codeEditor{
 	position         : absolute;
-	top              : 40px;
-	right            : 0px;
+	top              : 60px;
+	right            : 10px;
 	z-index          : 1000;
 
 	height           : 500px;
@@ -176,7 +176,7 @@
 		}
 
 		.codeEditor__topbar__docsLink{
-			display         : none;
+			display         : inline;
 
 			margin-left     : 10px;
 
@@ -185,9 +185,6 @@
 			text-decoration : none;
 			text-transform  : uppercase;
 		}
-			.codeEditor__topbar:hover .codeEditor__topbar__docsLink{
-				display : inline;
-			}
 
 		.codeEditor__editor{
 			position   : relative;

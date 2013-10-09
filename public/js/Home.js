@@ -60,8 +60,14 @@ Presto_Block_Home = XO.Block.extend({
 		this.dom.search.keydown(function(){
 			self.dom.container.stop().fadeTo(300, 0.4)
 			clearTimeout(typingTimeout);
+			self.dom.searchIcon.hide();
+			self.dom.searchingIcon.show();
 			typingTimeout = setTimeout(function(){
 					self.dom.container.stop().fadeTo(100, 1.0);
+					self.dom.searchIcon.show();
+					self.dom.searchingIcon.hide();
+
+
 					self.search(self.dom.search.val());
 			}, 500);
 		});
@@ -212,7 +218,7 @@ Presto_Block_CalculatorOption = XO.Block.extend({
 			if(typeof str !== 'string'){
 				return false;
 			}
-			return str.indexOf(target) !== -1;
+			return str.toLowerCase().indexOf(target.toLowerCase()) !== -1;
 		}
 
 
