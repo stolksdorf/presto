@@ -115,18 +115,16 @@ Presto_Block_Home = XO.Block.extend({
 		var newBlock = new Presto_Block_CalculatorOption(calculatorModel);
 		newBlock.injectInto(this.dom.container);
 
-		console.log(newBlock.dom.block);
-
 		this.calculators.push(newBlock);
 
-
+		//TODO: Do I need this?
 		this.dom.container.isotope( 'addItems', newBlock.dom.block);
-/*
+
 		this.dom.container.isotope({
 		  itemSelector : '.calculator',
 		  layoutMode : 'fitRows'
 		});
-*/
+
 		return this;
 
 

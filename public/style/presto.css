@@ -94,16 +94,18 @@ input{
 
 
 .adminbox{
-	position : fixed;
-	bottom: 0px;
-	left: 0px;
-	background-color: #C0392B;
-	color : white;
-	padding : 10px;
-	z-index : 1500;
+	position         : fixed;
+	bottom           : 0px;
+	left             : 0px;
+	z-index          : 1500;
+
+	padding          : 10px;
+
+	background-color : #C0392B;
+	color            : white;
 }
 	.adminbox i{
-		font-size: 1.3em;
+		font-size : 1.3em;
 	}
 
 
@@ -139,11 +141,13 @@ input{
 	.topbar__button{
 		float         : right;
 
+		min-width     : 25px;
 		padding-right : 10px;
 		padding-left  : 10px;
 
 		cursor        : pointer;
 		line-height   : 50px;
+		text-align    : center;
 	}
 		.topbar__button:hover{
 			background-color : #3498DB;

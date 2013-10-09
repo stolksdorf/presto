@@ -5,7 +5,7 @@ Presto = Archetype.extend({
 		show_errorbar : true,
 		is_beta       : false,
 		show_editor   : true,
-		max_update_iterations : 5
+		max_update_iterations : 10
 	},
 
 	start  : function(opts)
@@ -42,6 +42,8 @@ Presto = Archetype.extend({
 		if(typeof Presto_Block_CodeEditor !== 'undefined'){
 			this.codeEditor   = new Presto_Block_CodeEditor(this.calculatorBlueprint);
 		}
+
+
 
 		this.setupEvents();
 
@@ -153,12 +155,15 @@ Presto = Archetype.extend({
 		this.globals = {};
 		var iterationCount = 0;
 		while(1){
+			console.log('----START', iterationCount);
 			var newGlobals = {},
 				thrownError = false;
 			_.each(self.modules, function(module){
 				try{
+					console.log("  " + module.name);
 					var temp = module.generate();
 				}catch(e){
+					console.log('err', e.message);
 					thrownError = true;
 					if(iterationCount > Presto.options.max_update_iterations){
 						module.generate(); //Just cause the error again
@@ -170,16 +175,27 @@ Presto = Archetype.extend({
 				}
 			});
 
+			console.log(newGlobals);
+
 			if(iterationCount > Presto.options.max_update_iterations){
 				throw 'Circular dependacy';
 			}
-			if(!thrownError){//} && _.compare(newGlobals, this.globals)){
+
+/*
+			if(!thrownError){
+				break;
+			}
+*/
+			//Trying fix
+			if(!thrownError && _.compare(newGlobals, this.globals)){
 				break;
 			}
 
 			this.globals = newGlobals;
 			iterationCount++;
 		}
+
+		console.log('----END');
 
 		return this;
 	},
@@ -201,7 +217,7 @@ Presto = Archetype.extend({
 	sortedModules : function()
 	{
 		return _.sortBy(this.modules, function(module){
-			return module.drawOrder || 100000; //TODO: Fix later
+			return module.drawOrder || 100000;
 		});
 	},
 

@@ -79,7 +79,7 @@ Presto.registerModule({
 				generate : function(rowCount)
 				{
 					var self = this;
-					this.rowCount = rowCount || _.evalue(this.definition.rows);
+					this.rowCount = Math.ceil(rowCount || _.evalue(this.definition.rows));
 					return _.reduce(this.columns, function(result, column){
 						column.rowCount = self.rowCount;
 						result[column.name] = column.generate();
@@ -122,7 +122,7 @@ Presto.registerModule({
 				generate : function(numCells)
 				{
 					var self = this;
-					numCells = numCells || this.rowCount;
+					numCells = Math.ceil(numCells || this.rowCount);
 					var result =[_.evalue(this.definition.firstCell)];
 					_.times(numCells - 1, function(index){
 						result.push(self.definition.generator(result[index], index + 1));

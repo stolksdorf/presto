@@ -46,6 +46,10 @@ Presto_Block_Overlay = XO.Block.extend({
 			}
 		});
 
+		this.dom.refreshButton.click(function(){
+			Presto.update();
+		})
+
 		Presto.on('render', function(){
 			self.dom.errorBar.hide();
 		});
