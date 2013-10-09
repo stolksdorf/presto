@@ -157,6 +157,9 @@ Number.prototype.floor = function() {
 	return Math.floor(this);
 };
 
+
+
+
 /**
  * Underscore Mixins
  */
@@ -200,12 +203,7 @@ Array.prototype.get = function(index){
 
 
 
-jQuery.getSchematic = function(schematicName){
-	var schematicElement = jQuery('[xo-schematic="' + schematicName + '"]');
-	if(schematicElement.length === 0 ){throw 'ERROR: Could not find schematic with name "' + schematicName + '"';}
-	var schematicCode = jQuery('<div>').append(schematicElement.clone().removeAttr('xo-schematic')).html();
-	return jQuery(schematicCode);
-};
+
 
 jQuery.fn.toggleClass = function(classname){
 	if(this.hasClass(classname)){

@@ -94,7 +94,7 @@ input{
 
 
 .adminbox{
-	position : absolute;
+	position : fixed;
 	bottom: 0px;
 	left: 0px;
 	background-color: #C0392B;

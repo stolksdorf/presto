@@ -171,6 +171,8 @@ var CalculatorModel = mongoose.model('CalculatorModel', mongoose.Schema({
 	icon        : String,
 	url         : String,
 	script      : String,
+	keywords    : [String],
+	group       : String,
 	last_modified : { type: Date, default: Date.now },
 }));
 

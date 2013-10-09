@@ -132,3 +132,161 @@
 
 
 })();
+
+
+
+
+xo_view = Archetype.extend({
+	schematic : undefined,
+
+	initialize : function(model)
+	{
+		this.model = model;
+		return this;
+	},
+
+	bindToView : function(viewName)
+	{
+		var target = $('[xo-view="' + viewName + '"');
+		this.dom = this.dom || {};
+
+		return this;
+	},
+
+	injectInto : function(target, options)
+	{
+		var self = this;
+		options = options || {};
+		this.dom = this.dom || {};
+		if(target.length === 0 ){throw 'XO: Could not find the injection point';}
+
+		var getSchematic = function(schematicName){
+			var schematicElement = jQuery('[xo-schematic="' + schematicName + '"]');
+			if(schematicElement.length === 0 ){throw 'ERROR: Could not find schematic with name "' + schematicName + '"';}
+			var schematicCode = jQuery('<div>').append(schematicElement.clone().removeAttr('xo-schematic')).html();
+			return jQuery(schematicCode);
+		};
+
+		if(this.schematic === ''){throw 'XO: Schematic name not set' ;}
+		if(options.at_top){
+			this.dom.block = getSchematic(this.schematic).prependTo(target);
+		} else {
+			this.dom.block = getSchematic(this.schematic).appendTo(target);
+		}
+		//build internal dom object
+		this.dom.block.find('[xo-element]').each(function(index, element){
+			self.dom[jQuery(element).attr('xo-element')] = jQuery(element);
+		});
+		this.render();
+		return this;
+	},
+
+	render : function()
+	{
+		return this;
+	},
+
+	remove : function()
+	{
+		this.dom = this.dom || {};
+		if(this.dom.block) this.dom.block.remove();
+		this.off();
+		return this;
+	},
+});
+
+
+
+xo_model = Archetype.extend({
+	url : undefined,
+
+	initialize : function(obj)
+	{
+		this.set(obj);
+		return this;
+	},
+
+	set : function(key, value)
+	{
+		if(typeof key === 'object' && typeof value === 'undefined'){
+			var self = this;
+			_.each(key, function(v, k){
+				self.set(k,v);
+			});
+			this.trigger('change');
+			return this;
+		}
+		if(this[key] !== value){
+			this[key] = value;
+			this.trigger('change:' + key, value);
+		}
+		return this;
+	},
+
+	evalue : function(key)
+	{
+		if(typeof key === 'function'){
+			return this[key]();
+		}
+		return this[key];
+	},
+
+	onChange : function(attrName, event)
+	{
+		var self = this;
+		this.on('change:' + attrName, function(){
+			event(self.get(attrName));
+		});
+		event(this.get(attrName));
+		return this;
+	},
+
+	attributes : function()
+	{
+		var self = this;
+		return _.reduce(this, function(result, v,k){
+			if(self.hasOwnProperty[k]){
+				result[k] = v;
+			}
+			return result;
+		}, {});
+	},
+
+	toJSON : function()
+	{
+		return JSON.stringify(this.attributes());
+	},
+
+
+	save : function(callback)
+	{
+
+		return this;
+	},
+
+	fetch : function(callback)
+	{
+
+		return this;
+	},
+
+	remove : function(callback)
+	{
+
+		return this;
+	},
+
+
+
+});
+
+
+
+jQuery.getSchematic = function(schematicName){
+	var schematicElement = jQuery('[xo-schematic="' + schematicName + '"]');
+	if(schematicElement.length === 0 ){throw 'ERROR: Could not find schematic with name "' + schematicName + '"';}
+	var schematicCode = jQuery('<div>').append(schematicElement.clone().removeAttr('xo-schematic')).html();
+	return jQuery(schematicCode);
+};
+
+

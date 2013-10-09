@@ -6,11 +6,15 @@
 	<script type="text/javascript" src="libs/jq.js"></script>
 	<script type="text/javascript" src="libs/underscore.js"></script>
 	<script type="text/javascript" src="libs/moment.js"></script>
+	<script type="text/javascript" src="libs/isotope.js"></script>
+
+	<link rel="Stylesheet" type="text/css" href="libs/isotope.css" />
 	<link rel="Stylesheet" type="text/css" href="libs/hint.css" />
 
 
 	<!-- MVC -->
 	<script type="text/javascript" src="libs/backbone.js"></script>
+	<script type="text/javascript" src="libs/archetype.js"></script>
 	<script type="text/javascript" src="libs/xo.js"></script>
 
 	<!-- Style -->
@@ -68,6 +72,50 @@
 -->
 
 	<div class='content'>
+
+		<div class='content__search'>
+			<i class='icon-search'></i>
+			<input type='text' xo-element='search'></input>
+
+		</div>
+
+
+		<div class='calculatorContainer' xo-element='container'>
+			<!-- Calculators go here! -->
+		</div>
+	</div>
+
+
+	<!-- Schematics -->
+	<div class='calculator' xo-schematic='calculator'>
+		<a xo-element='link' target="_blank">
+			<div class='calculator__icon' xo-element='icon'><i></i></div>
+			<div class='calculator__info'>
+				<div class='calculator__info__title' xo-element='title'></div>
+				<div class='calculator__info__description' xo-element='description'></div>
+			</div>
+			<%if (user.account_type == 'admin') { %>
+				<div class='calculator__delete' xo-element='deleteBtn'>
+					<i class='icon-remove'></i>
+				</div>
+			<% } %>
+		</a>
+	</div>
+
+
+	<%if (user.account_type == 'admin') { %>
+		<div class='adminbox'>
+			<i class='icon-rocket'></i> ADMIN MODE
+		</div>
+	<% } %>
+
+
+</body>
+</html>
+
+
+
+
 		<!--
 		<div class='content__title'>Presto Calculators</div>
 
@@ -105,40 +153,3 @@
 
 	-->
 
-
-
-
-
-
-		<div class='calculatorContainer' xo-element='container'>
-			<!-- Calculators go here! -->
-		</div>
-	</div>
-
-
-	<!-- Schematics -->
-	<div class='calculator' xo-schematic='calculator'>
-		<a xo-element='link' target="_blank">
-			<div class='calculator__icon' xo-element='icon'><i></i></div>
-			<div class='calculator__info'>
-				<div class='calculator__info__title' xo-element='title'></div>
-				<div class='calculator__info__description' xo-element='description'></div>
-			</div>
-			<%if (user.account_type == 'admin') { %>
-				<div class='calculator__delete' xo-element='deleteBtn'>
-					<i class='icon-remove'></i>
-				</div>
-			<% } %>
-		</a>
-	</div>
-
-
-	<%if (user.account_type == 'admin') { %>
-		<div class='adminbox'>
-			<i class='icon-rocket'></i> ADMIN MODE
-		</div>
-	<% } %>
-
-
-</body>
-</html>

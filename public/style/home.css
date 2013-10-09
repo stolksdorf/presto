@@ -69,6 +69,34 @@
 			}
 
 
+	.content__search{
+		font-size: 1.8em;
+		margin-top: 20px;
+		margin-left: 26px;
+		color : #444;
+	}
+		.content__search i{
+			margin-right: 10px;
+		}
+
+		.content__search input{
+			font-size: 1.1em;
+			font-weight: 300;
+			padding: 15px;
+			border: 1px solid #ddd;
+
+		}
+
+
+
+
+.calculatorContainer{
+	margin-top : 20px;
+	height : 100%;
+}
+
+
+
 
 
 .calculator{
