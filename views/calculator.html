@@ -98,12 +98,17 @@
 				</div>
 			<% } %>
 
+
+			<div class='topbar__account topbar__button hint--bottom' data-hint='Account'>
+				<%= user.email %>
+			</div>
+
 			<div class='topbar__refreshCalc topbar__button hint--bottom' xo-element='refreshButton' data-hint='Update'>
 				<i class='icon-refresh'></i>
 			</div>
 
-			<div class='topbar__account topbar__button'>
-				<%= user.email %>
+			<div class='topbar__video topbar__button hint--bottom' data-hint='No Video Available'>
+				<i class='icon-facetime-video '></i>
 			</div>
 
 		</div>
