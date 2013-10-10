@@ -149,7 +149,6 @@ xo_view = Archetype.extend({
 	{
 		var target = $('[xo-view="' + viewName + '"');
 		this.dom = this.dom || {};
-
 		return this;
 	},
 
@@ -197,8 +196,32 @@ xo_view = Archetype.extend({
 
 
 
+model_ajax = function(self, name, type, callback, errorCallback){
+	if(!self.urlRoot) throw "XO: No url set";
+	self.trigger('before:'+ name, self);
+	var url = self.urlRoot + (self.id ? "/" + self.id : "");
+	console.log('URL', url);
+	jQuery.ajax({
+		url : url,
+		type : type,
+		data : self.attributes(),
+		success : function(result){
+			self.set(result);
+			if(typeof callback === 'function') callback(self);
+			self.trigger(name, self);
+			return;
+		},
+		error : function(result){
+			if(typeof errorCallback === 'function') errorCallback(self);
+			self.trigger('error:'+ name, result);
+			return self;
+		},
+	});
+}
+
+
 xo_model = Archetype.extend({
-	url : undefined,
+	urlRoot : undefined,
 
 	initialize : function(obj)
 	{
@@ -208,6 +231,7 @@ xo_model = Archetype.extend({
 
 	set : function(key, value)
 	{
+		console.log('SEETING', key, value);
 		if(typeof key === 'object' && typeof value === 'undefined'){
 			var self = this;
 			_.each(key, function(v, k){
@@ -223,21 +247,13 @@ xo_model = Archetype.extend({
 		return this;
 	},
 
-	evalue : function(key)
-	{
-		if(typeof key === 'function'){
-			return this[key]();
-		}
-		return this[key];
-	},
-
 	onChange : function(attrName, event)
 	{
 		var self = this;
 		this.on('change:' + attrName, function(){
 			event(self.get(attrName));
 		});
-		event(this.get(attrName));
+		event(this[attrName]);
 		return this;
 	},
 
@@ -245,9 +261,8 @@ xo_model = Archetype.extend({
 	{
 		var self = this;
 		return _.reduce(this, function(result, v,k){
-			if(self.hasOwnProperty[k]){
-				result[k] = v;
-			}
+			if(k === '__events__' || k === '__super__') return result;
+			result[k] = v;
 			return result;
 		}, {});
 	},
@@ -258,24 +273,31 @@ xo_model = Archetype.extend({
 	},
 
 
-	save : function(callback)
-	{
 
+	save : function(callback, errorCallback)
+	{
+		model_ajax(this, 'save', 'POST', callback, errorCallback);
 		return this;
 	},
 
 	fetch : function(callback)
 	{
-
+		model_ajax(this, 'fetch', 'GET', callback, errorCallback);
 		return this;
 	},
 
-	remove : function(callback)
+	delete : function(callback)
+	{
+		model_ajax(this, 'delete', 'DELETE', callback, errorCallback);
+		return this;
+	},
+
+	fetchAll : function(callback)
 	{
 
+		model_ajax(this, 'fetch_all', 'GET', callback, errorCallback);
 		return this;
 	},
-
 
 
 });

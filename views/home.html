@@ -38,10 +38,67 @@
 
 	<script>
 		PrestoHome.start();
+
+
+
+
+		data = {
+			name : 'test',
+			url : 'scott.tolksdorf@gmail.com',
+			phone : 5194963969,
+			test : true,
+		};
+
+
+		temp = xo_model.create(data);
+
+		MODEL = xo_model.extend({
+			urlRoot : '/test',
+
+
+			sccccccript : 'test',
+			awesome : function()
+			{
+				alert('test');
+			},
+		});
+
+		temp2 = MODEL.create(data);
+
+
+
+
+		jQuery.ajax({
+			url : '/test',
+			type : 'GET',
+			success : function(result){
+				console.log('FETCH ALL', result);
+				return;
+			},
+			error : function(result){
+				return;
+			},
+		});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	</script>
 
 	<div class='topbar'>
-		<div class='topbar__home'>
+		<div class='topbar__icon'>
 			<img src='/assets/logo_100w.png'></img>
 		</div>
 

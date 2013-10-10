@@ -21,7 +21,7 @@
 		},
 		create : function(){
 			var newObj = Object.create(this);
-			newObj.__super__ = this.__super__ || this;
+			//newObj.__super__ = this.__super__ || this;
 			if(arguments.length) newObj.initialize.apply(newObj, arguments);
 			return newObj;
 		},

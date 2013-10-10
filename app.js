@@ -93,6 +93,12 @@ app.get('/register', function(req, res){
 	res.render('register.html');
 });
 
+app.get('/admin', [loadUser, adminOnly], function(req, res){
+	return res.render('admin.html', {
+		user : req.user,
+		routes : ['/api/calculator', '/api/users']
+	});
+});
 
 ///////////////////// Activation
 
@@ -258,8 +264,52 @@ app.get('/drop', [loadUser, adminOnly], [loadUser, adminOnly], function(req, res
 
 
 
+//Testing API
+
+var TestModel = mongoose.model('TestModel', mongoose.Schema({
+	id          : String,
+	name :String,
+	url : String,
+	phone : Number,
+	test : Boolean,
+}));
 
 
+app.get('/test', function(req,res){
+	TestModel.find(function(err, objs){
+		res.send(objs);
+	});
+});
+
+app.get('/test/:id', function(req,res){
+	console.log('getting', req.params.id);
+	TestModel.findById(req.params.id, function(err, test){
+		res.send(test);
+	});
+});
+
+app.post('/test', function(req, res){
+	console.log('creating', req.body);
+	var newObj = new TestModel(req.body);
+	if(!newObj.id) newObj.id = newObj._id;
+	newObj.save(function(error, newObj){
+		res.send(newObj);
+	});
+});
+
+app.post('/test/:id', function(req,res){
+	console.log('params', req.params);
+	TestModel.findByIdAndUpdate(req.params.id, req.body, function(err, obj){
+		res.send(obj);
+	});
+});
+
+app.delete('/test/:id', function(req,res){
+	console.log('deleteing', req.params.id);
+	TestModel.findByIdAndRemove(req.params.id, function(err, obj){
+		res.send(obj);
+	});
+});
 
 
 
