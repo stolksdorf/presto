@@ -1,5 +1,7 @@
 
 .output{
+	position       : relative;
+
 	padding-right  : 15px;
 	padding-bottom : 15px;
 	padding-left   : 15px;
@@ -23,3 +25,18 @@
 		float          : right;
 		font-size      : 1.3em;
 	}
+
+	.output__deltaPos, .output__deltaNeg{
+		position : absolute;
+		display  : none;
+		float    : right;
+		top      : 2px;
+		right    : -7px;
+	}
+
+		.output__deltaPos{
+			color : #27AE60;
+		}
+		.output__deltaNeg{
+			color : #C0392B;
+		}

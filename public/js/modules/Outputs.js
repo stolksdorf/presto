@@ -46,15 +46,44 @@ Presto.registerModule({
 					return _.evalue(this.definition.value);
 				},
 
-				draw : function(data)
+				draw : function()
 				{
-					this.definition.type.renderer(data, this.dom.value);
+					this.definition.type.renderer(this.data, this.dom.value);
 
 					if(!_.evalue(this.definition.description)){
 						this.dom.description.hide();
 					}
 					this.dom.description.text(_.evalue(this.definition.description));
 					this.dom.title.text(_.evalue(this.definition.title));
+
+					if(!_.evalue(this.definition.hideDelta)){
+						this.drawDelta();
+					}
+					return this;
+				},
+
+				drawDelta : function()
+				{
+					this.dom.deltaNeg.hide();
+					this.dom.deltaPos.hide();
+					if(typeof this.data !== 'number' || typeof this.old_data !== 'number'){
+						this.old_data = this.data;
+						return this;
+					}
+
+					var delta = this.data - this.old_data;
+					var displayValue = this.definition.type.renderer(delta)
+
+					if(delta > 0){
+						this.dom.deltaPos.show()
+						this.dom.deltaPos.attr('data-hint', displayValue);
+					} else if(delta < 0){
+						this.dom.deltaNeg.show()
+						this.dom.deltaNeg.attr('data-hint', displayValue);
+					}
+
+					this.old_data = this.data;
+					return this;
 				},
 			})
 		}
