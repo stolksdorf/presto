@@ -76,7 +76,7 @@ Presto.registerModule({
 
 					if(delta > 0){
 						this.dom.deltaPos.show()
-						this.dom.deltaPos.attr('data-hint', displayValue);
+						this.dom.deltaPos.attr('data-hint', "+"+displayValue);
 					} else if(delta < 0){
 						this.dom.deltaNeg.show()
 						this.dom.deltaNeg.attr('data-hint', displayValue);
