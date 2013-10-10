@@ -141,7 +141,7 @@ Presto = Archetype.extend({
 			module.def = def;
 			module.initialize();
 
-			window[module.name] = def;
+			window[module.name] = def; //??????
 		});
 
 
@@ -180,7 +180,9 @@ Presto = Archetype.extend({
 
 			if(iterationCount > Presto.options.max_update_iterations){
 
-				throw 'Circular dependacy';
+				//throw 'Circular dependacy';
+				console.error('System Oscillating: No saddlepoint found');
+				break;
 			}
 
 /*

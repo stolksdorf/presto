@@ -130,7 +130,6 @@ app.get('/activate/:key', function(req,res){
 });
 
 
-
 var sendActivationEmail = function(domain, user, callback){
 	var newActivationKey = new ActivationKey({user_id : user._id});
 	newActivationKey.save(function(error, newKey){
