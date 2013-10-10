@@ -68,7 +68,7 @@ Presto_Block_Home = XO.Block.extend({
 					self.dom.searchingIcon.hide();
 
 
-					self.search(self.dom.search.val());
+					self.search(self.dom.search.val().split(' '));
 			}, 500);
 		});
 
@@ -99,13 +99,13 @@ Presto_Block_Home = XO.Block.extend({
 		return this;
 	},
 
-	search : function(term)
+	search : function(terms)
 	{
 		var matchedItems = _.filter(this.calculators, function(calc){
-			return calc.search(term);
+			return calc.search(terms);
 		});
 
-		this.dom.container.isotope({ filter: '.searched' });
+		this.dom.container.isotope({ filter: '.matched' });
 
 		return this;
 	},
@@ -207,10 +207,15 @@ Presto_Block_CalculatorOption = XO.Block.extend({
 		return this;
 	},
 
-	search : function(term)
+	search : function(terms)
 	{
 		var self = this;
-		this.dom.block.removeClass('searched');
+
+		if(typeof terms === 'string'){
+			terms = [terms];
+		}
+
+		this.dom.block.removeClass('matched');
 
 		var contains = function(str, target){
 			if(typeof str !== 'string'){
@@ -219,32 +224,31 @@ Presto_Block_CalculatorOption = XO.Block.extend({
 			return str.toLowerCase().indexOf(target.toLowerCase()) !== -1;
 		}
 
-
-
-		//check title
-		if(contains(this.model.get('title'), term)){
-			this.dom.block.addClass('searched');
-			return true;
-		}
-
-		//check description
-		if(contains(this.model.get('description'), term)){
-			this.dom.block.addClass('searched');
-			return true;
-		}
-
-		//check group
-		if(contains(this.model.get('group'), term)){
-			this.dom.block.addClass('searched');
-			return true;
-		}
-
-		//check keywords
-		_.each(this.model.get('keywords'), function(keyword){
-			if(contains(keyword, term)){
-				self.dom.block.addClass('searched');
+		var found = _.every(terms, function(term){
+			//check title
+			if(contains(self.model.get('title'), term)){
+				return true;
 			}
+
+			//check description
+			if(contains(self.model.get('description'), term)){
+				return true;
+			}
+
+			//check group
+			if(contains(self.model.get('group'), term)){
+				return true;
+			}
+
+			//check keywords
+			return _.some(self.model.get('keywords'), function(keyword){
+				return contains(keyword, term);
+			});
 		});
+
+		if(found){
+			this.dom.block.addClass('matched');
+		}
 
 
 		return false;
