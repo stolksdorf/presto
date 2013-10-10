@@ -131,22 +131,20 @@ app.get('/activate/:key', function(req,res){
 
 
 
-var sendActivationEmail = function(user, callback){
+var sendActivationEmail = function(domain, user, callback){
 	var newActivationKey = new ActivationKey({user_id : user._id});
 	newActivationKey.save(function(error, newKey){
-		var url = 'http://www.prestocalc.com/activate/' + newKey.key;
-
-		//url = 'http://localhost:5000/activate/' + newKey.key;
-
+		var url = domain + '/activate/' + newKey.key;
 		mail.sendActivationEmail(user, url, callback);
 	});
 };
 
 app.post('/addLink', function(req,res){
+	var domain = req.protocol + "://" + req.get('host');
 	var email = req.body.email;
 	User.getByEmail(email, function(err, user){
 		if(err){ return res.send(500) }
-		sendActivationEmail(user, function(error){
+		sendActivationEmail(domain, user, function(error){
 			if(error){ return res.send(500)}
 			return res.send(200);
 		});

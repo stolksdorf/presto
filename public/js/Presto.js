@@ -175,9 +175,11 @@ Presto = Archetype.extend({
 				}
 			});
 
-			console.log(newGlobals);
+			console.log('old', this.globals);
+			console.log('new', newGlobals);
 
 			if(iterationCount > Presto.options.max_update_iterations){
+
 				throw 'Circular dependacy';
 			}
 
