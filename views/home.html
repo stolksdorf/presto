@@ -40,8 +40,6 @@
 		PrestoHome.start();
 
 
-
-
 		data = {
 			name : 'test',
 			url : 'scott.tolksdorf@gmail.com',
@@ -52,7 +50,7 @@
 
 		temp = xo_model.create(data);
 
-		MODEL = xo_model.extend({
+		M = xo_model.extend({
 			urlRoot : '/test',
 
 
@@ -63,22 +61,11 @@
 			},
 		});
 
-		temp2 = MODEL.create(data);
+		temp2 = M.create(data);
 
-
-
-
-		jQuery.ajax({
-			url : '/test',
-			type : 'GET',
-			success : function(result){
-				console.log('FETCH ALL', result);
-				return;
-			},
-			error : function(result){
-				return;
-			},
-		});
+		M.fetchAll(function(result){
+			models = result;
+		})
 
 
 

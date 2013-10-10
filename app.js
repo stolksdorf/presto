@@ -42,6 +42,7 @@ require('./modules/models/user.js');
 var adminOnly = function(req,res,next){
 	if(req.user){
 		if(req.user.account_type === 'admin'){
+			console.log('Admin valided');
 			return next();
 		}
 	}
@@ -59,7 +60,7 @@ var loadUser = function(req,res,next){
 			return res.redirect('/register');
 		}
 		req.user = user;
-		console.log('user', user);
+		console.log('Logging in: ' + user.email);
 		next();
 	});
 }
@@ -276,15 +277,18 @@ var TestModel = mongoose.model('TestModel', mongoose.Schema({
 
 
 app.get('/test', function(req,res){
+	console.log('getting all');
 	TestModel.find(function(err, objs){
-		res.send(objs);
+		if(err) return res.send(500, err.message);
+		return res.send(objs);
 	});
 });
 
 app.get('/test/:id', function(req,res){
 	console.log('getting', req.params.id);
 	TestModel.findById(req.params.id, function(err, test){
-		res.send(test);
+		if(err) return res.send(500, err.message);
+		return res.send(test);
 	});
 });
 
@@ -293,21 +297,24 @@ app.post('/test', function(req, res){
 	var newObj = new TestModel(req.body);
 	if(!newObj.id) newObj.id = newObj._id;
 	newObj.save(function(error, newObj){
-		res.send(newObj);
+		if(err) return res.send(500, err.message);
+		return res.send(newObj);
 	});
 });
 
-app.post('/test/:id', function(req,res){
-	console.log('params', req.params);
+app.put('/test/:id', function(req,res){
+	console.log('update', req.body);
 	TestModel.findByIdAndUpdate(req.params.id, req.body, function(err, obj){
-		res.send(obj);
+		if(err) return res.send(500, err.message);
+		return res.send(obj);
 	});
 });
 
 app.delete('/test/:id', function(req,res){
 	console.log('deleteing', req.params.id);
 	TestModel.findByIdAndRemove(req.params.id, function(err, obj){
-		res.send(obj);
+		if(err) return res.send(500, err.message);
+		return res.send(obj);
 	});
 });
 

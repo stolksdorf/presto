@@ -200,7 +200,7 @@ model_ajax = function(self, name, type, callback, errorCallback){
 	if(!self.urlRoot) throw "XO: No url set";
 	self.trigger('before:'+ name, self);
 	var url = self.urlRoot + (self.id ? "/" + self.id : "");
-	console.log('URL', url);
+
 	jQuery.ajax({
 		url : url,
 		type : type,
@@ -212,6 +212,7 @@ model_ajax = function(self, name, type, callback, errorCallback){
 			return;
 		},
 		error : function(result){
+			console.log('err', result);
 			if(typeof errorCallback === 'function') errorCallback(self);
 			self.trigger('error:'+ name, result);
 			return self;
@@ -231,7 +232,6 @@ xo_model = Archetype.extend({
 
 	set : function(key, value)
 	{
-		console.log('SEETING', key, value);
 		if(typeof key === 'object' && typeof value === 'undefined'){
 			var self = this;
 			_.each(key, function(v, k){
@@ -261,7 +261,7 @@ xo_model = Archetype.extend({
 	{
 		var self = this;
 		return _.reduce(this, function(result, v,k){
-			if(k === '__events__' || k === '__super__') return result;
+			if(k === '__events__' || k === '__super__' || k === 'urlRoot' || typeof v ==='function') return result;
 			result[k] = v;
 			return result;
 		}, {});
@@ -272,34 +272,92 @@ xo_model = Archetype.extend({
 		return JSON.stringify(this.attributes());
 	},
 
-
-
 	save : function(callback, errorCallback)
 	{
-		model_ajax(this, 'save', 'POST', callback, errorCallback);
+		var self = this;
+		if(!this.urlRoot) throw "XO: No url set";
+		this.trigger('before:save', this);
+		jQuery.ajax({
+			url : this.urlRoot + (this.id ? "/" + this.id : ""),
+			type : (this.id ? 'PUT' : 'POST'),
+			data : this.attributes(),
+			success : function(result){
+				self.set(result);
+				if(typeof callback === 'function') callback(self);
+				self.trigger('save', self);
+			},
+			error : function(result){
+				console.log('err', result);
+				if(typeof errorCallback === 'function') errorCallback(result);
+				self.trigger('error:save', result);
+			},
+		});
 		return this;
 	},
 
-	fetch : function(callback)
+	fetch : function(callback, errorCallback)
 	{
-		model_ajax(this, 'fetch', 'GET', callback, errorCallback);
+		var self = this;
+		if(!this.urlRoot) throw "XO: No url set";
+		this.trigger('before:fetch', this);
+		jQuery.ajax({
+			url : this.urlRoot + '/' + this.id,
+			type : 'GET',
+			success : function(result){
+				self.set(result);
+				if(typeof callback === 'function') callback(self);
+				self.trigger('fetch', self);
+			},
+			error : function(result){
+				console.log('err', result);
+				if(typeof errorCallback === 'function') errorCallback(result);
+				self.trigger('error:fetch', result);
+			},
+		});
 		return this;
 	},
 
-	delete : function(callback)
+	delete : function(callback, errorCallback)
 	{
-		model_ajax(this, 'delete', 'DELETE', callback, errorCallback);
+		var self = this;
+		if(!this.urlRoot) throw "XO: No url set";
+		this.trigger('before:delete', this);
+		jQuery.ajax({
+			url : this.urlRoot + '/' + this.id,
+			type : 'DELETE',
+			success : function(result){
+				if(typeof callback === 'function') callback(self);
+				self.trigger('delete', self);
+			},
+			error : function(result){
+				console.log('err', result);
+				if(typeof errorCallback === 'function') errorCallback(result);
+				self.trigger('error:delete', result);
+			},
+		});
 		return this;
 	},
 
-	fetchAll : function(callback)
+	fetchAll : function(callback, errorCallback)
 	{
-
-		model_ajax(this, 'fetch_all', 'GET', callback, errorCallback);
+		var self = this;
+		if(!this.urlRoot) throw "XO: No url set";
+		jQuery.ajax({
+			url : this.urlRoot,
+			type : 'GET',
+			success : function(result){
+				result = _.map(result, function(data){
+					return self.create(data);
+				});
+				if(typeof callback === 'function') callback(result);
+			},
+			error : function(result){
+				console.log('err', result);
+				if(typeof errorCallback === 'function') errorCallback(result);
+			},
+		});
 		return this;
 	},
-
-
 });
 
 
