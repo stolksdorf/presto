@@ -66,7 +66,7 @@ Presto.registerModule({
 				{
 					this.dom.deltaNeg.hide();
 					this.dom.deltaPos.hide();
-					if(typeof this.data !== 'number' || typeof this.old_data !== 'number'){
+					if(!this.data || !this.old_data || !this.definition.type.isNumerical){
 						this.old_data = this.data;
 						return this;
 					}

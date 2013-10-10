@@ -33,9 +33,6 @@ Presto = Archetype.extend({
 
 	render : function() //rename to draw
 	{
-		console.log('Modules', this.modules);
-
-
 		var self = this;
 		this.overlayBlock = new Presto_Block_Overlay(this.calculatorModel);
 
@@ -160,10 +157,10 @@ Presto = Archetype.extend({
 				thrownError = false;
 			_.each(self.modules, function(module){
 				try{
-					console.log("  " + module.name);
+					//console.log("  " + module.name);
 					var temp = module.generate();
 				}catch(e){
-					console.log('err', e.message);
+					console.log('err - '+ module.name, e.message);
 					thrownError = true;
 					if(iterationCount > Presto.options.max_update_iterations){
 						module.generate(); //Just cause the error again
@@ -174,9 +171,6 @@ Presto = Archetype.extend({
 					window[module.global] = temp;
 				}
 			});
-
-			console.log('old', this.globals);
-			console.log('new', newGlobals);
 
 			if(iterationCount > Presto.options.max_update_iterations){
 

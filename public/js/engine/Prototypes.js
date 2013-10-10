@@ -9,12 +9,12 @@ Type = {
 		isNumerical : true,
 		renderer : function(value, view){
 			if(view){
-				view.text(value*1);
+				view.text((value*1).round(2));
 				if(typeof value === 'undefined'){
 					view.text('--');
 				}
 			}
-			return value*1;
+			return (value*1).round(2);
 		}
 	},
 
