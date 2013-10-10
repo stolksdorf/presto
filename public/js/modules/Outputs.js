@@ -72,14 +72,18 @@ Presto.registerModule({
 					}
 
 					var delta = this.data - this.old_data;
-					var displayValue = this.definition.type.renderer(delta)
+					var displayValue = this.definition.type.renderer(Math.abs(delta));
+
+					if(_.evalue(this.definition.reverseDelta)){
+						delta = -delta;
+					}
 
 					if(delta > 0){
 						this.dom.deltaPos.show()
 						this.dom.deltaPos.attr('data-hint', "+"+displayValue);
 					} else if(delta < 0){
 						this.dom.deltaNeg.show()
-						this.dom.deltaNeg.attr('data-hint', displayValue);
+						this.dom.deltaNeg.attr('data-hint', "-"+displayValue);
 					}
 
 					this.old_data = this.data;
