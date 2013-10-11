@@ -11,11 +11,12 @@ Presto = Archetype.extend({
 		this.options = _.extend(this.defaultOptions, opts);
 
 		this.model = xo.model.create();
-		this.blueprint = Presto_Model_Blueprint.create();
-		this.blueprint.id = this.options.calcId;
+		this.blueprint = Presto_Model_Blueprint.create({
+			id : this.options.calcId
+		});
+		//this.blueprint.id = ;
 		this.blueprint.fetch();
 
-		//When the page loads render the calculator
 		$(document).ready(function(){
 			console.log('READY');
 			self.render();

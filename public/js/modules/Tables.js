@@ -141,9 +141,6 @@ Presto.registerModule({
 
 					this.dom.title.text(_.evalue(this.definition.title));
 
-					//allows space for the cell to become bold
-					this.dom.block.width(this.dom.block.width() + 10);
-
 					return this;
 				},
 

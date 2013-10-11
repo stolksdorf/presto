@@ -41,20 +41,10 @@ require('./modules/models/keys.js');
 
 //Routes
 app.get('/calc/:calcId', [mw.loadUser], function(req,res){
-	Calculator.findOne({id : req.params.calcId}, function(err, calculator){
-
-		var temp = calculator.toObject();
-
-		delete temp._id;
-		delete temp.last_modified;
-
-		return res.render('calculator.html', {
-			user : req.user,
-			calcId : req.params.calcId, //TODO: revert to a API call
-			calc : temp
-		});
+	return res.render('calculator.html', {
+		user : req.user,
+		calcId : req.params.calcId
 	});
-
 });
 
 app.get('/home', [mw.loadUser], function(req,res){
