@@ -3,12 +3,13 @@
 <head>
 
 
+
 	<!-- Libraries -->
 	<script type="text/javascript" src="../libs/jq.js"></script>
 	<script type="text/javascript" src="../libs/underscore.js"></script>
 	<script type="text/javascript" src="../libs/moment.js"></script>
 	<script type="text/javascript" src="../libs/widget.js"></script>
-	<script type="text/javascript" src="../libs/archetype.js"></script>
+
 	<script type="text/javascript" src="../libs/jquery.flot.min.js"></script>
 	<link rel="Stylesheet" type="text/css" href="../libs/hint.css" />
 	<!-- remote
@@ -27,7 +28,7 @@
 
 
 	<!-- MVC -->
-	<script type="text/javascript" src="../libs/backbone.js"></script>
+	<script type="text/javascript" src="../libs/archetype.js"></script>
 	<script type="text/javascript" src="../libs/xo.js"></script>
 
 
@@ -38,14 +39,10 @@
 
 
 
-	<!--
-		PRESTO
-	-->
-
 
 	<!-- Engine -->
 	<script type="text/javascript" src="../js/Presto.js"></script>
-	<script type="text/javascript" src="../js/engine/Prototypes.js"></script>
+	<script type="text/javascript" src="../js/prototypes.js"></script>
 	<script type="text/javascript" src="../js/engine/CalculatorBlueprintModel.js"></script>
 	<script type="text/javascript" src="../js/engine/ModuleBlueprint.js"></script>
 	<script type="text/javascript" src="../js/engine/OverlayBlock.js"></script>
@@ -171,7 +168,16 @@
 		</div>
 	<% } %>
 
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', 'UA-44198332-1', 'prestocalc.com');
+		ga('send', 'pageview');
+	</script>
 </body>
+</html>
 
 
 
@@ -245,28 +251,3 @@
 	<div class='chart__description' xo-element='description'></div>
 	<div class='chart__graph' xo-element='graph'></div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-44198332-1', 'prestocalc.com');
-  ga('send', 'pageview');
-
-</script>
-
-
-
-</html>
