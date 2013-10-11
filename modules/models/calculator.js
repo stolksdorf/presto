@@ -7,11 +7,10 @@ var CalculatorSchema = mongoose.Schema({
 	description : String,
 	color       : String,
 	icon        : String,
-	url         : String,
-	script      : String,
+	script      : { type : String, default : fs.readFileSync('default_calculator.js','utf8')},
 	keywords    : [String],
 	group       : String,
-	last_modified : { type: Date, default: Date.now },
+	created : { type: Date, default: Date.now },
 });
 
 

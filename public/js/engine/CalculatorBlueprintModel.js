@@ -5,6 +5,8 @@
  */
 Presto_Model_CalculatorBlueprint = XO.Model.extend({
 	urlRoot : '/api/calculators',
+
+	/*
 	defaults : {
 		title       : 'New Calculator',
 		description : 'Click here to edit',
@@ -12,6 +14,7 @@ Presto_Model_CalculatorBlueprint = XO.Model.extend({
 		color       : 'yellow',
 		script      : "{\n	title       : 'New Calculator',\n	description : 'Click to edit',\n	icon        : 'icon-file-alt',\n	color       : 'yellow',\n\n	inputs : {\n		capital : {\n			title : 'Capital',\n			description : 'How much money ya got',\n			type  : Type.Money,\n			initialValue : 500\n		},\n		age : {\n			title : 'Age',\n			type  : Type.Number,\n			initialValue : 25\n		}\n	},\n\n	tables : {\n		sample : {\n			title : 'Sample Table',\n			columns : {\n				age : {\n					title : 'Age',\n					type : Type.Number,\n					firstCell : function(){\n						return Inputs.age;\n					},\n					generator : function(previousCellValue, index){\n						return previousCellValue + 1;\n					}\n				},\n				capitalDelta : {\n					title : 'Capital Change',\n					type  : Type.Money,\n					firstCell : function(){\n						return Inputs.capital;\n					},\n					generator : function(previousCellValue, index){\n						return previousCellValue + Math.random()*100;\n					}\n				},\n				random : {\n					title : 'Random',\n					type  : Type.Money,\n					firstCell : function(){\n						return 0;\n					},\n					generator : function(previousCellValue, index){\n						return previousCellValue + Math.random()*100;\n					}\n				},\n			}\n		}\n	},\n\n	charts : {\n		basic : {\n			title : function(){\n				return 'Sample Chart' + Outputs.test;\n			},\n			hover : function(x,y,label){\n				return '<b>$' + y + '</b> at month ' + x + '</br>' + label;\n			},\n			breakeven : [ ['capitalDelta', 'random'] ],\n			table : 'sample',\n		}\n	},\n\n	outputs : {\n		breakeven : {\n			title : 'Break-even Age',\n			description : 'Age at which you made 10% of your initial capital',\n			type : Type.Number,\n			value : function(){\n				var breakEvenAge = Tables.sample.age.find(function(age, index){\n					if(Tables.sample.capitalDelta[index] > Inputs.capital * 1.10){\n						return true;\n					}\n					return false;\n				});\n				return breakEvenAge;\n			}\n		}\n	}\n}\n"
 	},
+	*/
 
 	upload : function(callback)
 	{
@@ -67,6 +70,104 @@ Presto_Model_CalculatorBlueprint = XO.Model.extend({
 
 		this.trigger('execute', result);
 		return result;
+	},
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+Presto_Calculator = xo.model.extend({
+	urlRoot : '/api/calculators',
+
+	initialize : function()
+	{
+		var self = this;
+
+		this.on('change:script', function(){
+			self.execute();
+		});
+		return this;
+	},
+
+	upload : function(callback)
+	{
+		this.save(function(err, result){
+			callback(result);
+		});
+		return this;
+	},
+
+/*
+	retrieve : function(callback)
+	{
+		var self = this;
+		this.fetch(function(err, result){
+			self.execute();
+			callback(result);
+		});
+		return this;
+	},
+*/
+
+	/**
+	 * Executes the current script and triggers out the resultant object
+	 * @return {[type]} [description]
+	 */
+	execute : function()
+	{
+		var self = this;
+
+		eval("with (this) {var result = (" + this.script + ")}");
+
+		//update from result
+		_.each(['title','description', 'color', 'icon', 'group', 'keywords'], function(modelAttributeName){
+			if(typeof result[modelAttributeName] !== 'undefined'){
+				self.set(modelAttributeName, result[modelAttributeName]);
+			}
+		});
+
+		this.trigger('execute', result);
+		return result;
+	},
+
+	search : function(terms)
+	{
+		var self = this;
+		if(typeof terms === 'string'){
+			terms = [terms];
+		}
+
+		var contains = function(str, target){
+			if(typeof str !== 'string'){ return false;}
+			return str.toLowerCase().indexOf(target.toLowerCase()) !== -1;
+		}
+
+		var found = _.every(terms, function(term){
+			if(contains(self.title, term)){
+				return true;
+			}
+			if(contains(self.description, term)){
+				return true;
+			}
+			if(contains(self.group, term)){
+				return true;
+			}
+			return _.some(self.keywords, function(keyword){
+				return contains(keyword, term);
+			});
+		});
+
+		this.trigger('isMatched', found);
+		return found;
 	},
 
 });

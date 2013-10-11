@@ -58,11 +58,11 @@ exports.api = function(endpoint, Model, middleware){
 	});
 
 	app.post(endpoint, mw.post, function(req, res){
-		console.log('creating : '+ endpoint, req.body);
 		var obj = new Model(req.body);
 		if(!obj.id) obj.id = obj._id;
 		obj.save(function(err, obj){
 			if(err) return res.send(500, err.message);
+			console.log('creating : '+ endpoint, obj);
 			return res.send(clean(obj));
 		});
 	});

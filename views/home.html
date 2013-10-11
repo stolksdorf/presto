@@ -17,6 +17,8 @@
 	<script type="text/javascript" src="libs/archetype.js"></script>
 	<script type="text/javascript" src="libs/xo.js"></script>
 
+	<script type="text/javascript" src="../js/engine/Prototypes.js"></script>
+
 	<!-- Style -->
 	<link rel="Stylesheet" type="text/css" href="style/reset.css" />
 	<link rel="Stylesheet" type="text/css" href="style/presto.css" />
@@ -32,51 +34,12 @@
 
 
 
-<body xo-block='home'>
+<body xo-view='home'>
 
 	<title>Presto Calculators</title>
 
 	<script>
 		PrestoHome.start();
-
-
-		data = {
-			name : 'test',
-			url : 'scott.tolksdorf@gmail.com',
-			phone : 5194963969,
-			test : true,
-		};
-
-		Calculator = xo.model.extend({
-			urlRoot : '/test'
-		});
-
-		var calc = Calculator.create({
-			script : '{test : 6}'
-		});
-
-
-
-
-
-
-		eval("with (this) {var result = (" + calc.script + ")}");
-
-		console.log(result);
-
-		calc.script = JSON.stringify(result);
-
-
-
-
-
-
-
-
-
-
-
-
 
 	</script>
 

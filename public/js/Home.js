@@ -15,7 +15,8 @@ PrestoHome = {
 	{
 		var self = this;
 
-		this.block = Presto = new Presto_Block_Home();
+		this.block = Presto_Block_Home.create();
+		this.block.bindToView();
 		return this;
 	},
 
@@ -23,35 +24,25 @@ PrestoHome = {
 }
 
 
-Presto_Block_Home = XO.Block.extend({
-	block : 'home',
+Presto_Block_Home = xo.view.extend({
+	view : 'home',
 
 	render : function()
 	{
 		var self = this;
 
 
-		this.calculators = [];
+		this.calculators = xo.collection.extend({model : Presto_Calculator });
 
-		this.calculatorCollection = new XO.Collection([],{
-			url   : '/api/calculators',
-			model : Presto_Model_CalculatorBlueprint
-		});
-
-		this.calculatorCollection.on('add', function(calc) {
+		this.calculators.on('add', function(calc){
 			self.addCalculator(calc);
-
-
-			self.dom.container.isotope({
-			  itemSelector : '.calculator',
-			  layoutMode : 'fitRows'
-			});
 		});
+
 
 
 		if(this.dom.newCalculatorButton){
 			this.dom.newCalculatorButton.click(function(){
-				self.calculatorCollection.addNew();
+				self.calculators.add().save();
 			});
 		}
 
@@ -77,25 +68,8 @@ Presto_Block_Home = XO.Block.extend({
 			layoutMode : 'fitRows'
 		});
 
-/*
-		$.get('/api/calculator', function(result){
-			console.log('yo', result);
 
-			_.each(result, function(model){
-				var newCalc = Presto_View_Calculator.create(model)
-				self.calculators.push()
-
-
-			});
-
-
-		})
-*/
-
-
-		this.calculatorCollection.fetch(function(){
-			console.log('finished fetch');
-		});
+		this.calculators.fetch();
 		return this;
 	},
 
@@ -105,6 +79,8 @@ Presto_Block_Home = XO.Block.extend({
 			return calc.search(terms);
 		});
 
+		console.log(matchedItems);
+
 		this.dom.container.isotope({ filter: '.matched' });
 
 		return this;
@@ -112,14 +88,21 @@ Presto_Block_Home = XO.Block.extend({
 
 	addCalculator : function(calculatorModel)
 	{
-		var newBlock = new Presto_Block_CalculatorOption(calculatorModel);
-		newBlock.injectInto(this.dom.container);
+		var self = this;
+		//var newBlock = new Presto_Block_CalculatorOption(calculatorModel);
+		var newCalc = Presto_Block_CalculatorOption.create(calculatorModel);
 
-		this.calculators.push(newBlock);
 
-		//TODO: Do I need this?
-		this.dom.container.isotope( 'addItems', newBlock.dom.block);
+		console.log(newCalc);
 
+		newCalc.on('remove', function(){
+			self.dom.container.isotope( 'remove', newCalc.dom.block);
+		})
+
+		newCalc.injectInto(this.dom.container);
+
+
+		this.dom.container.isotope( 'addItems', newCalc.dom.block);
 		this.dom.container.isotope({
 		  itemSelector : '.calculator',
 		  layoutMode : 'fitRows'
@@ -133,64 +116,29 @@ Presto_Block_Home = XO.Block.extend({
 
 });
 
-
-/*
-Presto_View_Calculator = xo_view.extend({
-	schematic : 'calculator',
-
-	initialize : function(model)
-	{
-		this.model = model;
-		return this;
-	},
-
-	render : function()
-	{
-
-		this.dom.block.addClass(this.model.color);
-		this.dom.title.text(this.model.title);
-		this.dom.description.text(this.model.description);
-		this.dom.icon.find('i').addClass(this.model.icon);
-		this.dom.link.attr('href', this.model.url);
-
-	},
-
-
-
-	search : function(term)
-	{
-		if(Math.random() > 0.5){
-			return true;
-		}
-		return false;
-	},
-
-});
-
-*/
-
-
-Presto_Block_CalculatorOption = XO.Block.extend({
+Presto_Block_CalculatorOption = xo.view.extend({
 	schematic : 'calculator',
 
 	render : function()
 	{
 		var self = this;
 
-		this.model.onChange('color', function(){
-			self.dom.block.addClass(self.model.get('color'));
-		});
-		this.model.onChange('title', function(){
-			self.dom.title.text(self.model.get('title'));
-		});
-		this.model.onChange('description', function(){
-			self.dom.description.text(self.model.get('description'));
-		});
-		this.model.onChange('icon', function(){
-			self.dom.icon.find('i').addClass(self.model.get('icon'));
-		});
-		this.model.onChange('url', function(){
-			self.dom.link.attr('href', '/calc/' + self.model.get('id'));
+		this.model.onChange({
+			color : function(color){
+				self.dom.block.addClass(color);
+			},
+			title : function(title){
+				self.dom.title.text(title);
+			},
+			description : function(description){
+				self.dom.description.text(description);
+			},
+			icon : function(icon){
+				self.dom.icon.find('i').addClass(icon);
+			},
+			id : function(id){
+				self.dom.link.attr('href', '/calc/' + id);
+			},
 		});
 
 		if(this.dom.deleteBtn){
@@ -198,15 +146,24 @@ Presto_Block_CalculatorOption = XO.Block.extend({
 				event.preventDefault();
 				var temp = confirm("Are you sure you want to delete this calculator?");
 				if(temp){
-					self.model.destroy();
+					self.model.delete();
 					self.remove();
 				}
 			});
 		}
 
+		this.model.on('isMatched', function(isMatched){
+			if(isMatched){
+				self.dom.block.addClass('matched');
+			} else {
+				self.dom.block.removeClass('matched');
+			}
+		});
+
 		return this;
 	},
 
+/*
 	search : function(terms)
 	{
 		var self = this;
@@ -253,6 +210,7 @@ Presto_Block_CalculatorOption = XO.Block.extend({
 
 		return false;
 	},
+	*/
 
 
 });

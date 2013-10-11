@@ -16,6 +16,8 @@ app.use(express.cookieParser());
 app.use(express.static(__dirname + '/public'));
 app.locals.inspect = require('util').inspect;
 
+GLOBAL.fs = require('fs');
+
 GLOBAL._ = require('underscore');
 
 

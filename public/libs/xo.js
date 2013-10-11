@@ -176,6 +176,7 @@ jQuery.getSchematic = function(schematicName){
 		var self = this;
 		if(!args.url) throw 'XO : Url not set';
 		var callback = args.callback || function(){};
+		var success  = args.success || function(){};
 		var http = {
 			'fetch ' : 'GET',
 			'save'   : (self.id ? 'PUT' : 'POST'),
@@ -187,13 +188,13 @@ jQuery.getSchematic = function(schematicName){
 			type : http[args.type],
 			data : args.data,
 			success : function(data){
-				args.success.call(self, data);
+				success.call(self, data);
 				callback(undefined, self);
 				self.trigger(args.type, self);
 			},
 			error : function(err){
 				callback(err);
-				self.trigger('error');
+				self.trigger('error'); s
 				self.trigger('error:'+args.type, err);
 			},
 		});
@@ -204,10 +205,17 @@ jQuery.getSchematic = function(schematicName){
 			view      : undefined,
 			schematic : undefined,
 
+			initialize : function(model)
+			{
+				this.model = model;
+				return this;
+			},
+
 			bindToView : function()
 			{
+				var self = this;
 				this.dom = this.dom || {};
-				this.dom.block = jQuery('[xo-view="' + this.view + '"');
+				this.dom.block = jQuery('[xo-view="' + this.view + '"]');
 				this.dom.block.find('[xo-element]').each(function(index, element){
 					self.dom[jQuery(element).attr('xo-element')] = jQuery(element);
 				});
@@ -246,6 +254,7 @@ jQuery.getSchematic = function(schematicName){
 			},
 			remove : function()
 			{
+				this.trigger('remove', this);
 				this.dom = this.dom || {};
 				if(this.dom.block) this.dom.block.remove();
 				this.off();
@@ -280,6 +289,12 @@ jQuery.getSchematic = function(schematicName){
 			onChange : function(attrName, event)
 			{
 				var self = this;
+				if(typeof attrName === 'object' && typeof event === 'undefined'){
+					_.map(attrName, function(v, k){
+						self.onChange(k,v);
+					});
+					return this;
+				}
 				this.on('change:' + attrName, function(){
 					event(self[attrName]);
 				});
@@ -356,9 +371,11 @@ jQuery.getSchematic = function(schematicName){
 			},
 			add : function(obj)
 			{
-				this.push(this.model.create(obj));
-				this.trigger('add', obj);
-				return this;
+				var newObj = this.model.create();
+				newObj.set(obj);
+				this.push(newObj);
+				this.trigger('add', newObj);
+				return newObj;
 			},
 			clear : function()
 			{
@@ -375,7 +392,7 @@ jQuery.getSchematic = function(schematicName){
 						var self = this;
 						this.clear();
 						_.map(data, function(data){
-							self.add(data);
+							self.add(data).trigger('fetch');
 						});
 					}
 				});
@@ -402,7 +419,7 @@ jQuery.getSchematic = function(schematicName){
 				_.map(this, function(model){
 					model.save(function(err, data){
 						count--;
-						self.add(data);
+						self.add(data).trigger('save');
 						if(typeof callback === 'function'){
 							if(count === 0){
 								self.trigger('save', self);
