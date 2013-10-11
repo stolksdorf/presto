@@ -28,7 +28,52 @@
 	<title>Presto Admin</title>
 
 	<script>
-	console.log(<%- inspect(routes) %>);
+		var endpoints = <%- inspect(routes) %>;
+
+
+		var endpointView = xo.view.extend({
+			schematic : 'endpoint',
+
+			render : function()
+			{
+				var self = this;
+				this.dom.url.text(this.model.model.urlRoot);
+
+				this.model.on('add', function(){
+					self.dom.count.text(self.model.length);
+				});
+
+				return this;
+			},
+		});
+
+
+		$(document).ready(function(){
+
+			data = _.map(endpoints, function(ep){
+				console.log(ep);
+
+				var col = xo.collection.extend({
+					model : xo.model.extend({
+						urlRoot : ep
+					})
+				});
+
+
+				var view = endpointView.create();
+				view.model = col;
+				view.injectInto($('body'));
+
+
+				col.fetch();
+
+				return col;
+			});
+
+		});
+
+
+
 
 	</script>
 
@@ -42,6 +87,12 @@
 
 		ADMIN!
 
+	</div>
+
+
+	<div xo-schematic='endpoint'>
+		<span xo-element='url'></span>
+		<span xo-element='count'></span>
 	</div>
 
 </body>

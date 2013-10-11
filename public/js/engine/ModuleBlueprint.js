@@ -47,6 +47,11 @@ Presto_Module = Archetype.extend({
 	schematic : undefined,
 	target    : undefined,
 
+	start : function()
+	{
+		return this;
+	},
+
 	generate : function(definition, data)
 	{
 		return;
@@ -77,7 +82,7 @@ Presto_Module = Archetype.extend({
 			};
 
 			newComponent.definition = def;
-			newComponent.initialize();
+			newComponent.start();
 			return newComponent;
 		});
 	},
@@ -87,21 +92,6 @@ Presto_Module = Archetype.extend({
 		return {};
 	},
 
-/*
-	generateComponents : function(components, def)
-	{
-		return _.keymap(components, function(component, componentName){
-			return component.generate(_.evalueObj(def[componentName]));
-		});
-	},
-
-	drawComponents : function(components, def, data)
-	{
-		return _.keymap(components, function(component, componentName){
-			return component.draw(_.evalueObj(def[componentName]), data[componentName]);
-		});
-	},
-*/
 
 }).mixin(xo_view);
 

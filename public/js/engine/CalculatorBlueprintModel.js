@@ -4,7 +4,7 @@
  * contains the blueprint for generating the actual Calculator Model
  */
 Presto_Model_CalculatorBlueprint = XO.Model.extend({
-	urlRoot : '/api/calculator',
+	urlRoot : '/api/calculators',
 	defaults : {
 		title       : 'New Calculator',
 		description : 'Click here to edit',

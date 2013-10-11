@@ -6,7 +6,7 @@ Presto.registerModule({
 	target    : Presto.getStaticPanel,
 
 
-	initialize : function()
+	start : function()
 	{
 		this.inputs = this.createComponents({
 			definition : this.definition,
@@ -36,7 +36,7 @@ Presto.registerModule({
 			input : Presto_Component.extend({
 				schematic : 'input',
 
-				initialize : function()
+				start : function()
 				{
 					var self = this;
 					this.widget = this.dom.value.widget({

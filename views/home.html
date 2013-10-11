@@ -47,28 +47,24 @@
 			test : true,
 		};
 
-
-		temp = xo_model.create(data);
-
-		M = xo_model.extend({
-			urlRoot : '/test',
-
-
-			sccccccript : 'test',
-			awesome : function()
-			{
-				alert('test');
-			},
+		Calculator = xo.model.extend({
+			urlRoot : '/test'
 		});
 
-		temp2 = M.create(data);
-
-		M.fetchAll(function(result){
-			models = result;
-		})
+		var calc = Calculator.create({
+			script : '{test : 6}'
+		});
 
 
 
+
+
+
+		eval("with (this) {var result = (" + calc.script + ")}");
+
+		console.log(result);
+
+		calc.script = JSON.stringify(result);
 
 
 

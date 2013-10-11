@@ -1,3 +1,10 @@
+jQuery.getSchematic = function(schematicName){
+	var schematicElement = jQuery('[xo-schematic="' + schematicName + '"]');
+	if(schematicElement.length === 0 ){throw 'ERROR: Could not find schematic with name "' + schematicName + '"';}
+	var schematicCode = jQuery('<div>').append(schematicElement.clone().removeAttr('xo-schematic')).html();
+	return jQuery(schematicCode);
+};
+
 (function(){
 
 	jQuery("<style type='text/css'> [xo-schematic]{display:none !important;} </style>").appendTo("head");
@@ -136,237 +143,286 @@
 
 
 
-xo_view = Archetype.extend({
-	schematic : undefined,
 
-	initialize : function(model)
-	{
-		this.model = model;
-		return this;
-	},
 
-	bindToView : function(viewName)
-	{
-		var target = $('[xo-view="' + viewName + '"');
-		this.dom = this.dom || {};
-		return this;
-	},
 
-	injectInto : function(target, options)
-	{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;(function(){
+	jQuery("<style type='text/css'> [xo-schematic]{display:none !important;} </style>").appendTo("head");
+
+	var xo_ajax = function(args){
 		var self = this;
-		options = options || {};
-		this.dom = this.dom || {};
-		if(target.length === 0 ){throw 'XO: Could not find the injection point';}
-
-		var getSchematic = function(schematicName){
-			var schematicElement = jQuery('[xo-schematic="' + schematicName + '"]');
-			if(schematicElement.length === 0 ){throw 'ERROR: Could not find schematic with name "' + schematicName + '"';}
-			var schematicCode = jQuery('<div>').append(schematicElement.clone().removeAttr('xo-schematic')).html();
-			return jQuery(schematicCode);
+		if(!args.url) throw 'XO : Url not set';
+		var callback = args.callback || function(){};
+		var http = {
+			'fetch ' : 'GET',
+			'save'   : (self.id ? 'PUT' : 'POST'),
+			'delete' : 'DELETE'
 		};
-
-		if(this.schematic === ''){throw 'XO: Schematic name not set' ;}
-		if(options.at_top){
-			this.dom.block = getSchematic(this.schematic).prependTo(target);
-		} else {
-			this.dom.block = getSchematic(this.schematic).appendTo(target);
-		}
-		//build internal dom object
-		this.dom.block.find('[xo-element]').each(function(index, element){
-			self.dom[jQuery(element).attr('xo-element')] = jQuery(element);
-		});
-		this.render();
-		return this;
-	},
-
-	render : function()
-	{
-		return this;
-	},
-
-	remove : function()
-	{
-		this.dom = this.dom || {};
-		if(this.dom.block) this.dom.block.remove();
-		this.off();
-		return this;
-	},
-});
-
-
-
-model_ajax = function(self, name, type, callback, errorCallback){
-	if(!self.urlRoot) throw "XO: No url set";
-	self.trigger('before:'+ name, self);
-	var url = self.urlRoot + (self.id ? "/" + self.id : "");
-
-	jQuery.ajax({
-		url : url,
-		type : type,
-		data : self.attributes(),
-		success : function(result){
-			self.set(result);
-			if(typeof callback === 'function') callback(self);
-			self.trigger(name, self);
-			return;
-		},
-		error : function(result){
-			console.log('err', result);
-			if(typeof errorCallback === 'function') errorCallback(self);
-			self.trigger('error:'+ name, result);
-			return self;
-		},
-	});
-}
-
-
-xo_model = Archetype.extend({
-	urlRoot : undefined,
-
-	initialize : function(obj)
-	{
-		this.set(obj);
-		return this;
-	},
-
-	set : function(key, value)
-	{
-		if(typeof key === 'object' && typeof value === 'undefined'){
-			var self = this;
-			_.each(key, function(v, k){
-				self.set(k,v);
-			});
-			this.trigger('change');
-			return this;
-		}
-		if(this[key] !== value){
-			this[key] = value;
-			this.trigger('change:' + key, value);
-		}
-		return this;
-	},
-
-	onChange : function(attrName, event)
-	{
-		var self = this;
-		this.on('change:' + attrName, function(){
-			event(self.get(attrName));
-		});
-		event(this[attrName]);
-		return this;
-	},
-
-	attributes : function()
-	{
-		var self = this;
-		return _.reduce(this, function(result, v,k){
-			if(k === '__events__' || k === '__super__' || k === 'urlRoot' || typeof v ==='function') return result;
-			result[k] = v;
-			return result;
-		}, {});
-	},
-
-	toJSON : function()
-	{
-		return JSON.stringify(this.attributes());
-	},
-
-	save : function(callback, errorCallback)
-	{
-		var self = this;
-		if(!this.urlRoot) throw "XO: No url set";
-		this.trigger('before:save', this);
+		self.trigger('before:'+args.type, self);
 		jQuery.ajax({
-			url : this.urlRoot + (this.id ? "/" + this.id : ""),
-			type : (this.id ? 'PUT' : 'POST'),
-			data : this.attributes(),
-			success : function(result){
-				self.set(result);
-				if(typeof callback === 'function') callback(self);
-				self.trigger('save', self);
+			url  : args.url + (self.id ? "/" + self.id : ""),
+			type : http[args.type],
+			data : args.data,
+			success : function(data){
+				args.success.call(self, data);
+				callback(undefined, self);
+				self.trigger(args.type, self);
 			},
-			error : function(result){
-				console.log('err', result);
-				if(typeof errorCallback === 'function') errorCallback(result);
-				self.trigger('error:save', result);
-			},
-		});
-		return this;
-	},
-
-	fetch : function(callback, errorCallback)
-	{
-		var self = this;
-		if(!this.urlRoot) throw "XO: No url set";
-		this.trigger('before:fetch', this);
-		jQuery.ajax({
-			url : this.urlRoot + '/' + this.id,
-			type : 'GET',
-			success : function(result){
-				self.set(result);
-				if(typeof callback === 'function') callback(self);
-				self.trigger('fetch', self);
-			},
-			error : function(result){
-				console.log('err', result);
-				if(typeof errorCallback === 'function') errorCallback(result);
-				self.trigger('error:fetch', result);
+			error : function(err){
+				callback(err);
+				self.trigger('error');
+				self.trigger('error:'+args.type, err);
 			},
 		});
-		return this;
-	},
+	};
 
-	delete : function(callback, errorCallback)
-	{
-		var self = this;
-		if(!this.urlRoot) throw "XO: No url set";
-		this.trigger('before:delete', this);
-		jQuery.ajax({
-			url : this.urlRoot + '/' + this.id,
-			type : 'DELETE',
-			success : function(result){
-				if(typeof callback === 'function') callback(self);
-				self.trigger('delete', self);
-			},
-			error : function(result){
-				console.log('err', result);
-				if(typeof errorCallback === 'function') errorCallback(result);
-				self.trigger('error:delete', result);
-			},
-		});
-		return this;
-	},
+	xo = {
+		view : Archetype.extend({
+			view      : undefined,
+			schematic : undefined,
 
-	fetchAll : function(callback, errorCallback)
-	{
-		var self = this;
-		if(!this.urlRoot) throw "XO: No url set";
-		jQuery.ajax({
-			url : this.urlRoot,
-			type : 'GET',
-			success : function(result){
-				result = _.map(result, function(data){
-					return self.create(data);
+			bindToView : function()
+			{
+				this.dom = this.dom || {};
+				this.dom.block = jQuery('[xo-view="' + this.view + '"');
+				this.dom.block.find('[xo-element]').each(function(index, element){
+					self.dom[jQuery(element).attr('xo-element')] = jQuery(element);
 				});
-				if(typeof callback === 'function') callback(result);
+				this.render();
+				return this;
 			},
-			error : function(result){
-				console.log('err', result);
-				if(typeof errorCallback === 'function') errorCallback(result);
+			injectInto : function(target, options)
+			{
+				var self = this;
+				options = options || {};
+				this.dom = this.dom || {};
+				if(target.length === 0 ){throw 'XO: Could not find target';}
+				if(!this.schematic){throw 'XO: Schematic name not set' ;}
+
+				var getSchematic = function(schematicName){
+					var schematicElement = jQuery('[xo-schematic="' + schematicName + '"]');
+					if(schematicElement.length === 0 ){throw 'XO: Could not find schematic with name "' + schematicName + '"';}
+					var schematicCode = jQuery('<div>').append(schematicElement.clone().removeAttr('xo-schematic')).html();
+					return jQuery(schematicCode);
+				};
+
+				if(options.at_top){
+					this.dom.block = getSchematic(this.schematic).prependTo(target);
+				} else {
+					this.dom.block = getSchematic(this.schematic).appendTo(target);
+				}
+				this.dom.block.find('[xo-element]').each(function(index, element){
+					self.dom[jQuery(element).attr('xo-element')] = jQuery(element);
+				});
+				this.render();
+				return this;
 			},
-		});
-		return this;
-	},
-});
+			render : function()
+			{
+				return this;
+			},
+			remove : function()
+			{
+				this.dom = this.dom || {};
+				if(this.dom.block) this.dom.block.remove();
+				this.off();
+				return this;
+			},
+		}),
+
+		model : Archetype.extend({
+			urlRoot : undefined,
+
+			initialize : function(obj)
+			{
+				this.set(obj);
+				return this;
+			},
+			set : function(key, value)
+			{
+				if(typeof key === 'object' && typeof value === 'undefined'){
+					var self = this;
+					_.map(key, function(v, k){
+						self.set(k,v);
+					});
+					this.trigger('change');
+					return this;
+				}
+				if(this[key] !== value){
+					this[key] = value;
+					this.trigger('change:' + key, value);
+				}
+				return this;
+			},
+			onChange : function(attrName, event)
+			{
+				var self = this;
+				this.on('change:' + attrName, function(){
+					event(self[attrName]);
+				});
+				event(this[attrName]);
+				return this;
+			},
+			attributes : function()
+			{
+				var self = this;
+				return _.reduce(this, function(result, v,k){
+					if(	k === '__events__' ||
+						k === '__super__' ||
+						k === 'urlRoot' ||
+						typeof v ==='function'){ return result;}
+					result[k] = v;
+					return result;
+				}, {});
+			},
+			toJSON : function()
+			{
+				return JSON.stringify(this.attributes());
+			},
+			save : function(callback)
+			{
+				xo_ajax.call(this,{
+					url  : this.urlRoot,
+					type : 'save',
+					data : this.attributes(),
+					callback : callback,
+					success : function(data){
+						this.set(data);
+					}
+				});
+				return this;
+			},
+			fetch : function(callback)
+			{
+				xo_ajax.call(this,{
+					url  : this.urlRoot,
+					type : 'fetch',
+					callback : callback,
+					success : function(data){
+						this.set(data);
+					}
+				});
+				return this;
+			},
+			delete : function(callback)
+			{
+				xo_ajax.call(this,{
+					url  : this.urlRoot,
+					type : 'delete',
+					callback : callback
+				});
+				return this;
+			},
+		}),
+
+		collection : Archetype.extend({
+			model : undefined,
+
+			extend : function(props)
+			{
+				var col = _.extend([], this, props);
+				col.initialize();
+				return col;
+			},
+			create : function(arr)
+			{
+				arr = arr || [];
+				var col = _.extend(arr, this)
+				col.initialize();
+				return col;
+			},
+			add : function(obj)
+			{
+				this.push(this.model.create(obj));
+				this.trigger('add', obj);
+				return this;
+			},
+			clear : function()
+			{
+				self.length = 0;
+				return this;
+			},
+			fetch : function(callback)
+			{
+				xo_ajax.call(this,{
+					url  : this.model.urlRoot,
+					type : 'fetch',
+					callback : callback,
+					success : function(data){
+						var self = this;
+						this.clear();
+						_.map(data, function(data){
+							self.add(data);
+						});
+					}
+				});
+				return this;
+			},
+			delete : function(callback)
+			{
+				xo_ajax.call(this,{
+					url  : this.model.urlRoot,
+					type : 'delete',
+					callback : callback,
+					success : function(data){
+						this.clear();
+					}
+				});
+				return this;
+			},
+			save : function(callback)
+			{
+				var self = this,
+					count = this.length;
+				this.trigger('before:save', this);
+				this.clear();
+				_.map(this, function(model){
+					model.save(function(err, data){
+						count--;
+						self.add(data);
+						if(typeof callback === 'function'){
+							if(count === 0){
+								self.trigger('save', self);
+								callback(undefined, self);
+							}
+							if(err){
+								self.trigger('error:save', self);
+								callback(err);
+							}
+						}
+					});
+				});
+				return this;
+			},
+		})
+	};
+
+})();
 
 
 
-jQuery.getSchematic = function(schematicName){
-	var schematicElement = jQuery('[xo-schematic="' + schematicName + '"]');
-	if(schematicElement.length === 0 ){throw 'ERROR: Could not find schematic with name "' + schematicName + '"';}
-	var schematicCode = jQuery('<div>').append(schematicElement.clone().removeAttr('xo-schematic')).html();
-	return jQuery(schematicCode);
-};
 
 

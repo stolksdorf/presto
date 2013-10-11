@@ -139,7 +139,7 @@ Presto = Archetype.extend({
 
 			module.definition = def;
 			module.def = def;
-			module.initialize();
+			module.start();
 
 			window[module.name] = def; //??????
 		});

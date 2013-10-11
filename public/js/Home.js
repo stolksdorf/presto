@@ -34,7 +34,7 @@ Presto_Block_Home = XO.Block.extend({
 		this.calculators = [];
 
 		this.calculatorCollection = new XO.Collection([],{
-			url   : '/api/calculator',
+			url   : '/api/calculators',
 			model : Presto_Model_CalculatorBlueprint
 		});
 
@@ -190,7 +190,7 @@ Presto_Block_CalculatorOption = XO.Block.extend({
 			self.dom.icon.find('i').addClass(self.model.get('icon'));
 		});
 		this.model.onChange('url', function(){
-			self.dom.link.attr('href', self.model.get('url'));
+			self.dom.link.attr('href', '/calc/' + self.model.get('id'));
 		});
 
 		if(this.dom.deleteBtn){

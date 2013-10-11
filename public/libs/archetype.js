@@ -9,20 +9,14 @@
 			return new F();
 		};
 	}
-	window.Archetype_EventCount = new Date().getTime();
+	var archetype_EventCount = new Date().getTime();
 	Archetype = {
 		initialize : function(){
 			return this;
 		},
-		instance : function(){
-			var newObj = Object.create(this);
-			newObj.__super__ = this.__super__ || this;
-			return newObj.initialize.apply(newObj, arguments);
-		},
 		create : function(){
 			var newObj = Object.create(this);
-			//newObj.__super__ = this.__super__ || this;
-			if(arguments.length) newObj.initialize.apply(newObj, arguments);
+			newObj.initialize.apply(newObj, arguments);
 			return newObj;
 		},
 		extend : function(methods){
@@ -33,21 +27,19 @@
 				this[methodName] = methods[methodName];
 			}
 			return this;
-		},
-		super : function(methodName){
-			return Object.getPrototypeOf(this.__super__ || this)[methodName]
-					.apply(this, Array.prototype.slice.apply(arguments).slice(1));
-		},
+		}
+	};
 
+	Archetype_Events = {
 		on : function(eventName, event){
-			Archetype_EventCount++;
+			archetype_EventCount++;
 			this.__events__ = this.__events__ || [];
 			this.__events__.push({
-				id    : Archetype_EventCount,
+				id    : archetype_EventCount,
 				name  : eventName,
 				event : event
 			});
-			return Archetype_EventCount;
+			return archetype_EventCount;
 		},
 		trigger : function(eventName){
 			this.__events__ = this.__events__ || [];
@@ -74,6 +66,23 @@
 			return this;
 		}
 	};
+
+	Archetype_Super = {
+		create : function(){
+			var newObj = Object.create(this);
+			newObj.__super__ = this.__super__ || this;
+			newObj.initialize.apply(newObj, arguments);
+			return newObj;
+		},
+		super : function(methodName){
+			return Object.getPrototypeOf(this.__super__ || this)[methodName]
+					.apply(this, Array.prototype.slice.apply(arguments).slice(1));
+		},
+	};
+
+
+	Archetype.mixin(Archetype_Events);
+	//Archetype.mixin(Archetype_Super);
 })();
 
 

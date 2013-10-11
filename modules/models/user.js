@@ -32,58 +32,12 @@ UserSchema.methods.isAdmin = function(){
 };
 
 UserSchema.methods.addCookie = function(cookieSignature, callback){ //TODO: Make into an update
-	console.log('adding new cookie', cookieSignature);
 	this.auth.push({
 		cookie      : cookieSignature
 	});
 	this.save(callback);
 };
 
-
-//Statics
-
-/*
-//Finds a user based on the fingerprint, then cookie
-UserSchema.statics.get = function(data, callback){
-	if(typeof data.fingerprint === 'undefined'){
-		return callback(ErrorCode[2]);
-	}
-	this.find({'auth.fingerprint' : data.fingerprint},
-		function(err, user) {
-			if(err){
-				return callback(err);                 //Mongoose Error
-			}else if(user.length === 1){
-				return callback(undefined, user[0]);  //Found User
-			}else if(user.length === 0){
-				return callback(ErrorCode[0]);        //No users
-			}else{
-				this.match(data, callback);           //Multiple fingerprint matches
-			}
-		}
-	);
-};
-
-//Finds a user based on both the fingerpritn and cookie
-UserSchema.statics.match = function(data, callback){
-	if(typeof data.fingerprint === 'undefined' || typeof data.cookie === 'undefined'){
-		callback(ErrorCode[2]);
-	}
-	this.find({
-			'auth.fingerprint' : data.fingerprint,
-			'auth.cookie'      : data.cookie
-		},
-		function(err, user) {
-			if(err){
-				return callback(err);                 //Mongoose Error
-			}else if(user.length === 1){
-				return callback(undefined, user[0]);  //Found User
-			}else{
-				return callback(ErrorCode[0]);        //No users
-			}
-		}
-	);
-};
-*/
 
 //Adds a new user, checks if we should make them an admin
 UserSchema.statics.add = function(data, callback){
@@ -102,7 +56,6 @@ UserSchema.statics.getByEmail = function(email, callback){
 			return callback(err)
 		}
 		if(!user){
-			console.log('creating user');
 			return self.add({email : email}, callback);
 		}
 		return callback(null, user);
