@@ -17,6 +17,7 @@ var adminEmails = [
 
 
 UserSchema = mongoose.Schema({
+	id : String,
 	email : String,
 	account_type : { type: String, default: 'beta'},
 	auth : [{
@@ -46,7 +47,17 @@ UserSchema.statics.add = function(data, callback){
 		newUser.account_type = 'admin';
 	}
 	return newUser.save(callback);
+};
+
+
+//Try out the middle ware
+/*
+UserSchema.post('save', function(user){
+	if(_.contains(adminEmails, user.email)){
+		user.account_type = 'admin';
+	}
 }
+*/
 
 //returns the user if the email exists, if not adds the user and returns in
 UserSchema.statics.getByEmail = function(email, callback){

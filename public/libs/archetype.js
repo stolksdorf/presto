@@ -73,19 +73,25 @@
 
 	Archetype_Super = {
 		create : function(){
+			var self = this;
+			this.super = function(){ return Object.getPrototypeOf(self); };
 			var newObj = Object.create(this);
-			newObj.__super__ = this.__super__ || this;
-			newObj.initialize.apply(newObj, arguments);
+			var init  = function(obj, args){
+				if(obj.initialize) init(Object.getPrototypeOf(obj), args);
+				if(obj.hasOwnProperty('initialize')) obj.initialize.apply(newObj, args);
+			};
+			init(newObj, arguments);
 			return newObj;
 		},
 		super : function(){
-			return Object.getPrototypeOf(this.__super__ || this);
+			return Object.getPrototypeOf(this);
 		},
+
 	};
 
 
 	Archetype.mixin(Archetype_Events);
-	//Archetype.mixin(Archetype_Super);
+	Archetype.mixin(Archetype_Super);
 })();
 
 
