@@ -1,3 +1,4 @@
+/*
 xo_view = Archetype.extend({
 	schematic : undefined,
 
@@ -35,12 +36,12 @@ xo_view = Archetype.extend({
 	},
 });
 
+*/
 
 
 
 
-
-Presto_Module = Archetype.extend({
+Presto_Module = xo.view.extend({
 	name      : undefined,
 	global    : undefined,
 
@@ -93,8 +94,6 @@ Presto_Module = Archetype.extend({
 	},
 
 
-}).mixin(xo_view);
-
-Presto_Component = Presto_Module.extend({
-
 });
+
+Presto_Component = Presto_Module;

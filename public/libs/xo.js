@@ -176,7 +176,7 @@ jQuery.getSchematic = function(schematicName){
 		var self = this;
 		if(!args.url) throw 'XO : Url not set';
 		var callback = args.callback || function(){};
-		var success  = args.success || function(){};
+		var success  = args.success  || function(){};
 		var http = {
 			'fetch ' : 'GET',
 			'save'   : (self.id ? 'PUT' : 'POST'),
@@ -208,13 +208,14 @@ jQuery.getSchematic = function(schematicName){
 			initialize : function(model)
 			{
 				this.model = model;
+				this.dom = {};
+				if(this.view) this.bindToView();
 				return this;
 			},
 
 			bindToView : function()
 			{
 				var self = this;
-				this.dom = this.dom || {};
 				this.dom.block = jQuery('[xo-view="' + this.view + '"]');
 				this.dom.block.find('[xo-element]').each(function(index, element){
 					self.dom[jQuery(element).attr('xo-element')] = jQuery(element);
@@ -226,7 +227,6 @@ jQuery.getSchematic = function(schematicName){
 			{
 				var self = this;
 				options = options || {};
-				this.dom = this.dom || {};
 				if(target.length === 0 ){throw 'XO: Could not find target';}
 				if(!this.schematic){throw 'XO: Schematic name not set' ;}
 
@@ -255,7 +255,6 @@ jQuery.getSchematic = function(schematicName){
 			remove : function()
 			{
 				this.trigger('remove', this);
-				this.dom = this.dom || {};
 				if(this.dom.block) this.dom.block.remove();
 				this.off();
 				return this;

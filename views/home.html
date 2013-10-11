@@ -39,8 +39,62 @@
 	<title>Presto Calculators</title>
 
 	<script>
-		PrestoHome.start();
 
+
+/*
+		var temp = Archetype.extend({
+			initialize : function(model)
+			{
+				console.log('1', model);
+				this.model = model;
+				return this;
+			},
+
+			test : function()
+			{
+				console.log('super', this.model);
+				return this;
+			},
+		});
+
+
+		temp2 = temp.extend({
+			initialize : function(args)
+			{
+				console.log('2', this.model);
+			},
+			test : function()
+			{
+				this.super().test();
+				console.log('not this');
+				return this;
+			},
+		})
+
+		temp3 = temp2.extend({
+			initialize : function(args)
+			{
+				console.log('3', this.model);
+			},
+
+		});
+
+		var temp4 = temp3.create('fooo');
+
+*/
+
+
+
+
+
+
+
+
+
+
+		$(document).ready(function(){
+			PrestoHome.create();
+		});
 	</script>
 
 	<div class='topbar'>

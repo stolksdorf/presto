@@ -73,15 +73,14 @@
 	<script>
 
 		Presto.start({
-			calc : <%- inspect(calc) %>,
-
+			calcId : '<%- calcId %>'
 		});
 
 	</script>
 
 
 
-	<div class='presto' xo-block='calculator'>
+	<div class='presto' xo-view='calculator'>
 
 		<title xo-element='windowTitle'></title>
 
@@ -136,7 +135,7 @@
 
 	<!-- Code Editor -->
 	<%if (user.account_type == 'admin') { %>
-		<div class='codeEditor' xo-block='codeEditor' style='display:none'>
+		<div class='codeEditor' xo-view='codeEditor' style='display:none'>
 			<div class='codeEditor__topbar' xo-element='topbar'>
 				<div class='codeEditor__topbar__close clickable' xo-element='closeButton'><i class='icon-remove card'></i></div>
 				<span class='codeEditor__topbar__title'>Code Editor</span>

@@ -85,50 +85,42 @@ Presto_Model_CalculatorBlueprint = XO.Model.extend({
 
 
 
-Presto_Calculator = xo.model.extend({
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Presto_Model_Blueprint = xo.model.extend({
 	urlRoot : '/api/calculators',
 
 	initialize : function()
 	{
 		var self = this;
 
-		this.on('change:script', function(){
+		this.onChange('script', function(){
 			self.execute();
 		});
 		return this;
 	},
 
-	upload : function(callback)
-	{
-		this.save(function(err, result){
-			callback(result);
-		});
-		return this;
-	},
-
-/*
-	retrieve : function(callback)
-	{
-		var self = this;
-		this.fetch(function(err, result){
-			self.execute();
-			callback(result);
-		});
-		return this;
-	},
-*/
-
-	/**
-	 * Executes the current script and triggers out the resultant object
-	 * @return {[type]} [description]
-	 */
 	execute : function()
 	{
 		var self = this;
+		if(!this.script) return;
 
 		eval("with (this) {var result = (" + this.script + ")}");
 
-		//update from result
 		_.each(['title','description', 'color', 'icon', 'group', 'keywords'], function(modelAttributeName){
 			if(typeof result[modelAttributeName] !== 'undefined'){
 				self.set(modelAttributeName, result[modelAttributeName]);
@@ -152,18 +144,11 @@ Presto_Calculator = xo.model.extend({
 		}
 
 		var found = _.every(terms, function(term){
-			if(contains(self.title, term)){
-				return true;
-			}
-			if(contains(self.description, term)){
-				return true;
-			}
-			if(contains(self.group, term)){
-				return true;
-			}
 			return _.some(self.keywords, function(keyword){
 				return contains(keyword, term);
-			});
+			})	|| contains(self.title, term)
+				|| contains(self.description, term)
+				|| contains(self.group, term);
 		});
 
 		this.trigger('isMatched', found);

@@ -16,7 +16,11 @@
 		},
 		create : function(){
 			var newObj = Object.create(this);
-			newObj.initialize.apply(newObj, arguments);
+			var init  = function(obj, args){
+				if(obj.initialize) init(Object.getPrototypeOf(obj), args);
+				if(obj.hasOwnProperty('initialize')) obj.initialize.apply(newObj, args);
+			};
+			init(newObj, arguments);
 			return newObj;
 		},
 		extend : function(methods){
@@ -74,9 +78,8 @@
 			newObj.initialize.apply(newObj, arguments);
 			return newObj;
 		},
-		super : function(methodName){
-			return Object.getPrototypeOf(this.__super__ || this)[methodName]
-					.apply(this, Array.prototype.slice.apply(arguments).slice(1));
+		super : function(){
+			return Object.getPrototypeOf(this.__super__ || this);
 		},
 	};
 
