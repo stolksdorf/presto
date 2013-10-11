@@ -1,3 +1,4 @@
+/*
 jQuery.getSchematic = function(schematicName){
 	var schematicElement = jQuery('[xo-schematic="' + schematicName + '"]');
 	if(schematicElement.length === 0 ){throw 'ERROR: Could not find schematic with name "' + schematicName + '"';}
@@ -87,13 +88,6 @@ jQuery.getSchematic = function(schematicName){
 
 
 	XO.Model = Backbone.Model.extend({
-
-		/**
-		 * [onChange description]
-		 * @param  {[type]} attrName [description]
-		 * @param  {[type]} event    [description]
-		 * @return {[type]}          [description]
-		 */
 		onChange : function(attrName, event)
 		{
 			var self = this;
@@ -103,11 +97,6 @@ jQuery.getSchematic = function(schematicName){
 			event(this.get(attrName));
 			return this;
 		},
-
-		/**
-		 * [toJSONString description]
-		 * @return {[type]} [description]
-		 */
 		toJSONString: function()
 		{
 			return JSON.stringify(this.toJSON());
@@ -141,7 +130,7 @@ jQuery.getSchematic = function(schematicName){
 })();
 
 
-
+*/
 
 
 
