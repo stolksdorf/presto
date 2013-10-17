@@ -261,8 +261,7 @@ app.get('/backup', [loadUser, adminOnly], function(req, res){
 		if(err) return res.send(200, 'Error - ' + err);
 		return res.send(calcs);
 	});
-})
-
+});
 
 
 

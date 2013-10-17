@@ -51,3 +51,10 @@ app.get('/promo2', function(req, res){
 		calcId : '523854d1f0021f0200000001'
 	});
 });
+
+app.get('/sp_backup', function(req, res){
+	BetaUsers.find({}, function(err, peeps){
+		if(err) return res.send(200, 'Error - ' + err);
+		return res.send(peeps);
+	});
+});
