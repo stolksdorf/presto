@@ -37,7 +37,7 @@ exports.api = function(endpoint, Model, middleware){
 	app.get(endpoint, mw.get, function(req,res){
 		Model.find(function(err, objs){
 			if(DEBUG) console.log('getting all : ' + endpoint, clean(objs));
-			if(err) return res.send(500, err.message);
+			if(err) return res.send(500, err);
 			return res.send(clean(objs));
 		});
 	});
@@ -45,7 +45,7 @@ exports.api = function(endpoint, Model, middleware){
 	app.delete(endpoint, mw.del, function(req,res){
 		if(DEBUG) console.log('delete collection : '+ endpoint);
 		Model.remove({}, function(err){
-			if(err) return res.send(500, err.message);
+			if(err) return res.send(500, err);
 			return res.send(200);
 		});
 	});
@@ -54,7 +54,7 @@ exports.api = function(endpoint, Model, middleware){
 	app.get(endpoint + '/:id', mw.get, function(req,res){
 		if(DEBUG) console.log('getting : '+ endpoint, req.params.id);
 		Model.findById(req.params.id, function(err, obj){
-			if(err) return res.send(500, err.message);
+			if(err) return res.send(500, err);
 			return res.send(clean(obj));
 		});
 	});
@@ -63,7 +63,7 @@ exports.api = function(endpoint, Model, middleware){
 		var obj = new Model(req.body);
 		if(!obj.id) obj.id = obj._id;
 		obj.save(function(err, obj){
-			if(err) return res.send(500, err.message);
+			if(err) return res.send(500, err);
 			if(DEBUG) console.log('creating : '+ endpoint, obj);
 			return res.send(clean(obj));
 		});
@@ -72,7 +72,7 @@ exports.api = function(endpoint, Model, middleware){
 	app.put(endpoint + '/:id', mw.put, function(req,res){
 		if(DEBUG) console.log('update : '+ endpoint, req.body);
 		Model.findByIdAndUpdate(req.params.id, req.body, function(err, obj){
-			if(err) return res.send(500, err.message);
+			if(err || !obj) return res.send(500, err);
 			return res.send(clean(obj));
 		});
 	});
@@ -80,7 +80,7 @@ exports.api = function(endpoint, Model, middleware){
 	app.delete(endpoint + '/:id', mw.del, function(req,res){
 		if(DEBUG) console.log('deleteing : '+ endpoint, req.params.id);
 		Model.findByIdAndRemove(req.params.id, function(err, obj){
-			if(err) return res.send(500, err.message);
+			if(err) return res.send(500, err);
 			return res.send(clean(obj));
 		});
 	});

@@ -5,7 +5,7 @@ PrestoHome = xo.view.extend({
 	{
 		var self = this;
 
-		this.calculators = xo.collection.extend({model : Presto_Model_Blueprint });
+		this.calculators = xo.collection.extend({model : Presto_Model_Calculator });
 
 		this.calculators.on('add', function(calc){
 			var newCalc = Presto_Block_CalculatorOption.create(calc);
@@ -48,6 +48,7 @@ PrestoHome = xo.view.extend({
 			layoutMode : 'fitRows'
 		});
 
+		GLOBAL = this.calculators;
 
 
 		return this;

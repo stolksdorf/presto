@@ -167,39 +167,15 @@ app.get('/clear_all_users', [mw.loadUser, mw.adminOnly], function(req, res){
 });
 
 
-
-//Testing API
-
-
-
-
-var TestModel = mongoose.model('TestModel', mongoose.Schema({
-	id : String,
-	name :String,
-	url : String,
-	phone : Number,
-	test : Boolean,
-}));
-
-
-
-
-XO.api('/test', TestModel, {
-	post : [function(req,res,next){
-		//console.log('wooo', req.body)
-
-		var test = JSON.parse(req.body.script);
-
-		console.log('woo', test.test);
-
-		next();
-
-	}]
+app.get('/clear_calcs', [mw.loadUser, mw.adminOnly], function(req, res){
+	Calculator.remove({}, function(err){
+		console.log('All calcs dropped');
+	});
+	res.send(200, 'Calcs Dropped');
 });
 
 
-
-
+//Testing API
 
 
 

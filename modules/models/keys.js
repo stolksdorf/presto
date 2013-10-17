@@ -3,6 +3,7 @@ var shortId = require('shortid');
 
 
 ActivationKeySchema = mongoose.Schema({
+	id : String,
 	user_id : String,
 	key : {
 		type : String,
@@ -11,6 +12,15 @@ ActivationKeySchema = mongoose.Schema({
 		}
 	},
 	createdAt : { type: Date, default: Date.now }
+});
+
+
+
+ActivationKeySchema.post('save', function(aKey){
+	console.log('KEY', aKey);
+	if(!aKey.id) aKey.id = aKey._id;
+	aKey.update({id : aKey.id}, function(err){});
+	console.log('KEY2', aKey);
 });
 
 

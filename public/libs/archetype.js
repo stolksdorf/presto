@@ -11,6 +11,7 @@
 	}
 	var archetype_EventCount = new Date().getTime();
 
+/*
 	var fullCall = function(obj,method, args){
 		if(obj[method]) fullCall(Object.getPrototypeOf(obj), args);
 		if(obj.hasOwnProperty(method)){
@@ -19,7 +20,7 @@
 			obj[method].apply(newObj, args);
 		}
 	};
-
+*/
 
 	Archetype = {
 		initialize : function(){
@@ -30,6 +31,7 @@
 			var params = Array.prototype.slice.apply(arguments);
 			params.unshift('initialize');
 			newObj.deep.apply(newObj, params);
+			newObj.trigger('created');
 			return newObj;
 		},
 		extend : function(methods){
@@ -44,9 +46,11 @@
 		deep : function(method, arg1, arg2){
 			var self = this;
 			var deepcall = function(obj,method,args){
+				//console.log('WOO', obj.hasOwnProperty(method), args, obj[method]);
 				if(obj[method]) deepcall(Object.getPrototypeOf(obj), method, args);
 				if(obj.hasOwnProperty(method)){
-					return obj[method].apply(self, args);
+					//console.log(obj[method], args);
+					obj[method].apply(self, args);
 				}
 			};
 			return deepcall(this, method, Array.prototype.slice.apply(arguments).slice(1));
@@ -95,10 +99,10 @@
 			var self = this;
 			var newObj = Object.create(this);
 			newObj.super = function(){ return self; };
-
 			var params = Array.prototype.slice.apply(arguments);
 			params.unshift('initialize');
 			newObj.deep.apply(newObj, params);
+			newObj.trigger('created');
 			return newObj;
 		},
 		super : function(){
@@ -108,7 +112,7 @@
 
 
 	Archetype.mixin(Archetype_Events);
-	Archetype.mixin(Archetype_Super);
+	//Archetype.mixin(Archetype_Super);
 	archetype = Archetype;
 })();
 

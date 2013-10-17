@@ -11,7 +11,7 @@ Presto = Archetype.extend({
 		this.options = _.extend(this.defaultOptions, opts);
 
 		this.model = xo.model.create();
-		this.blueprint = Presto_Model_Blueprint.create({
+		this.blueprint = Presto_Model_Calculator.create({
 			id : this.options.calcId
 		});
 		//this.blueprint.id = ;

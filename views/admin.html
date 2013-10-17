@@ -5,145 +5,99 @@
 	<!-- Libraries -->
 	<script type="text/javascript" src="libs/jq.js"></script>
 	<script type="text/javascript" src="libs/underscore.js"></script>
+	<script type="text/javascript" src="js/prototypes.js"></script>
 
 	<!-- MVC -->
 	<script type="text/javascript" src="libs/archetype.js"></script>
 	<script type="text/javascript" src="libs/xo.js"></script>
+	<link href='libs/lato/lato.css' rel='stylesheet' type='text/css'>
+	<link href='libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
+
+
+
 
 	<!-- Style -->
 	<link rel="Stylesheet" type="text/css" href="style/reset.css" />
 	<link rel="Stylesheet" type="text/css" href="style/presto.css" />
 	<link rel="Stylesheet" type="text/css" href="style/pages/admin.css" />
 
-	<link href='libs/lato/lato.css' rel='stylesheet' type='text/css'>
-	<link href='libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
+
+	<script type="text/javascript" src="js/CalculatorModel.js"></script>
+	<script type="text/javascript" src="js/admin/AdminApp.js"></script>
+
+	<script type="text/javascript" src="js/admin/EndpointGroupView.js"></script>
+	<script type="text/javascript" src="js/admin/EndpointView.js"></script>
+	<script type="text/javascript" src="js/admin/ContentView.js"></script>
+
 
 </head>
 
 
 
-<body xo-view='admin'>
 
+
+
+
+
+
+<body>
 	<title>Presto Admin</title>
 
 	<script>
 		var endpoints = <%- inspect(routes) %>;
 
-
-		var EndpointGroup = xo.view.extend({
-			schematic : 'endpointGroup',
-
-			initialize : function()
-			{
-				this.collection = this.model;
-				return this;
-			},
-
-			render : function()
-			{
-				var self = this;
-
-
-				this.dom.url.text(this.collection.model.urlRoot);
-
-				this.collection.on('add', function(endpointModel){
-					//self.dom.count.text(self.collection.length);
-
-					var newView = EndpointView.create(endpointModel).injectInto(self.dom.endpointContainer);
-				});
-
-				return this;
-			}
-
-
-		});
-
-
-		var EndpointView = xo.view.extend({
-			schematic : 'endpoint',
-
-			render : function()
-			{
-				var self = this;
-
-				this.dom.url.text(":    -" + this.model.id);
-
-				this.dom.block.click(function(){
-					$('.test').val(self.model.script || self.model.toJSON());
-				})
-
-
-				return this;
-			},
-		});
-
-
 		$(document).ready(function(){
-
-			$('#run').click(function(){
-				var code = $('.test').val();
-				console.log(code);
-
-				eval("with (this) {var result = (" + code + ")}");
-
-				console.log(result);
-
-
-			});
-
-
-			data = _.map(endpoints, function(ep){
-
-				var col = xo.collection.extend({
-					model : xo.model.extend({
-						urlRoot : ep
-					})
-				});
-
-
-
-				var view = EndpointGroup.create(col);
-				view.injectInto($('body'));
-
-
-				col.fetch();
-
-				return col;
-			});
-
+			PrestoAdmin.start(endpoints);
 		});
-
-
-
 
 	</script>
 
-	<div class='sidebar'>
 
+	<div class='topbar red'>
+		<div class='topbar__icon'>
+			<i class='icon-rocket'></i>
+		</div>
+
+		<div class='topbar__title'>Presto Admin</div>
+
+		<div class='topbar__account topbar__button hint--bottom' data-hint='Account'>
+			<%= user.email %>
+		</div>
+	</div>
+
+
+	<div class='container'>
+
+		<div class='routes tile'>
+			<div class='routes__title'>Routes</div>
+
+		</div>
+
+
+		<div class='content tile' xo-view='content'>
+			<div class='content__title'>Data</div>
+			<textarea class='content__data' xo-element='data'></textarea>
+			<div class='content__buttons'>
+				<!--<div class='fetch button green'>Fetch</div> -->
+				<div class='save button blue' xo-element='save'>Save</div>
+				<div class='delete button red' xo-element='delete'>Delete</div>
+			</div>
+		</div>
 
 	</div>
 
 
-	<div class='content'>
-
-		ADMIN!
-
-		<textarea class='test'>
-		</textarea>
-		<button id='run'>run</button
-
-	</div>
-
-
-	<div xo-schematic='endpointGroup'>
-		<span xo-element='url'></span>
-		<span xo-element='count'></span>
-		<div xo-element='endpointContainer'></div>
-	</div>
-
-	<div xo-schematic='endpoint'>
-		<span xo-element='url'></span>
-	</div>
 
 </body>
+
+<!-- Schematics -->
+
+
+<div class='endpoint' xo-schematic='endpoint'></div>
+
+<div class='endpointGroup' xo-schematic='endpointGroup'>
+	<div class='endpointGroup__title' xo-element='title'>TEST</div>
+	<div class='endpointGroup__container' xo-element='container'></div>
+</div>
+
 </html>

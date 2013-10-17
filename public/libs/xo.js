@@ -36,9 +36,12 @@
 
 			initialize : function(model)
 			{
+				var self = this;
 				this.model = model;
 				this.dom = {};
-				if(this.view) this.bindToView();
+				this.on('created', function(){
+					if(self.view) self.bindToView();
+				});
 				return this;
 			},
 
@@ -186,13 +189,15 @@
 			extend : function(props)
 			{
 				var col = _.extend([], this, props);
+				if(col.model){ col.urlRoot = col.model.urlRoot; }
 				col.initialize();
 				return col;
 			},
 			create : function(arr)
 			{
 				arr = arr || [];
-				var col = _.extend(arr, this)
+				var col = _.extend(arr, this);
+				if(col.model){ col.urlRoot = col.model.urlRoot; }
 				col.initialize();
 				return col;
 			},
@@ -206,18 +211,19 @@
 			},
 			clear : function()
 			{
-				self.length = 0;
+				this.length = 0;
 				return this;
 			},
 			fetch : function(callback)
 			{
+				var self = this;
 				xo_ajax.call(this,{
 					url  : this.model.urlRoot,
 					type : 'fetch',
 					callback : callback,
 					success : function(data){
 						var self = this;
-						this.clear();
+						self.clear();
 						_.map(data, function(data){
 							self.add(data).trigger('fetch');
 						});
@@ -227,12 +233,13 @@
 			},
 			delete : function(callback)
 			{
+				var self = this;
 				xo_ajax.call(this,{
 					url  : this.model.urlRoot,
 					type : 'delete',
 					callback : callback,
 					success : function(data){
-						this.clear();
+						self.clear();
 					}
 				});
 				return this;
@@ -242,9 +249,10 @@
 				var self = this,
 					count = this.length;
 				this.trigger('before:save', this);
-				this.clear();
+
 				_.map(this, function(model){
 					model.save(function(err, data){
+						console.log('save', data);
 						count--;
 						self.add(data).trigger('save');
 						if(typeof callback === 'function'){
@@ -259,6 +267,7 @@
 						}
 					});
 				});
+				this.clear();
 				return this;
 			},
 		})

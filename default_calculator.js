@@ -1,4 +1,5 @@
 {
+	id          : '{{ID}}',
 	title       : 'New Calculator',
 	description : 'Click to edit COOOL',
 	icon        : 'icon-file-alt',

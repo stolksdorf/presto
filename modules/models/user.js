@@ -17,7 +17,7 @@ var adminEmails = [
 
 
 UserSchema = mongoose.Schema({
-	id : { type: String, default: function(){ return this._id; }},
+	id : String,
 	email : String,
 	account_type : { type: String, default: 'beta'},
 	auth : [{
@@ -43,6 +43,7 @@ UserSchema.methods.addCookie = function(cookieSignature, callback){ //TODO: Make
 //Adds a new user, checks if we should make them an admin
 UserSchema.statics.add = function(data, callback){
 	var newUser = new User(data);
+	if(!newUser.id) newUser.id = newUser._id;
 	if(_.contains(adminEmails, newUser.email)){
 		newUser.account_type = 'admin';
 	}
@@ -50,14 +51,12 @@ UserSchema.statics.add = function(data, callback){
 };
 
 
-//Try out the middle ware
-/*
+
 UserSchema.post('save', function(user){
 	if(_.contains(adminEmails, user.email)){
 		user.account_type = 'admin';
 	}
-}
-*/
+});
 
 //returns the user if the email exists, if not adds the user and returns in
 UserSchema.statics.getByEmail = function(email, callback){

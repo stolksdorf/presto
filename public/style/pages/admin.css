@@ -1,0 +1,90 @@
+body{
+	position         : relative;
+
+	height           : 100%;
+
+	background-color : #BDC3C7;
+}
+
+.container{
+	padding-top: 50px;
+
+}
+
+
+.tile{
+	display: inline-block;
+	vertical-align: top;
+	background-color: white;
+	padding : 10px;
+	margin-top : 15px;
+	margin-right : 15px;
+	margin-left : 15px;
+
+}
+
+.selected{
+	background-color: #ddd;
+}
+
+
+
+.routes{
+	margin-right: 0px;
+}
+	.routes__title{
+		font-weight: 300;
+		font-size: 2em;
+		margin-bottom: 15px;
+	}
+
+	.endpointGroup{
+		margin-bottom: 15px;
+	}
+		.endpointGroup__title{
+			cursor:pointer;
+			font-size: 1.3em;
+			padding: 5px;
+		}
+			.endpointGroup__title:hover{
+				background-color: #eee;
+			}
+
+		.endpointGroup__container{
+			margin-left: 20px;
+		}
+			.endpoint{
+				cursor:pointer;
+				padding: 3px;
+			}
+				.endpoint:hover{
+					background-color: #eee;
+				}
+
+
+
+
+.content{
+
+}
+	.content__title{
+		font-weight: 300;
+		font-size: 2em;
+		margin-bottom: 15px;
+	}
+	.content__data{
+		height: 575px;
+		width: 800px;
+	}
+	.content__buttons{
+
+	}
+		.fetch{
+
+		}
+		.save{
+
+		}
+		.delete{
+
+		}
