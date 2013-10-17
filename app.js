@@ -259,7 +259,13 @@ app.get('/drop', [loadUser, adminOnly], function(req, res){
 app.get('/backup', [loadUser, adminOnly], function(req, res){
 	CalculatorModel.find({}, function(err, calcs){
 		if(err) return res.send(200, 'Error - ' + err);
-		return res.send(calcs);
+		var result = _.map(calcs, function(calc){
+			return calc.script.slice(0, 3) + "id:'" + calc.id + "',\n\t" + calc.script.slice(3);
+		});
+
+		return res.render('backup.html', {
+			calc : result
+		});
 	});
 });
 

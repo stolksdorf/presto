@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
+
+
+	<link rel="Stylesheet" type="text/css" href="style/reset.css" />
+
+
+
+</head>
+<body>
+	<script>
+
+	var temp = <%- inspect(calc) %>
+
+	$(document).ready(function(){
+
+		for(i in temp){
+			var calc = temp [i];
+			$('#temp').val($('#temp').val() + calc + ',');
+
+		}
+		$('#temp').val($('#temp').val()+']');
+
+//		$('#temp')
+
+
+	})
+
+
+
+	</script>
+	<title>Backup</title>
+	<textarea id='temp' style='width:600px;height:600px'>[</textarea>
+
+</body>
+</html>
