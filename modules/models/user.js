@@ -50,12 +50,11 @@ UserSchema.statics.add = function(data, callback){
 	return newUser.save(callback);
 };
 
-
 UserSchema.post('save', function(user){
-	if(_.contains(adminEmails, user.email)){
-		user.account_type = 'admin';
-	}
+	if(!user.id) user.id = user._id;
+	user.update({id : user.id}, function(err){});
 });
+
 
 //returns the user if the email exists, if not adds the user and returns in
 UserSchema.statics.getByEmail = function(email, callback){

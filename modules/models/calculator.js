@@ -9,8 +9,12 @@ var CalculatorSchema = mongoose.Schema({
 
 
 CalculatorSchema.post('save', function(calc){
+	if(!calc.id) calc.id = calc._id;
 	calc.script = calc.script.replace('{{ID}}', calc.id);
-	calc.update({script : calc.script.replace('{{ID}}', calc.id)}, function(err){});
+	calc.update({
+		script : calc.script,
+		id : calc.id
+	}, function(err){});
 });
 
 Calculator = mongoose.model('Calculator', CalculatorSchema);

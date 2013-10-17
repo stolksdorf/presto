@@ -112,7 +112,7 @@ app.get('/csv/:filename', function(req,res){
 	API
  */
 
-/*
+
 XO.api('/api/users', User, [mw.loadUser, mw.adminOnly]);
 
 XO.api('/api/calculators', Calculator, {
@@ -123,18 +123,22 @@ XO.api('/api/calculators', Calculator, {
 });
 
 XO.api('/api/keys', ActivationKey, [mw.loadUser, mw.adminOnly]);
-*/
 
+
+/*
 app.get('/api', function(req,res){
 	res.send(XO.endpoints);
 });
+*/
+
+/*
 
 XO.api('/api/users', User);
 
 XO.api('/api/calculators', Calculator);
 
 XO.api('/api/keys', ActivationKey);
-
+*/
 
 
 
@@ -175,7 +179,6 @@ app.get('/clear_calcs', [mw.loadUser, mw.adminOnly], function(req, res){
 });
 
 
-//Testing API
 
 
 
