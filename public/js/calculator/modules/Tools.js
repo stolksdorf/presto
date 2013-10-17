@@ -1,4 +1,4 @@
-CoolFunctions = {
+Tools = {
 	/**
 	 * Returns a function that does a regression analysis
 	 * to find the value of a target variable
@@ -38,4 +38,7 @@ CoolFunctions = {
 
 };
 
-Functions = CoolFunctions;
+
+//TODO: Remove after push
+Functions = Tools;
+CoolFunctions = Tools;

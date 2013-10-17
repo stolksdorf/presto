@@ -38,30 +38,29 @@
 	<link rel="Stylesheet" type="text/css" href="../style/pages/calculator.css" />
 
 
-
-
 	<!-- Engine -->
-	<script type="text/javascript" src="../js/Presto.js"></script>
 	<script type="text/javascript" src="../js/prototypes.js"></script>
-	<script type="text/javascript" src="../js/engine/CalculatorBlueprintModel.js"></script>
-	<script type="text/javascript" src="../js/engine/ModuleBlueprint.js"></script>
-	<script type="text/javascript" src="../js/engine/OverlayBlock.js"></script>
+	<script type="text/javascript" src="../js/CalculatorModel.js"></script>
+	<script type="text/javascript" src="../js/calculator/CalculatorApp.js"></script>
+	<script type="text/javascript" src="../js/calculator/CalculatorView.js"></script>
+	<script type="text/javascript" src="../js/calculator/ModuleBlueprint.js"></script>
+
 
 	<%if (user.account_type == 'admin') { %>
-		<script type="text/javascript" src="../js/engine/CodeEditorBlock.js"></script>
+		<script type="text/javascript" src="../js/calculator/CodeEditorView.js"></script>
 	<% } %>
 
 	<!-- Modules -->
-	<script type="text/javascript"             src="../js/modules/Inputs.js"></script>
+	<script type="text/javascript"             src="../js/calculator/modules/Inputs.js"></script>
 	<link rel="Stylesheet" type="text/css" href="../style/modules/Inputs.css" />
-	<script type="text/javascript"             src="../js/modules/Outputs.js"></script>
+	<script type="text/javascript"             src="../js/calculator/modules/Outputs.js"></script>
 	<link rel="Stylesheet" type="text/css" href="../style/modules/Outputs.css" />
-	<script type="text/javascript"             src="../js/modules/Tables.js"></script>
+	<script type="text/javascript"             src="../js/calculator/modules/Tables.js"></script>
 	<link rel="Stylesheet" type="text/css" href="../style/modules/Tables.css" />
-	<script type="text/javascript"             src="../js/modules/Charts.js"></script>
+	<script type="text/javascript"             src="../js/calculator/modules/Charts.js"></script>
 	<link rel="Stylesheet" type="text/css" href="../style/modules/Charts.css" />
-	<script type="text/javascript"             src="../js/modules/Global.js"></script>
-	<script type="text/javascript"             src="../js/modules/CoolFunctions.js"></script>
+	<script type="text/javascript"             src="../js/calculator/modules/Global.js"></script>
+	<script type="text/javascript"             src="../js/calculator/modules/Tools.js"></script>
 </head>
 
 
@@ -80,7 +79,6 @@
 	<div class='presto' xo-view='calculator'>
 
 		<title xo-element='windowTitle'></title>
-
 
 		<div class='topbar' xo-element='topbar'>
 			<div class='topbar__icon'>

@@ -1,4 +1,6 @@
 
+var DEBUG = false;
+
 exports.endpoints = [];
 
 exports.api = function(endpoint, Model, middleware){
@@ -34,14 +36,14 @@ exports.api = function(endpoint, Model, middleware){
 	//Collection
 	app.get(endpoint, mw.get, function(req,res){
 		Model.find(function(err, objs){
-			console.log('getting all : ' + endpoint, clean(objs));
+			if(DEBUG) console.log('getting all : ' + endpoint, clean(objs));
 			if(err) return res.send(500, err.message);
 			return res.send(clean(objs));
 		});
 	});
 
 	app.delete(endpoint, mw.del, function(req,res){
-		console.log('delete collection : '+ endpoint);
+		if(DEBUG) console.log('delete collection : '+ endpoint);
 		Model.remove({}, function(err){
 			if(err) return res.send(500, err.message);
 			return res.send(200);
@@ -50,7 +52,7 @@ exports.api = function(endpoint, Model, middleware){
 
 	//Object
 	app.get(endpoint + '/:id', mw.get, function(req,res){
-		console.log('getting : '+ endpoint, req.params.id);
+		if(DEBUG) console.log('getting : '+ endpoint, req.params.id);
 		Model.findById(req.params.id, function(err, obj){
 			if(err) return res.send(500, err.message);
 			return res.send(clean(obj));
@@ -62,13 +64,13 @@ exports.api = function(endpoint, Model, middleware){
 		if(!obj.id) obj.id = obj._id;
 		obj.save(function(err, obj){
 			if(err) return res.send(500, err.message);
-			console.log('creating : '+ endpoint, obj);
+			if(DEBUG) console.log('creating : '+ endpoint, obj);
 			return res.send(clean(obj));
 		});
 	});
 
 	app.put(endpoint + '/:id', mw.put, function(req,res){
-		console.log('update : '+ endpoint, req.body);
+		if(DEBUG) console.log('update : '+ endpoint, req.body);
 		Model.findByIdAndUpdate(req.params.id, req.body, function(err, obj){
 			if(err) return res.send(500, err.message);
 			return res.send(clean(obj));
@@ -76,7 +78,7 @@ exports.api = function(endpoint, Model, middleware){
 	});
 
 	app.delete(endpoint + '/:id', mw.del, function(req,res){
-		console.log('deleteing : '+ endpoint, req.params.id);
+		if(DEBUG) console.log('deleteing : '+ endpoint, req.params.id);
 		Model.findByIdAndRemove(req.params.id, function(err, obj){
 			if(err) return res.send(500, err.message);
 			return res.send(clean(obj));
