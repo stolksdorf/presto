@@ -34,10 +34,17 @@ Presto_View_Content = xo.view.extend({
 
 		var code = this.dom.data.val();
 
-		eval("with (this) {var result = (" + code + ")}");
+		try{
+			eval("with (this) {var result = (" + code + ")}");
+		}catch(e){
+			result = "";
+		}
+
+
 
 		if(this.model){
 			this.model.update(result, code);
+			console.log('saving!', this.model);
 			this.model.save(function(){
 				alert('Saved!');
 			});

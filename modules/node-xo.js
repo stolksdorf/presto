@@ -61,7 +61,7 @@ exports.api = function(endpoint, Model, middleware){
 
 	app.post(endpoint, mw.post, function(req, res){
 		var obj = new Model(req.body);
-		if(!obj.id) obj.id = obj._id;
+		obj.id = obj._id;
 		obj.save(function(err, obj){
 			if(err) return res.send(500, err);
 			if(DEBUG) console.log('creating : '+ endpoint, obj);
@@ -72,8 +72,18 @@ exports.api = function(endpoint, Model, middleware){
 	app.put(endpoint + '/:id', mw.put, function(req,res){
 		if(DEBUG) console.log('update : '+ endpoint, req.body);
 		Model.findByIdAndUpdate(req.params.id, req.body, function(err, obj){
-			if(err || !obj) return res.send(500, err);
-			return res.send(clean(obj));
+			if(err) return res.send(500, err);
+			if(!obj){
+				var obj = new Model(req.body);
+				obj.id = obj._id;
+				obj.save(function(err, obj){
+					if(err) return res.send(500, err);
+					if(DEBUG) console.log('creating : '+ endpoint, obj);
+					return res.send(clean(obj));
+				});
+			}else{
+				return res.send(clean(obj));
+			}
 		});
 	});
 

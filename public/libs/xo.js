@@ -252,7 +252,6 @@
 
 				_.map(this, function(model){
 					model.save(function(err, data){
-						console.log('save', data);
 						count--;
 						self.add(data).trigger('save');
 						if(typeof callback === 'function'){

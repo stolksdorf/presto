@@ -11,6 +11,13 @@ var CalculatorSchema = mongoose.Schema({
 CalculatorSchema.post('save', function(calc){
 	if(!calc.id) calc.id = calc._id;
 	calc.script = calc.script.replace('{{ID}}', calc.id);
+
+	if(calc.script.indexOf('id') < 10){
+
+	}
+
+
+
 	calc.update({
 		script : calc.script,
 		id : calc.id
