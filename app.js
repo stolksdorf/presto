@@ -260,7 +260,7 @@ app.get('/backup', [loadUser, adminOnly], function(req, res){
 	CalculatorModel.find({}, function(err, calcs){
 		if(err) return res.send(200, 'Error - ' + err);
 		var result = _.map(calcs, function(calc){
-			return calc.script.slice(0, 3) + "id:'" + calc.id + "',\n\t" + calc.script.slice(3);
+			return calc.script;
 		});
 
 		return res.render('backup.html', {
