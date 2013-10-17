@@ -17,10 +17,8 @@ ActivationKeySchema = mongoose.Schema({
 
 
 ActivationKeySchema.post('save', function(aKey){
-	console.log('KEY', aKey);
 	if(!aKey.id) aKey.id = aKey._id;
-	aKey.update({id : aKey.id}, function(err){});
-	console.log('KEY2', aKey);
+	aKey.update(aKey, function(err){});
 });
 
 

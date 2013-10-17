@@ -51,7 +51,6 @@ UserSchema.statics.add = function(data, callback){
 };
 
 
-
 UserSchema.post('save', function(user){
 	if(_.contains(adminEmails, user.email)){
 		user.account_type = 'admin';
