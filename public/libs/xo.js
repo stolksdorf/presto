@@ -135,12 +135,14 @@
 				var self = this;
 				return _.reduce(this, function(result, v,k){
 					if(	k === '__events__' ||
-						k === '__super__' ||
 						k === 'urlRoot' ||
 						typeof v ==='function'){ return result;}
 					result[k] = v;
 					return result;
 				}, {});
+			},
+			toJSON : function(){
+				return JSON.stringify(this.attributes(), null, 4);
 			},
 			save : function(callback)
 			{

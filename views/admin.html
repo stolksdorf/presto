@@ -7,7 +7,6 @@
 	<script type="text/javascript" src="libs/underscore.js"></script>
 
 	<!-- MVC -->
-	<script type="text/javascript" src="libs/backbone.js"></script>
 	<script type="text/javascript" src="libs/archetype.js"></script>
 	<script type="text/javascript" src="libs/xo.js"></script>
 
@@ -31,17 +30,48 @@
 		var endpoints = <%- inspect(routes) %>;
 
 
-		var endpointView = xo.view.extend({
+		var EndpointGroup = xo.view.extend({
+			schematic : 'endpointGroup',
+
+			initialize : function()
+			{
+				this.collection = this.model;
+				return this;
+			},
+
+			render : function()
+			{
+				var self = this;
+
+
+				this.dom.url.text(this.collection.model.urlRoot);
+
+				this.collection.on('add', function(endpointModel){
+					//self.dom.count.text(self.collection.length);
+
+					var newView = EndpointView.create(endpointModel).injectInto(self.dom.endpointContainer);
+				});
+
+				return this;
+			}
+
+
+		});
+
+
+		var EndpointView = xo.view.extend({
 			schematic : 'endpoint',
 
 			render : function()
 			{
 				var self = this;
-				this.dom.url.text(this.model.model.urlRoot);
 
-				this.model.on('add', function(){
-					self.dom.count.text(self.model.length);
-				});
+				this.dom.url.text(":    -" + this.model.id);
+
+				this.dom.block.click(function(){
+					$('.test').val(self.model.script || self.model.toJSON());
+				})
+
 
 				return this;
 			},
@@ -50,8 +80,19 @@
 
 		$(document).ready(function(){
 
+			$('#run').click(function(){
+				var code = $('.test').val();
+				console.log(code);
+
+				eval("with (this) {var result = (" + code + ")}");
+
+				console.log(result);
+
+
+			});
+
+
 			data = _.map(endpoints, function(ep){
-				console.log(ep);
 
 				var col = xo.collection.extend({
 					model : xo.model.extend({
@@ -60,8 +101,8 @@
 				});
 
 
-				var view = endpointView.create();
-				view.model = col;
+
+				var view = EndpointGroup.create(col);
 				view.injectInto($('body'));
 
 
@@ -87,12 +128,21 @@
 
 		ADMIN!
 
+		<textarea class='test'>
+		</textarea>
+		<button id='run'>run</button
+
 	</div>
 
 
-	<div xo-schematic='endpoint'>
+	<div xo-schematic='endpointGroup'>
 		<span xo-element='url'></span>
 		<span xo-element='count'></span>
+		<div xo-element='endpointContainer'></div>
+	</div>
+
+	<div xo-schematic='endpoint'>
+		<span xo-element='url'></span>
 	</div>
 
 </body>

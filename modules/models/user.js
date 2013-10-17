@@ -17,7 +17,7 @@ var adminEmails = [
 
 
 UserSchema = mongoose.Schema({
-	id : String,
+	id : { type: String, default: function(){ return this._id; }},
 	email : String,
 	account_type : { type: String, default: 'beta'},
 	auth : [{

@@ -10,17 +10,26 @@
 		};
 	}
 	var archetype_EventCount = new Date().getTime();
+
+	var fullCall = function(obj,method, args){
+		if(obj[method]) fullCall(Object.getPrototypeOf(obj), args);
+		if(obj.hasOwnProperty(method)){
+			console.log('test', obj[method]);
+
+			obj[method].apply(newObj, args);
+		}
+	};
+
+
 	Archetype = {
 		initialize : function(){
 			return this;
 		},
 		create : function(){
 			var newObj = Object.create(this);
-			var init  = function(obj, args){
-				if(obj.initialize) init(Object.getPrototypeOf(obj), args);
-				if(obj.hasOwnProperty('initialize')) obj.initialize.apply(newObj, args);
-			};
-			init(newObj, arguments);
+			var params = Array.prototype.slice.apply(arguments);
+			params.unshift('initialize');
+			newObj.deep.apply(newObj, params);
 			return newObj;
 		},
 		extend : function(methods){
@@ -31,7 +40,17 @@
 				this[methodName] = methods[methodName];
 			}
 			return this;
-		}
+		},
+		deep : function(method, arg1, arg2){
+			var self = this;
+			var deepcall = function(obj,method,args){
+				if(obj[method]) deepcall(Object.getPrototypeOf(obj), method, args);
+				if(obj.hasOwnProperty(method)){
+					return obj[method].apply(self, args);
+				}
+			};
+			return deepcall(this, method, Array.prototype.slice.apply(arguments).slice(1));
+		},
 	};
 
 	Archetype_Events = {
@@ -74,24 +93,23 @@
 	Archetype_Super = {
 		create : function(){
 			var self = this;
-			this.super = function(){ return Object.getPrototypeOf(self); };
 			var newObj = Object.create(this);
-			var init  = function(obj, args){
-				if(obj.initialize) init(Object.getPrototypeOf(obj), args);
-				if(obj.hasOwnProperty('initialize')) obj.initialize.apply(newObj, args);
-			};
-			init(newObj, arguments);
+			newObj.super = function(){ return self; };
+
+			var params = Array.prototype.slice.apply(arguments);
+			params.unshift('initialize');
+			newObj.deep.apply(newObj, params);
 			return newObj;
 		},
 		super : function(){
 			return Object.getPrototypeOf(this);
 		},
-
 	};
 
 
 	Archetype.mixin(Archetype_Events);
 	Archetype.mixin(Archetype_Super);
+	archetype = Archetype;
 })();
 
 
