@@ -246,7 +246,7 @@ app.get('/allkey', [loadUser, adminOnly], function(req, res){
 	});
 });
 
-app.get('/drop', [loadUser, adminOnly], [loadUser, adminOnly], function(req, res){
+app.get('/drop', [loadUser, adminOnly], function(req, res){
 	User.remove({}, function(err){
 		console.log('All users dropped');
 	});
@@ -256,6 +256,12 @@ app.get('/drop', [loadUser, adminOnly], [loadUser, adminOnly], function(req, res
 	res.send(200, 'Dropped');
 });
 
+app.get('/backup', [loadUser, adminOnly], function(req, res){
+	CalculatorModel.find({}, function(err, calcs){
+		if(err) return res.send(200, 'Error - ' + err);
+		return res.send(calcs);
+	});
+})
 
 
 
