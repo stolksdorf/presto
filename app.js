@@ -27,7 +27,6 @@ var DEBUG = false;
 
 //Modules
 mail          = require('./modules/mail.js');
-sneakpeek     = require('./modules/sneakpeek.js');
 mw            = require('./modules/middleware.js');
 XO            = require('./modules/node-xo.js');
 
@@ -40,6 +39,23 @@ require('./modules/models/keys.js');
 
 
 //Routes
+app.get('/', [mw.loadUser], function (req, res) {
+	return res.redirect('/index');
+	/*
+	return res.render('home.html', {
+		user : req.user
+	});*/
+});
+
+app.get('/home', [mw.loadUser], function (req, res) {
+	return res.redirect('/');
+	/*
+	return res.render('home.html', {
+		user : req.user
+	});*/
+});
+
+
 app.get('/calc/:calcId', [mw.loadUser], function(req,res){
 	return res.render('calculator.html', {
 		user : req.user,
@@ -47,12 +63,14 @@ app.get('/calc/:calcId', [mw.loadUser], function(req,res){
 	});
 });
 
-app.get('/home', [mw.loadUser], function(req,res){
-	return res.render('home.html', {
+app.get('/index', [mw.loadUser], function(req,res){
+	return res.render('index.html', {
 		user : req.user
 	});
 });
 
+
+//TODO: Remove once new home page is made
 app.get('/register', function(req, res){
 	res.render('register.html');
 });

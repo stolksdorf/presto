@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<script type="text/javascript" src="libs/jq.js"></script>
+	<script type="text/javascript" src="libs/underscore.js"></script>
+	<script type="text/javascript" src="libs/archetype.js"></script>
+	<script type="text/javascript" src="libs/xo.js"></script>
+	<script type="text/javascript" src="../js/prototypes.js"></script>
+
+	<link href='libs/lato/lato.css' rel='stylesheet' type='text/css'>
+	<link href='libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
+
+	<link rel="Stylesheet" type="text/css" href="style/reset.css" />
+	<link rel="Stylesheet" type="text/css" href="style/presto.css" />
+
+	<link rel="Stylesheet" type="text/css" href="style/pages/index.css" />
+
+	<script type="text/javascript" src="libs/isotope.js"></script>
+	<link rel="Stylesheet" type="text/css" href="libs/isotope.css" />
+	<link rel="Stylesheet" type="text/css" href="libs/hint.css" />
+
+	<script type="text/javascript" src="../js/CalculatorModel.js"></script>
+	<script type="text/javascript" src="../js/index/IndexApp.js"></script>
+</head>
+
+<body xo-view='home'>
+
+	<title>Presto Calculators</title>
+
+	<script>
+
+
+		temp = archetype.extend({
+			id : 1,
+			test : function()
+			{
+				console.log('1');
+			},
+		})
+
+		temp2 = temp.extend({
+			id : 2,
+			test : function()
+			{
+				console.log('2');
+			},
+		})
+
+		temp3 = temp2.extend({
+			id : 3,
+			initialize : function()
+			{
+				var cool = 3;
+				return this;
+			},
+			test : function()
+			{
+				console.log('3', cool);
+			},
+		})
+
+		temp4 = temp3.create();
+
+		temp5 = temp4.create()
+
+
+
+
+
+
+
+
+
+
+		$(document).ready(function(){
+			PrestoHome.create();
+		});
+	</script>
+
+	<div class='topbar'>
+		<div class='topbar__icon'>
+			<img src='/assets/logo_100w.png'></img>
+		</div>
+
+		<div class='topbar__title'>Presto</div>
+
+		<div class='topbar__logout topbar__button'>
+			<i class='icon-share-alt'></i>
+		</div>
+
+		<div class='topbar__account topbar__button'>
+			<%= user.email %>
+		</div>
+
+		<%if (user.account_type == 'admin') { %>
+			<div class='topbar__newCalc topbar__button' xo-element='newCalculatorButton'>
+				<i class='icon-plus'></i> New Calculator
+			</div>
+		<% } %>
+
+	</div>
+
+	<div class='content'>
+		<div class='content__search'>
+			<i class='icon-search' xo-element='searchIcon'></i>
+			<i class='icon-time' style='display:none' xo-element='searchingIcon'></i>
+			<input type='text' xo-element='search'></input>
+		</div>
+
+
+		<div class='calculatorContainer' xo-element='container'>
+			<!-- Calculators go here! -->
+		</div>
+	</div>
+
+
+
+
+
+	<%if (user.account_type == 'admin') { %>
+		<div class='adminbox'>
+			<i class='icon-rocket'></i> ADMIN MODE
+		</div>
+	<% } %>
+
+
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', 'UA-44198332-1', 'prestocalc.com');
+		ga('send', 'pageview');
+	</script>
+</body>
+</html>
+
+
+<!-- Schematics -->
+<div class='calculator' xo-schematic='calculator'>
+	<a xo-element='link' target="_blank">
+		<div class='calculator__icon' xo-element='icon'><i></i></div>
+		<div class='calculator__info'>
+			<div class='calculator__info__title' xo-element='title'></div>
+			<div class='calculator__info__description' xo-element='description'></div>
+		</div>
+		<%if (user.account_type == 'admin') { %>
+			<div class='calculator__delete' xo-element='deleteBtn'>
+				<i class='icon-remove'></i>
+			</div>
+		<% } %>
+	</a>
+</div>
