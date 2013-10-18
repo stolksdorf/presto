@@ -162,7 +162,7 @@ XO.api('/api/keys', ActivationKey);
  */
 
 app.get('/backup', [mw.loadUser, mw.adminOnly], function(req, res){
-	CalculatorModel.find({}, function(err, calcs){
+	Calculator.find({}, function(err, calcs){
 		if(err) return res.send(200, 'Error - ' + err);
 		var result = _.map(calcs, function(calc){
 			return calc.script;
