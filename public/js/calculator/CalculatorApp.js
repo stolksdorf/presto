@@ -85,7 +85,7 @@ Presto = Archetype.extend({
 		this.globals = {};
 		var iterationCount = 0;
 		while(1){
-			console.log('----START', iterationCount);
+			//console.log('----START', iterationCount);
 			var newGlobals = {},
 				thrownError = false;
 			_.each(self.modules, function(module){
@@ -93,7 +93,7 @@ Presto = Archetype.extend({
 					//console.log("  " + module.name);
 					var temp = module.generate();
 				}catch(e){
-					console.log('err - '+ module.name, e.message);
+					//console.log('err - '+ module.name, e.message);
 					thrownError = true;
 					if(iterationCount > Presto.options.max_update_iterations){
 						module.generate(); //Just cause the error again
@@ -120,7 +120,7 @@ Presto = Archetype.extend({
 			iterationCount++;
 		}
 
-		console.log('----END');
+		//console.log('----END');
 
 		return this;
 	},

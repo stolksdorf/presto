@@ -44,9 +44,13 @@ Presto.registerModule({
 				start : function()
 				{
 					var self = this;
-					this.options = _.extend(module.options.default, module.options.line);
-					this.tooltip = $('#chart__tooltip');
+					if(this.definition.type === 'bar'){
+						this.options = _.extend(module.options.bar, module.options.default);
+					} else{
+						this.options = _.extend(module.options.line, module.options.default);
+					}
 
+					this.tooltip = $('#chart__tooltip');
 
 
 					//Resizing buttons
@@ -114,6 +118,7 @@ Presto.registerModule({
 					var self = this;
 					this.dom.title.text(_.evalue(this.definition.title));
 
+
 					if(this.definition.hover){
 						this.addHover();
 					}
@@ -162,7 +167,7 @@ Presto.registerModule({
 								.html(self.definition.hover(x,y,label))
 								.css({
 									top: item.pageY -25,
-									left: item.pageX + 15
+									left: item.pageX + 25
 								})
 								.show();
 						} else {
@@ -253,6 +258,17 @@ Presto.registerModule({
 		line : {
 			series: {
 				lines : { show: true },
+				points: { show: false }
+			}
+		},
+
+		bar : {
+			series: {
+				stack : true,
+				bars : {
+					show: true,
+					barWidth : 0.6
+				},
 				points: { show: false }
 			}
 		}
