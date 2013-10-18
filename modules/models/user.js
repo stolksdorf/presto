@@ -17,6 +17,7 @@ var adminEmails = [
 
 
 UserSchema = mongoose.Schema({
+	id : String,
 	email : String,
 	account_type : { type: String, default: 'beta'},
 	auth : [{
@@ -32,7 +33,6 @@ UserSchema.methods.isAdmin = function(){
 };
 
 UserSchema.methods.addCookie = function(cookieSignature, callback){ //TODO: Make into an update
-	console.log('adding new cookie', cookieSignature);
 	this.auth.push({
 		cookie      : cookieSignature
 	});
@@ -40,59 +40,21 @@ UserSchema.methods.addCookie = function(cookieSignature, callback){ //TODO: Make
 };
 
 
-//Statics
-
-/*
-//Finds a user based on the fingerprint, then cookie
-UserSchema.statics.get = function(data, callback){
-	if(typeof data.fingerprint === 'undefined'){
-		return callback(ErrorCode[2]);
-	}
-	this.find({'auth.fingerprint' : data.fingerprint},
-		function(err, user) {
-			if(err){
-				return callback(err);                 //Mongoose Error
-			}else if(user.length === 1){
-				return callback(undefined, user[0]);  //Found User
-			}else if(user.length === 0){
-				return callback(ErrorCode[0]);        //No users
-			}else{
-				this.match(data, callback);           //Multiple fingerprint matches
-			}
-		}
-	);
-};
-
-//Finds a user based on both the fingerpritn and cookie
-UserSchema.statics.match = function(data, callback){
-	if(typeof data.fingerprint === 'undefined' || typeof data.cookie === 'undefined'){
-		callback(ErrorCode[2]);
-	}
-	this.find({
-			'auth.fingerprint' : data.fingerprint,
-			'auth.cookie'      : data.cookie
-		},
-		function(err, user) {
-			if(err){
-				return callback(err);                 //Mongoose Error
-			}else if(user.length === 1){
-				return callback(undefined, user[0]);  //Found User
-			}else{
-				return callback(ErrorCode[0]);        //No users
-			}
-		}
-	);
-};
-*/
-
 //Adds a new user, checks if we should make them an admin
 UserSchema.statics.add = function(data, callback){
 	var newUser = new User(data);
+	if(!newUser.id) newUser.id = newUser._id;
 	if(_.contains(adminEmails, newUser.email)){
 		newUser.account_type = 'admin';
 	}
 	return newUser.save(callback);
-}
+};
+
+UserSchema.post('save', function(user){
+	if(!user.id) user.id = user._id;
+	user.update({id : user.id}, function(err){});
+});
+
 
 //returns the user if the email exists, if not adds the user and returns in
 UserSchema.statics.getByEmail = function(email, callback){
@@ -102,7 +64,6 @@ UserSchema.statics.getByEmail = function(email, callback){
 			return callback(err)
 		}
 		if(!user){
-			console.log('creating user');
 			return self.add({email : email}, callback);
 		}
 		return callback(null, user);

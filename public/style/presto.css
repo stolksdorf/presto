@@ -115,6 +115,7 @@ input{
 	position         : fixed;
 	z-index          : 1000;
 
+	overflow         : hidden;
 	height           : 50px;
 	width            : 100%;
 
@@ -126,6 +127,18 @@ input{
 		display        : inline-block;
 		vertical-align : top;
 		line-height    : 50px;
+	}
+
+	.topbar__icon img{
+		height : 45px;
+	}
+
+	.topbar__icon i{
+		margin-right : 10px;
+		margin-left  : 10px;
+
+		font-size    : 2em;
+		line-height  : 50px;
 	}
 
 	.topbar__title{

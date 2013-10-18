@@ -6,7 +6,7 @@ Presto.registerModule({
 	target    : Presto.getStaticPanel,
 
 
-	initialize : function()
+	start : function()
 	{
 		this.outputs = this.createComponents({
 			definition : this.definition,
@@ -36,7 +36,7 @@ Presto.registerModule({
 			output : Presto_Component.extend({
 				schematic : 'output',
 
-				initialize : function()
+				start : function()
 				{
 					return this;
 				},

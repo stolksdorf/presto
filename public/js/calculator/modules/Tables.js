@@ -4,7 +4,7 @@ Presto.registerModule({
 
 	drawOrder : 200,
 
-	initialize : function()
+	start : function()
 	{
 		this.tables =  this.createComponents({
 			definition : this.definition,
@@ -41,7 +41,7 @@ Presto.registerModule({
 			table : Presto_Component.extend({
 				schematic : 'table',
 
-				initialize : function()
+				start : function()
 				{
 					var self = this;
 					this.columns = this.createComponents({
@@ -114,7 +114,7 @@ Presto.registerModule({
 			column : Presto_Component.extend({
 				schematic : 'tableColumn',
 
-				initialize : function()
+				start : function()
 				{
 					return this;
 				},

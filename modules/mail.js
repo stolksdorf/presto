@@ -46,9 +46,9 @@ exports.sendMail = function(account, mailOptions, callback){
 
 
 //Sends the meail to link a new browser
-exports.sendActivationEmail = function(userModel, link, callback){
+exports.sendActivationEmail = function(email, link, callback){
 	exports.sendMail(accounts.admin, {
-		to : userModel.email,
+		to : email,
 		subject : 'Account activation',
 		html : 'Hey there, <br><a href="' + link + '">Click here</a> to link your browser with Presto'
 	},

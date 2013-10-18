@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+
+	<!-- Libraries -->
+	<script type="text/javascript" src="libs/jq.js"></script>
+	<script type="text/javascript" src="libs/underscore.js"></script>
+	<script type="text/javascript" src="js/prototypes.js"></script>
+
+	<!-- MVC -->
+	<script type="text/javascript" src="libs/archetype.js"></script>
+	<script type="text/javascript" src="libs/xo.js"></script>
+	<link href='libs/lato/lato.css' rel='stylesheet' type='text/css'>
+	<link href='libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
+
+
+
+
+	<!-- Style -->
+	<link rel="Stylesheet" type="text/css" href="style/reset.css" />
+	<link rel="Stylesheet" type="text/css" href="style/presto.css" />
+	<link rel="Stylesheet" type="text/css" href="style/pages/admin.css" />
+
+
+	<script type="text/javascript" src="js/CalculatorModel.js"></script>
+	<script type="text/javascript" src="js/calculator/modules/Tools.js"></script>
+	<script type="text/javascript" src="js/admin/AdminApp.js"></script>
+
+	<script type="text/javascript" src="js/admin/EndpointGroupView.js"></script>
+	<script type="text/javascript" src="js/admin/EndpointView.js"></script>
+	<script type="text/javascript" src="js/admin/ContentView.js"></script>
+
+
+</head>
+
+
+
+
+
+
+
+
+
+<body>
+	<title>Presto Admin</title>
+
+	<script>
+		var endpoints = <%- inspect(routes) %>;
+
+		$(document).ready(function(){
+			PrestoAdmin.start(endpoints);
+		});
+
+	</script>
+
+
+	<div class='topbar red'>
+		<div class='topbar__icon'>
+			<i class='icon-rocket'></i>
+		</div>
+
+		<div class='topbar__title'>Presto Admin</div>
+
+		<div class='topbar__account topbar__button hint--bottom' data-hint='Account'>
+			<%= user.email %>
+		</div>
+	</div>
+
+
+	<div class='container'>
+
+		<div class='routes tile'>
+			<div class='routes__title'>Routes</div>
+
+		</div>
+
+
+		<div class='content tile' xo-view='content'>
+			<div class='content__title'>Data</div>
+			<textarea class='content__data' xo-element='data'></textarea>
+			<div class='content__buttons'>
+				<!--<div class='fetch button green'>Fetch</div> -->
+				<div class='save button blue' xo-element='save'>Save</div>
+				<div class='delete button red' xo-element='delete'>Delete</div>
+			</div>
+		</div>
+
+	</div>
+
+
+
+</body>
+
+<!-- Schematics -->
+
+
+<div class='endpoint' xo-schematic='endpoint'></div>
+
+<div class='endpointGroup' xo-schematic='endpointGroup'>
+	<div class='endpointGroup__title' xo-element='title'>TEST</div>
+	<div class='endpointGroup__container' xo-element='container'></div>
+</div>
+
+</html>

@@ -1,9 +1,6 @@
 Presto = Archetype.extend({
 	modules : {},
 	defaultOptions : {
-		//disabled_modules : [],
-		show_errorbar : true,
-		is_beta       : false,
 		show_editor   : true,
 		max_update_iterations : 10
 	},
@@ -13,17 +10,13 @@ Presto = Archetype.extend({
 		var self = this;
 		this.options = _.extend(this.defaultOptions, opts);
 
-		this.calculatorModel     = new XO.Model();
-		this.calculatorBlueprint = new Presto_Model_CalculatorBlueprint({
+		this.model = xo.model.create();
+		this.blueprint = Presto_Model_Calculator.create({
 			id : this.options.calcId
 		});
+		//this.blueprint.id = ;
+		this.blueprint.fetch();
 
-		console.log(this.options.calc);
-
-
-		this.calculatorBlueprint = new Presto_Model_CalculatorBlueprint(this.options.calc);
-
-		//When the page loads render the calculator
 		$(document).ready(function(){
 			console.log('READY');
 			self.render();
@@ -34,42 +27,19 @@ Presto = Archetype.extend({
 	render : function() //rename to draw
 	{
 		var self = this;
-		this.overlayBlock = new Presto_Block_Overlay(this.calculatorModel);
 
-		if(typeof Presto_Block_CodeEditor !== 'undefined'){
-			this.codeEditor   = new Presto_Block_CodeEditor(this.calculatorBlueprint);
-		}
+		this.view = Presto_View_Calculator.create(this.blueprint);
 
-
-
-		this.setupEvents();
-
-		//get the blueprint from the server
-		//this.calculatorBlueprint.retrieve();
-		this.calculatorBlueprint.execute();
-		return this;
-	},
-
-	setupEvents : function()
-	{
-		var self = this;
-		//Whenever the blueprint is executed, update the model with changes
-		this.calculatorBlueprint.on('execute', function(newCalcModel){
-			self.calculatorModel.set(newCalcModel);
+		this.blueprint.on('execute', function(newCalcModel){
+			self.model.set(newCalcModel);
 		});
 
-		//whenever the model updates, re-render the modules
-		this.calculatorModel.on('change', function(){
-			self.initializeModules()
-		});
-
-		this.overlayBlock.on('showEditor', function(){
-			self.codeEditor.show();
+		this.model.on('change', function(){
+			self.initializeModules();
 		});
 
 		return this;
 	},
-
 
 	update : function()
 	{
@@ -89,59 +59,22 @@ Presto = Archetype.extend({
 	 */
 	registerModule : function(moduleObject)
 	{
-		//Check for disabled
-		/*
-		if(_.contains(Presto.options.disabled_modules, moduleObject.name)){
-			return this;
-		}
-		*/
-		this.modules[moduleObject.name] = Presto_Module.extend(moduleObject);
-
-		console.log('ADDED:', moduleObject.name);
-
+		this.modules[moduleObject.name] = Presto_Module.create().mixin(moduleObject);
 		return this;
 	},
 
-	/**
-	 * Takes the blueprint, executes it, then renders the calculator using the model
-	 */
 	initializeModules : function()
 	{
 		var self = this;
-
 		this.removeModules();
-
-		//dump defintion into global
-		_.each(this.modules, function(module){
-			var def = self.calculatorModel.get(module.name);
-			try{
-				if(module.global){
-					window[module.global] = module.generate(def);
-				}
-			}catch(e){
-				//nuhing
-			}
-		});
-
-		//Now try to initialize each
 		_.each(this.sortedModules(), function(module){
-
-			var def = self.calculatorModel.get(module.name);
-
+			module.definition = self.model[module.name];
 			if(module.schematic){
 				module.injectInto(module.target.call(self));
 			}
-
 			module.components = module.registerComponents(module);
-
-			module.definition = def;
-			module.def = def;
-			module.initialize();
-
-			window[module.name] = def; //??????
+			module.start();
 		});
-
-
 		this.update();
 		return this;
 	},
@@ -178,12 +111,6 @@ Presto = Archetype.extend({
 				console.error('System Oscillating: No saddlepoint found');
 				break;
 			}
-
-/*
-			if(!thrownError){
-				break;
-			}
-*/
 			//Trying fix
 			if(!thrownError && _.compare(newGlobals, this.globals)){
 				break;
@@ -199,9 +126,6 @@ Presto = Archetype.extend({
 	},
 
 
-	/**
-	 * When called updates each module, utilizing the updated Globals
-	 */
 	drawModules : function()
 	{
 		_.each(this.sortedModules(), function(module){
@@ -209,8 +133,6 @@ Presto = Archetype.extend({
 		});
 		return this;
 	},
-
-
 
 	sortedModules : function()
 	{
@@ -234,12 +156,12 @@ Presto = Archetype.extend({
 
 	getStaticPanel : function()
 	{
-		return this.overlayBlock.dom.staticContainer;
+		return this.view.dom.staticContainer;
 	},
 
 	getFlowPanel : function()
 	{
-		return this.overlayBlock.dom.flowContainer;
+		return this.view.dom.flowContainer;
 	},
 
 });

@@ -4,7 +4,7 @@ Presto.registerModule({
 
 	drawOrder : 100,
 
-	initialize : function()
+	start : function()
 	{
 		this.charts =  this.createComponents({
 			definition : this.definition,
@@ -41,7 +41,7 @@ Presto.registerModule({
 			chart : Presto_Component.extend({
 				schematic : 'chart',
 
-				initialize : function()
+				start : function()
 				{
 					var self = this;
 					this.options = _.extend(module.options.default, module.options.line);

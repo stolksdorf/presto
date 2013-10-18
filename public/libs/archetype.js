@@ -9,20 +9,29 @@
 			return new F();
 		};
 	}
-	window.Archetype_EventCount = new Date().getTime();
+	var archetype_EventCount = new Date().getTime();
+
+/*
+	var fullCall = function(obj,method, args){
+		if(obj[method]) fullCall(Object.getPrototypeOf(obj), args);
+		if(obj.hasOwnProperty(method)){
+			console.log('test', obj[method]);
+
+			obj[method].apply(newObj, args);
+		}
+	};
+*/
+
 	Archetype = {
 		initialize : function(){
 			return this;
 		},
-		instance : function(){
-			var newObj = Object.create(this);
-			newObj.__super__ = this.__super__ || this;
-			return newObj.initialize.apply(newObj, arguments);
-		},
 		create : function(){
 			var newObj = Object.create(this);
-			newObj.__super__ = this.__super__ || this;
-			if(arguments.length) newObj.initialize.apply(newObj, arguments);
+			var params = Array.prototype.slice.apply(arguments);
+			params.unshift('initialize');
+			newObj.deep.apply(newObj, params);
+			newObj.trigger('created');
 			return newObj;
 		},
 		extend : function(methods){
@@ -34,20 +43,30 @@
 			}
 			return this;
 		},
-		super : function(methodName){
-			return Object.getPrototypeOf(this.__super__ || this)[methodName]
-					.apply(this, Array.prototype.slice.apply(arguments).slice(1));
+		deep : function(method, arg1, arg2){
+			var self = this;
+			var deepcall = function(obj,method,args){
+				//console.log('WOO', obj.hasOwnProperty(method), args, obj[method]);
+				if(obj[method]) deepcall(Object.getPrototypeOf(obj), method, args);
+				if(obj.hasOwnProperty(method)){
+					//console.log(obj[method], args);
+					obj[method].apply(self, args);
+				}
+			};
+			return deepcall(this, method, Array.prototype.slice.apply(arguments).slice(1));
 		},
+	};
 
+	Archetype_Events = {
 		on : function(eventName, event){
-			Archetype_EventCount++;
+			archetype_EventCount++;
 			this.__events__ = this.__events__ || [];
 			this.__events__.push({
-				id    : Archetype_EventCount,
+				id    : archetype_EventCount,
 				name  : eventName,
 				event : event
 			});
-			return Archetype_EventCount;
+			return archetype_EventCount;
 		},
 		trigger : function(eventName){
 			this.__events__ = this.__events__ || [];
@@ -74,6 +93,27 @@
 			return this;
 		}
 	};
+
+	Archetype_Super = {
+		create : function(){
+			var self = this;
+			var newObj = Object.create(this);
+			newObj.super = function(){ return self; };
+			var params = Array.prototype.slice.apply(arguments);
+			params.unshift('initialize');
+			newObj.deep.apply(newObj, params);
+			newObj.trigger('created');
+			return newObj;
+		},
+		super : function(){
+			return Object.getPrototypeOf(this);
+		},
+	};
+
+
+	Archetype.mixin(Archetype_Events);
+	//Archetype.mixin(Archetype_Super);
+	archetype = Archetype;
 })();
 
 
