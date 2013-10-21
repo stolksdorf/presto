@@ -1,3 +1,11 @@
+body{
+
+	background        : url(../../assets/coffee2.jpg);
+	background-repeat : no-repeat;
+	background-size   : 100%;
+	background-size   : cover;
+}
+
 .content{
 	position       : relative;
 
@@ -11,7 +19,7 @@
 
 .top{
 	padding-top      : 20px;
-	background-color : #332f33;
+	background-color : rgba(51,47,51, 0.8);
 	color            : white;
 }
 
