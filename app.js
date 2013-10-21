@@ -40,19 +40,11 @@ require('./modules/models/keys.js');
 
 //Routes
 app.get('/', [mw.loadUser], function (req, res) {
-	return res.redirect('/index');
-	/*
-	return res.render('home.html', {
-		user : req.user
-	});*/
+	res.redirect('/index');
 });
 
-app.get('/home', [mw.loadUser], function (req, res) {
-	return res.redirect('/');
-	/*
-	return res.render('home.html', {
-		user : req.user
-	});*/
+app.get('/home', function (req, res) {
+	res.render('home.html');
 });
 
 
