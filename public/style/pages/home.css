@@ -1,5 +1,4 @@
 body{
-
 	background        : url(../../assets/coffee2.jpg);
 	background-repeat : no-repeat;
 	background-size   : 100%;
@@ -47,13 +46,13 @@ body{
 		right    : 0px;
 	}
 		.top__options a{
-			text-transform: uppercase;
 			margin-right    : 10px;
 			margin-left     : 10px;
 
 			font-weight     : 900;
 			color           : white;
 			text-decoration : none;
+			text-transform  : uppercase;
 		}
 			.top__options a:hover{
 				text-decoration : underline;
@@ -70,14 +69,15 @@ body{
 		max-width      : 760px;
 
 		font-size      : 1.3em;
-		color          : grey;
+		color          : #eee;
 		letter-spacing : 2px;
 		line-height    : 1.4em;
 	}
 
 
 	.top__try{
-		margin-top : 40px;
+		margin-top    : 40px;
+		margin-bottom : 25px;
 	}
 		.top__try .button{
 			display        : inline-block;
@@ -156,30 +156,30 @@ body{
 .footer{
 	height           : 100px;
 	background-color : #16A085;
-	color : white;
+	color            : white;
 }
 	.footer .content{
-		height           : 100px;
-		padding: 0px;
+		height  : 100px;
+		padding : 0px;
 	}
 
 	.footer__left{
-		float : left;
-		line-height: 100px;
+		float       : left;
+		line-height : 100px;
 	}
 	.footer__right{
-		float : right;
-		line-height: 100px;
+		float       : right;
+		line-height : 100px;
 	}
 
 		.footer__right a{
-			text-transform: uppercase;
 			margin-right    : 10px;
 			margin-left     : 10px;
 
 			font-weight     : 900;
 			color           : white;
 			text-decoration : none;
+			text-transform  : uppercase;
 		}
 			.footer__right a:hover{
 				text-decoration : underline;

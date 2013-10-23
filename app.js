@@ -169,6 +169,12 @@ app.get('/backup', [mw.loadUser, mw.adminOnly], function(req, res){
 
 
 
+app.get('/uhoh', function (req, res) {
+	res.render('404.html');
+});
+app.get('*', function (req, res) {
+	res.redirect('/uhoh');
+});
 
 
 var port = process.env.PORT || 5000;
