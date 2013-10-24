@@ -35,7 +35,8 @@
 	var async_map = function(list, fnName, callback){
 		callback = callback || function(){};
 		var count = list.length;
-		var result = []
+		var result = [];
+		if(count === 0) return callback();
 		_.each(list, function(obj){
 			obj[fnName](function(err, data){
 				if(err) return callback(err);

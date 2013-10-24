@@ -14,7 +14,7 @@ var CalculatorSchema = mongoose.Schema({
 	url         : String,
 	group       : String,
 	keywords    : [String],
-	dev         : Boolean,
+	dev         : { type : Boolean, default : true},
 	tiers       : [String]
 });
 

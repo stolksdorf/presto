@@ -8,7 +8,6 @@
 [hint-left],
 [hint-right] {
 	position : relative;
-	display  : inline-block;
 }
 [hint]:before, [hint]:after,
 [hint-top]:before, [hint-top]:after,

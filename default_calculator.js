@@ -4,6 +4,11 @@
 		description : 'Click to edit',
 		icon        : 'icon-file-alt',
 		color       : 'yellow',
+		group       : '',
+		keywords    : [],
+		tiers       : [],
+
+		dev         : true
 	},
 
 	inputs : {
@@ -41,17 +46,17 @@
 						return Inputs.capital;
 					},
 					generator : function(previousCellValue, index){
-						return previousCellValue + Math.random()*100;
+						return previousCellValue + 100;
 					}
 				},
-				random : {
-					title : 'Random',
+				baseChange : {
+					title : 'Base Change',
 					type  : Type.Money,
 					firstCell : function(){
 						return 0;
 					},
 					generator : function(previousCellValue, index){
-						return previousCellValue + Math.random()*100;
+						return previousCellValue + 150;
 					}
 				},
 			}
@@ -60,13 +65,11 @@
 
 	charts : {
 		basic : {
-			title : function(){
-				return 'Sample Chart' + Outputs.test;
-			},
+			title : 'Sample Chart',
 			hover : function(x,y,label){
 				return '<b>$' + y + '</b> at month ' + x + '</br>' + label;
 			},
-			breakeven : [ ['capitalDelta', 'random'] ],
+			breakeven : [ ['capitalDelta', 'baseChange'] ],
 			table : 'sample',
 		}
 	},

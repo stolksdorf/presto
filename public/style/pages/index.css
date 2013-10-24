@@ -146,6 +146,17 @@ body{
 		line-height      : 1.7em;
 		text-align       : center;
 	}
+		.calculator.teal .calculator__icon      {background-color:#16A085;}
+		.calculator.green .calculator__icon     {background-color:#27AE60;}
+		.calculator.blue .calculator__icon      {background-color:#2980B9;}
+		.calculator.purple .calculator__icon    {background-color:#8E44AD;}
+		.calculator.steel .calculator__icon     {background-color:#2C3E50;}
+		.calculator.yellow .calculator__icon    {background-color:#F39C12;}
+		.calculator.orange .calculator__icon    {background-color:#D35400;}
+		.calculator.red .calculator__icon       {background-color:#C0392B;}
+		.calculator.silver .calculator__icon    {background-color:#BDC3C7;}
+		.calculator.grey .calculator__icon      {background-color:#7F8C8D;}
+
 
 	.calculator__info{
 		margin-left : 125px;
@@ -171,36 +182,43 @@ body{
 		right    : 10px;
 	}
 
-
-	.calculator__delete{
-		position : absolute;
-		display  : none;
-		top      : 40px;
-		right    : 10px;
-
-		cursor   : pointer;
-		color    : black;
-	}
-
-		.calculator__delete:hover{
-			color : red;
+		.calculator__delete{
+			display  : none;
+			cursor   : pointer;
+			color    : black;
 		}
-		.calculator:hover .calculator__delete{
-			display : block;
+			.calculator__delete:hover{
+				color : red;
+			}
+			.calculator:hover .calculator__delete{
+				display : inline-block;
+			}
+
+		.badge{
+			display: none;
+			font-size: 1.3em;
 		}
+			.badge__dev{
+				color : #2C3E50;
+			}
+			.badge__beta{
+				color : #27AE60;
+			}
+			.badge__silver{
+				color : #95A5A6;
+			}
+			.badge__gold{
+				color : #DAA520;
+			}
 
 
-	.calculator.teal .calculator__icon      {background-color:#16A085;}
-	.calculator.green .calculator__icon     {background-color:#27AE60;}
-	.calculator.blue .calculator__icon      {background-color:#2980B9;}
-	.calculator.purple .calculator__icon    {background-color:#8E44AD;}
-	.calculator.steel .calculator__icon     {background-color:#2C3E50;}
-	.calculator.yellow .calculator__icon    {background-color:#F39C12;}
-	.calculator.orange .calculator__icon    {background-color:#D35400;}
-	.calculator.red .calculator__icon       {background-color:#C0392B;}
-	.calculator.silver .calculator__icon    {background-color:#BDC3C7;}
-	.calculator.grey .calculator__icon      {background-color:#7F8C8D;}
 
+
+
+
+
+/*
 .newCalculator{
 	border-bottom : 5px solid #eee;
 }
+*/

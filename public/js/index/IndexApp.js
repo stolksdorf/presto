@@ -13,10 +13,6 @@ PrestoHome = xo.view.extend({
 				self.dom.container.isotope( 'remove', newCalc.dom.block);
 			});
 
-			newCalc.on('save', function(){
-				console.log('woo save');
-			})
-
 			newCalc.injectInto(self.dom.container);
 			self.dom.container.isotope('addItems', newCalc.dom.block);
 			self.dom.container.isotope({
@@ -51,9 +47,6 @@ PrestoHome = xo.view.extend({
 			itemSelector : '.calculator',
 			layoutMode : 'fitRows'
 		});
-
-		GLOBAL = this.calculators;
-
 
 		return this;
 	},
@@ -99,6 +92,13 @@ Presto_Block_CalculatorOption = xo.view.extend({
 			url : function(url){
 				self.dom.link.attr('href', '/calc/' + url);
 			},
+
+			dev : function(){
+				self.renderBadges()
+			},
+			tiers : function(){
+				self.renderBadges()
+			},
 		});
 
 		this.model.on('isMatched', function(isMatched){
@@ -120,6 +120,14 @@ Presto_Block_CalculatorOption = xo.view.extend({
 			});
 		}
 
+		return this;
+	},
+
+	renderBadges : function(){
+		if(this.model.dev){                         return this.dom.devBadge.show(); }
+		if(_.contains(this.model.tiers, 'beta')){   return this.dom.betaBadge.show(); }
+		if(_.contains(this.model.tiers, 'gold')){   return this.dom.goldBadge.show(); }
+		if(_.contains(this.model.tiers, 'silver')){ return this.dom.silverBadge.show(); }
 		return this;
 	},
 

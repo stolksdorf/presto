@@ -3,9 +3,9 @@ var _loadUser = function(req,res,callback){
 	var cookie = req.cookies.presto_auth;
 	if(cookie){
 		User.findOne({'auth.cookie' : cookie}, function(err, user){
-			if(err || !user){ return next(err); }
+			if(err || !user){ return callback(req, res); }
 			req.user = user;
-			console.log('Logging in: ' + user.email);
+			console.log('Logged in:', user.email);
 			return callback(req,res);
 		});
 	} else{

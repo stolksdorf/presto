@@ -64,7 +64,6 @@ PrestoAdmin = xo.view.extend({
 
 				self.calculators.save(function(err){
 					if(err) return alert("There was an error");
-					window.reload();
 				})
 			});
 
