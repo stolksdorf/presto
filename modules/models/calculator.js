@@ -34,7 +34,7 @@ CalculatorSchema.post('save', function(calc){
 
 
 //Returns true if the user can access this calculator
-CalculatorSchema.methods.filterUser = function(user){
+CalculatorSchema.methods.isUserAllowed = function(user){
 	if(user.account_type === 'admin') return true;
 
 	//Only Admins can access in dev calculators
@@ -50,24 +50,28 @@ CalculatorSchema.methods.filterUser = function(user){
 
 Calculator = mongoose.model('Calculator', CalculatorSchema);
 
+
+
 //API
 var filterCalc = function(req,res,next){
-	if(!req.document) return next();
-	if(!req.document.filterUser(req.user)){
-		req.document = null;
+	if(req.document){
+		if(!req.document.isUserAllowed(req.user)){
+			req.document = undefined;
+		}
 	}
+
+	if(req.documents){
+		req.documents = _.filter(req.documents, function(calc){
+			return calc.isUserAllowed(req.user);
+		});
+	}
+
 	return next();
 };
 
-var filterCalcs = function(req,res,next){
-	req.documents = _.filter(req.documents, function(calc){
-		return calc.filterUser(req.user);
-	});
-	return next();
-};
 
 xo.api('/api/calculators', Calculator, {
-	all  : [mw.forceUser, filterCalcs],
+	//all  : [mw.forceUser, filterCalcs],
 	get  : [mw.forceUser, filterCalc],
 	put  : [mw.adminOnly],
 	post : [mw.adminOnly],

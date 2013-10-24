@@ -17,13 +17,11 @@ exports.clean = function(obj){
 	return result;
 };
 
-
-
 exports.api = function(endpoint, Model, middleware, handleError){
 	exports.endpoints.push(endpoint);
 	middleware = middleware || [];
 	var mw = {
-		all  : middleware,
+		//all  : middleware,
 		get  : middleware,
 		post : middleware,
 		put  : middleware,
@@ -31,7 +29,7 @@ exports.api = function(endpoint, Model, middleware, handleError){
 	};
 
 	if(!_.isArray(middleware)){
-		mw.all  = middleware.all  || [];
+		//mw.all  = middleware.all  || [];
 		mw.get  = middleware.get  || [];
 		mw.post = middleware.post || [];
 		mw.put  = middleware.put  || [];
@@ -74,7 +72,7 @@ exports.api = function(endpoint, Model, middleware, handleError){
 	};
 
 
-	app.get(endpoint, mw.findAll, mw.all, function(req,res){
+	app.get(endpoint, mw.findAll, mw.get, function(req,res){
 		return res.send(exports.clean(req.documents) || []);
 	});
 

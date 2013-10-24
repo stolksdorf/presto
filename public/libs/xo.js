@@ -201,6 +201,22 @@
 				col.initialize();
 				return col;
 			},
+
+			toJSON : function(){
+				return JSON.stringify(_.map(this, function(obj){
+					return obj.attributes();
+				}), null, 4);
+			},
+
+			set  : function(arr){
+				var self = this;
+				this.clear();
+				_.each(arr, function(obj){
+					self.add(obj);
+				});
+				return this;
+			},
+
 			add : function(obj)
 			{
 				var newObj = this.model.create();
@@ -225,7 +241,7 @@
 						var self = this;
 						self.clear();
 						_.map(data, function(data){
-							self.add(data).trigger('fetch');
+							self.add(data);
 						});
 					}
 				});

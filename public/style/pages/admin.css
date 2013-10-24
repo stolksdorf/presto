@@ -1,90 +1,101 @@
 body{
 	position         : relative;
-
 	height           : 100%;
-
 	background-color : #BDC3C7;
 }
 
 .container{
-	padding-top: 50px;
-
+	padding-top : 50px;
 }
 
 
 .tile{
-	display: inline-block;
-	vertical-align: top;
-	background-color: white;
-	padding : 10px;
-	margin-top : 15px;
-	margin-right : 15px;
-	margin-left : 15px;
+	/*display          : inline-block;
+	vertical-align   : top;
+*/
+	margin-top       : 15px;
+	margin-right     : 15px;
+	margin-left      : 15px;
+	padding          : 10px;
 
+	background-color : white;
 }
 
 .selected{
-	background-color: #ddd;
+	background-color : #3498DB;
 }
 
 
 
 .routes{
-	margin-right: 0px;
+	margin-right : 0px;
+	max-height: 800px;
+	overflow-y: scroll;
+
+	float:left;
+	width:200px;
 }
 	.routes__title{
-		font-weight: 300;
-		font-size: 2em;
-		margin-bottom: 15px;
+		margin-bottom : 15px;
+		font-size     : 2em;
+		font-weight   : 300;
 	}
 
 	.endpointGroup{
-		margin-bottom: 15px;
+
 	}
 		.endpointGroup__title{
-			cursor:pointer;
-			font-size: 1.3em;
-			padding: 5px;
+			padding   : 5px;
+			cursor    : pointer;
 		}
 			.endpointGroup__title:hover{
-				background-color: #eee;
+				background-color : rgba(0,0,0,0.1);
 			}
 
 		.endpointGroup__container{
-			margin-left: 20px;
+			margin-left : 20px;
 		}
 			.endpoint{
-				cursor:pointer;
-				padding: 3px;
+				padding : 3px;
+				cursor  : pointer;
+				font-size: 0.75em;
 			}
 				.endpoint:hover{
-					background-color: #eee;
+					background-color : rgba(0,0,0,0.1);
 				}
 
 
 
 
 .content{
+	margin-left: 260px;
 
 }
 	.content__title{
-		font-weight: 300;
-		font-size: 2em;
-		margin-bottom: 15px;
+		margin-bottom : 15px;
+		font-size     : 2em;
+		font-weight   : 300;
 	}
 	.content__data{
-		height: 575px;
-		width: 800px;
+		max-height : 900px;
+		min-width  : 300px;
+		width : 100%;
 	}
-	.content__buttons{
+	.content__option{
+		position       : absolute;
+		top            : 26px;
+		left           : 115px;
 
+		cursor         : pointer;
+		font-size      : 0.8em;
+		text-transform : uppercase;
+	}
+
+	.content__buttons{
 	}
 		.fetch{
-
 		}
 		.save{
-
 		}
 		.delete{
-
 		}
