@@ -5,7 +5,16 @@ var CalculatorSchema = mongoose.Schema({
 	id          : String,
 	script      : { type : String, default : fs.readFileSync('default_calculator.js','utf8')},
 	created     : { type: Date, default: Date.now },
-}, { strict: false });
+
+	title       : String,
+	description : String,
+	color       : String,
+	icon        : String,
+	group       : String,
+	keywords    : [String],
+	dev         : Boolean,
+	tiers       : [String]
+});
 
 
 CalculatorSchema.post('save', function(calc){
@@ -23,4 +32,45 @@ CalculatorSchema.post('save', function(calc){
 	}, function(err){});
 });
 
+
+//Returns true if the user can access this calculator
+CalculatorSchema.methods.filterUser = function(user){
+	if(user.account_type === 'admin') return true;
+
+	//Only Admins can access in dev calculators
+	if(this.dev) return false;
+
+	//For now beta users can access all calculators
+	if(user.account_type === 'beta') return true;
+
+	if(_.contains(this.tiers, user.account_type)) return true;
+
+	return false;
+}
+
 Calculator = mongoose.model('Calculator', CalculatorSchema);
+
+//API
+var filterCalc = function(req,res,next){
+	if(!req.document) return next();
+	if(!req.document.filterUser(req.user)){
+		req.document = null;
+	}
+	return next();
+};
+
+var filterCalcs = function(req,res,next){
+	req.documents = _.filter(req.documents, function(calc){
+		return calc.filterUser(req.user);
+	});
+	return next();
+};
+
+xo.api('/api/calculators', Calculator, {
+	all  : [mw.forceUser, filterCalcs],
+	get  : [mw.forceUser, filterCalc],
+	put  : [mw.adminOnly],
+	post : [mw.adminOnly],
+	del  : [mw.adminOnly]
+});
+

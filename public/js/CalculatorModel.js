@@ -18,7 +18,7 @@ Presto_Model_Calculator = xo.model.extend({
 
 		eval("with (this) {var result = (" + this.script + ")}");
 
-		_.each(['title','description', 'color', 'icon', 'group', 'keywords', 'id'], function(modelAttributeName){
+		_.each(['title','description', 'color', 'icon', 'group', 'keywords', 'id', 'dev', 'tiers'], function(modelAttributeName){
 			if(typeof result[modelAttributeName] !== 'undefined'){
 				self.set(modelAttributeName, result[modelAttributeName]);
 			}

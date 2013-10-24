@@ -28,7 +28,7 @@ var DEBUG = false;
 //Modules
 mail          = require('./modules/mail.js');
 mw            = require('./modules/middleware.js');
-XO            = require('./modules/node-xo.js');
+xo            = require('./modules/node-xo.js');
 
 
 //Models
@@ -37,9 +37,8 @@ require('./modules/models/user.js');
 require('./modules/models/keys.js');
 
 
-
 //Routes
-app.get('/', [mw.loadUser], function (req, res) {
+app.get('/', function (req, res) {
 	res.redirect('/index');
 });
 
@@ -48,14 +47,14 @@ app.get('/home', function (req, res) {
 });
 
 
-app.get('/calc/:calcId', [mw.loadUser], function(req,res){
+app.get('/calc/:calcId', [mw.forceLogin], function(req,res){
 	return res.render('calculator.html', {
 		user : req.user,
 		calcId : req.params.calcId
 	});
 });
 
-app.get('/index', [mw.loadUser], function(req,res){
+app.get('/index', [mw.forceLogin], function(req,res){
 	return res.render('index.html', {
 		user : req.user
 	});
@@ -67,12 +66,16 @@ app.get('/register', function(req, res){
 	res.render('register.html');
 });
 
-app.get('/admin', [mw.loadUser, mw.adminOnly], function(req, res){
+app.get('/admin', [mw.adminOnly], function(req, res){
 	return res.render('admin.html', {
 		user : req.user,
-		routes : XO.endpoints
+		routes : xo.endpoints
 	});
 });
+
+
+
+//Other routes
 
 app.get('/activate/:key', function(req,res){
 	var key    = req.params.key;
@@ -105,35 +108,12 @@ app.get('/csv/:filename', function(req,res){
  */
 
 
-XO.api('/api/users', User, [mw.loadUser, mw.adminOnly]);
 
-XO.api('/api/calculators', Calculator, {
-	get  : [mw.loadUser],
-	put  : [mw.loadUser, mw.adminOnly],
-	post : [mw.loadUser, mw.adminOnly],
-	del  : [mw.loadUser, mw.adminOnly]
-});
-
-XO.api('/api/keys', ActivationKey, [mw.loadUser, mw.adminOnly]);
-
-
-/*
-app.get('/api', function(req,res){
-	res.send(XO.endpoints);
-});
-*/
-
-/*
-
-XO.api('/api/users', User);
-
-XO.api('/api/calculators', Calculator);
-
-XO.api('/api/keys', ActivationKey);
-*/
+xo.api('/api/users', User, [mw.adminOnly]);
 
 
 
+xo.api('/api/keys', ActivationKey, [mw.adminOnly]);
 
 
 

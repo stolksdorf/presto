@@ -37,7 +37,7 @@ PrestoAdmin = xo.view.extend({
 		});
 
 		_.each(endpoints, function(ep){
-			if(ep === '/api/calculators'){
+			if(ep === '/api/calculators REMOVE'){
 				var col = calcCollection;
 			}else {
 				var col = xo.collection.extend({
