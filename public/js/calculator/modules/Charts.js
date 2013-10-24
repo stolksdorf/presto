@@ -191,15 +191,41 @@ Presto.registerModule({
 					return this;
 				},
 
-				calculateIntercept : function(series1, series2){
-					if(!this.data[series1] || !this.data[series2]) return [];
-					var smallSetLength = this.data[series1].data.length > this.data[series2].data.length ? this.data[series2].data.length : this.data[series1].data.length;
-					var fp1 = this.data[series1].data[0];
-					var fp2 = this.data[series2].data[0];
+				calculateIntercept : function(seriesName1, seriesName2){
+					if( (!this.data[seriesName1] && typeof seriesName1 === 'string') ||
+						(!this.data[seriesName2] && typeof seriesName2 === 'string')) return [];
+
+					var series1 = this.data[seriesName1],
+						series2 = this.data[seriesName2];
+
+					//Creates a static dataset from a single number
+					var makeNumberedDataSet = function(series, num){
+						series1 = series;
+						series2 = {
+							label : 'Intercept ' + num,
+							data : []
+						};
+						_.times(series1.data.length, function(idx){
+							series2.data.push([series1.data[idx][0], num]);
+						});
+					}
+
+					//check for number only series
+					if(typeof seriesName1 !== 'number' && typeof seriesName2 === 'number'){
+						makeNumberedDataSet(series1, seriesName2);
+					}
+
+					if(typeof seriesName2 !== 'number' && typeof seriesName1 === 'number'){
+						makeNumberedDataSet(series2, seriesName1);
+					}
+
+					var smallSetLength = series1.data.length > series2.data.length ? series2.data.length : series1.data.length;
+					var fp1 = series1.data[0];
+					var fp2 = series2.data[0];
 					var result = [];
 					for(var i = 1; i < smallSetLength; i++){
-						var lp1 = this.data[series1].data[i];
-						var lp2 = this.data[series2].data[i];
+						var lp1 = series1.data[i];
+						var lp2 = series2.data[i];
 						var x=((fp1[0]*lp1[1]-fp1[1]*lp1[0])*(fp2[0]-lp2[0])-(fp1[0]-lp1[0])*(fp2[0]*lp2[1]-fp2[1]*lp2[0]))/((fp1[0]-lp1[0])*(fp2[1]-lp2[1])-(fp1[1]-lp1[1])*(fp2[0]-lp2[0]));
 						var y=((fp1[0]*lp1[1]-fp1[1]*lp1[0])*(fp2[1]-lp2[1])-(fp1[1]-lp1[1])*(fp2[0]*lp2[1]-fp2[1]*lp2[0]))/((fp1[0]-lp1[0])*(fp2[1]-lp2[1])-(fp1[1]-lp1[1])*(fp2[0]-lp2[0]));
 						if( (x >= fp1[0] && x >= fp2[0]) && (x <= lp1[0] && x <= lp2[0] ) ){
@@ -208,6 +234,7 @@ Presto.registerModule({
 						fp1 = lp1;
 						fp2 = lp2;
 					};
+					console.log(result);
 					return result;
 				}
 			})

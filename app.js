@@ -135,22 +135,6 @@ xo.api('/api/keys', ActivationKey, [mw.adminOnly]);
  *
  */
 
-app.get('/backup', [mw.loadUser, mw.adminOnly], function(req, res){
-	Calculator.find({}, function(err, calcs){
-		if(err) return res.send(200, 'Error - ' + err);
-		var result = _.map(calcs, function(calc){
-			return calc.script;
-		});
-
-		return res.render('backup.html', {
-			calc : result
-		});
-	});
-});
-
-
-
-
 app.get('/uhoh', function (req, res) {
 	res.render('404.html');
 });
