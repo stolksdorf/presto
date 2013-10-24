@@ -3,6 +3,9 @@
 
 	var xo_ajax = function(args){
 		var self = this;
+		args.url = this.urlRoot;
+		if(this.model) args.url = this.model.urlRoot;
+
 		if(!args.url) throw 'XO : Url not set';
 		var callback = args.callback || function(){};
 		var success  = args.success  || function(){};
@@ -28,6 +31,21 @@
 			},
 		});
 	};
+
+	var async_map = function(list, fnName, callback){
+		callback = callback || function(){};
+		var count = list.length;
+		var result = []
+		_.each(list, function(obj){
+			obj[fnName](function(err, data){
+				if(err) return callback(err);
+				result.push(data);
+				if(result.length === count){
+					callback(undefined, result);
+				}
+			})
+		});
+	}
 
 	xo = {
 		view : Archetype.extend({
@@ -150,7 +168,7 @@
 			save : function(callback)
 			{
 				xo_ajax.call(this,{
-					url  : this.urlRoot,
+					//url  : this.urlRoot,
 					type : 'save',
 					data : this.attributes(),
 					callback : callback,
@@ -163,7 +181,7 @@
 			fetch : function(callback)
 			{
 				xo_ajax.call(this,{
-					url  : this.urlRoot,
+					//url  : this.urlRoot,
 					type : 'fetch',
 					callback : callback,
 					success : function(data){
@@ -175,13 +193,14 @@
 			delete : function(callback)
 			{
 				xo_ajax.call(this,{
-					url  : this.urlRoot,
+					//url  : this.urlRoot,
 					type : 'delete',
 					callback : callback
 				});
 				return this;
 			},
 		}),
+
 
 		collection : Archetype.extend({
 			model : undefined,
@@ -234,21 +253,27 @@
 			{
 				var self = this;
 				xo_ajax.call(this,{
-					url  : this.model.urlRoot,
+					//url  : this.model.urlRoot,
 					type : 'fetch',
 					callback : callback,
 					success : function(data){
-						var self = this;
-						self.clear();
-						_.map(data, function(data){
-							self.add(data);
-						});
+						self.set(data);
 					}
 				});
 				return this;
 			},
 			delete : function(callback)
 			{
+				var self = this;
+				callback = callback || function(){};
+				async_map(this, 'delete', function(err, data){
+					if(err) return callback(err);
+					self.clear();
+					callback(undefined, self);
+				});
+
+
+				/*
 				var self = this;
 				xo_ajax.call(this,{
 					url  : this.model.urlRoot,
@@ -257,11 +282,21 @@
 					success : function(data){
 						self.clear();
 					}
-				});
+				}); */
+
 				return this;
 			},
 			save : function(callback)
 			{
+				var self = this;
+				callback = callback || function(){};
+				async_map(this, 'save', function(err, data){
+					if(err) return callback(err);
+					//self.set(data);
+					callback(undefined, self);
+				});
+/*
+
 				var self = this,
 					count = this.length;
 				this.trigger('before:save', this);
@@ -283,6 +318,7 @@
 					});
 				});
 				this.clear();
+				*/
 				return this;
 			},
 		})

@@ -1,9 +1,10 @@
 {
-	id          : '{{ID}}',
-	title       : 'New Calculator',
-	description : 'Click to edit COOOL',
-	icon        : 'icon-file-alt',
-	color       : 'purple',
+	info : {
+		title       : 'New Calculator',
+		description : 'Click to edit',
+		icon        : 'icon-file-alt',
+		color       : 'yellow',
+	},
 
 	inputs : {
 		capital : {

@@ -6,17 +6,17 @@ var CalculatorSchema = mongoose.Schema({
 	script      : { type : String, default : fs.readFileSync('default_calculator.js','utf8')},
 	created     : { type: Date, default: Date.now },
 
-	title       : String,
-	description : String,
-	color       : String,
-	icon        : String,
+	title       : { type : String, default : 'New Calculator'},
+	description : { type : String, default : 'Click to edit'},
+	color       : { type : String, default : 'yellow'},
+	icon        : { type : String, default : 'icon-file-alt'},
 	group       : String,
 	keywords    : [String],
 	dev         : Boolean,
 	tiers       : [String]
 });
 
-
+/*
 CalculatorSchema.post('save', function(calc){
 	if(!calc.id) calc.id = calc._id;
 	calc.script = calc.script.replace('{{ID}}', calc.id);
@@ -31,7 +31,7 @@ CalculatorSchema.post('save', function(calc){
 		id : calc.id
 	}, function(err){});
 });
-
+*/
 
 //Returns true if the user can access this calculator
 CalculatorSchema.methods.isUserAllowed = function(user){

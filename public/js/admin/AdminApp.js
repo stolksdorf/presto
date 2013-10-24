@@ -33,7 +33,7 @@ PrestoAdmin = xo.view.extend({
 
 			self.content.dom.buttons.hide()
 			self.content.dom.data.val(
-				"[" + _.map(self.calculators, function(calc){
+				"[\n" + _.map(self.calculators, function(calc){
 					return calc.script;
 				}) + "]"
 				);
@@ -41,9 +41,9 @@ PrestoAdmin = xo.view.extend({
 			self.content.resize();
 		});
 
+		//takes the text from ther data area, and resets all the calculators with it
 		$('.RESTORE').click(function(){
-
-			if(!confirm("Delete all current calcaultors and restore with code in box?")){
+			if(!confirm("Delete all current calculators and restore with code in box?")){
 				return;
 			}
 			var calcData = parseText(self.content.dom.data.val());
@@ -53,7 +53,20 @@ PrestoAdmin = xo.view.extend({
 				return;
 			}
 
-			console.log(calcData);
+			self.calculators.delete(function(err){
+				if(err) return alert("There was an error");
+
+				_.each(calcData, function(data){
+					var temp = Presto_Model_Calculator.create();
+					temp.set('script', data);
+					self.calculators.add(temp);
+				});
+
+				self.calculators.save(function(err){
+					if(err) return alert("There was an error");
+					window.reload();
+				})
+			});
 
 		});
 
@@ -77,7 +90,8 @@ PrestoAdmin = xo.view.extend({
 
 
 
-
+//Converts text of an array of scripts into an actual array of the text of scripts
+//Basically a shallow JSON parse
 parseText = function(text){
 	var result = [];
 	var slush = '';

@@ -13,6 +13,10 @@ PrestoHome = xo.view.extend({
 				self.dom.container.isotope( 'remove', newCalc.dom.block);
 			});
 
+			newCalc.on('save', function(){
+				console.log('woo save');
+			})
+
 			newCalc.injectInto(self.dom.container);
 			self.dom.container.isotope('addItems', newCalc.dom.block);
 			self.dom.container.isotope({
