@@ -234,7 +234,6 @@ Presto.registerModule({
 						fp1 = lp1;
 						fp2 = lp2;
 					};
-					console.log(result);
 					return result;
 				}
 			})

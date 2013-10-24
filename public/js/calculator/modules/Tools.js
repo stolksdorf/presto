@@ -37,8 +37,3 @@ Tools = {
 
 
 };
-
-
-//TODO: Remove after push
-Functions = Tools;
-CoolFunctions = Tools;
