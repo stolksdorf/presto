@@ -11,6 +11,10 @@
 		dev         : true
 	},
 
+	global : {
+
+	},
+
 	inputs : {
 		capital : {
 			title : 'Capital',
