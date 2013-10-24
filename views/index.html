@@ -18,7 +18,7 @@
 
 	<script type="text/javascript" src="libs/isotope.js"></script>
 	<link rel="Stylesheet" type="text/css" href="libs/isotope.css" />
-	<link rel="Stylesheet" type="text/css" href="libs/hint.css" />
+	<link rel="Stylesheet" type="text/css" href="libs/hintnew.css" />
 
 	<script type="text/javascript" src="../js/CalculatorModel.js"></script>
 	<script type="text/javascript" src="../js/index/IndexApp.js"></script>
@@ -29,50 +29,6 @@
 	<title>Presto Calculators</title>
 
 	<script>
-
-
-		temp = archetype.extend({
-			id : 1,
-			test : function()
-			{
-				console.log('1');
-			},
-		})
-
-		temp2 = temp.extend({
-			id : 2,
-			test : function()
-			{
-				console.log('2');
-			},
-		})
-
-		temp3 = temp2.extend({
-			id : 3,
-			initialize : function()
-			{
-				var cool = 3;
-				return this;
-			},
-			test : function()
-			{
-				console.log('3', cool);
-			},
-		})
-
-		temp4 = temp3.create();
-
-		temp5 = temp4.create()
-
-
-
-
-
-
-
-
-
-
 		$(document).ready(function(){
 			PrestoHome.create();
 		});
@@ -144,6 +100,12 @@
 		<div class='calculator__info'>
 			<div class='calculator__info__title' xo-element='title'></div>
 			<div class='calculator__info__description' xo-element='description'></div>
+		</div>
+		<div class='calculator__badges'>
+			<div class='badge' xo-element='devBadge' hint-right="in development">
+				<i class='icon-gear' ></i>
+			</div>
+
 		</div>
 		<%if (user.account_type == 'admin') { %>
 			<div class='calculator__delete' xo-element='deleteBtn'>
