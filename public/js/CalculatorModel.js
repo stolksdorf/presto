@@ -23,6 +23,10 @@ Presto_Model_Calculator = xo.model.extend({
 			self.set(keyName, value);
 		});
 
+		if(!result.info.url){
+			self.set('url', self.id);
+		}
+
 		this.trigger('execute', result);
 		return result;
 	},

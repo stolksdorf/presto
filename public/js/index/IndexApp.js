@@ -96,8 +96,8 @@ Presto_Block_CalculatorOption = xo.view.extend({
 			icon : function(icon){
 				self.dom.icon.find('i').addClass(icon);
 			},
-			id : function(id){
-				self.dom.link.attr('href', '/calc/' + id);
+			url : function(url){
+				self.dom.link.attr('href', '/calc/' + url);
 			},
 		});
 

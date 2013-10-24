@@ -48,9 +48,12 @@ app.get('/home', function (req, res) {
 
 
 app.get('/calc/:calcId', [mw.forceLogin], function(req,res){
-	return res.render('calculator.html', {
-		user : req.user,
-		calcId : req.params.calcId
+	Calculator.findByUrlOrId(req.params.calcId, function(err, calc){
+		if(err || !calc) return res.redirect('/uhoh');
+		return res.render('calculator.html', {
+			user : req.user,
+			calcId : calc.id
+		});
 	});
 });
 

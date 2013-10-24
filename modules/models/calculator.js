@@ -4,12 +4,14 @@ var mongoose = require('mongoose');
 var CalculatorSchema = mongoose.Schema({
 	id          : String,
 	script      : { type : String, default : fs.readFileSync('default_calculator.js','utf8')},
-	created     : { type: Date, default: Date.now },
+	created     : { type: Date,    default: Date.now },
 
 	title       : { type : String, default : 'New Calculator'},
 	description : { type : String, default : 'Click to edit'},
 	color       : { type : String, default : 'yellow'},
 	icon        : { type : String, default : 'icon-file-alt'},
+
+	url         : String,
 	group       : String,
 	keywords    : [String],
 	dev         : Boolean,
@@ -47,6 +49,12 @@ CalculatorSchema.methods.isUserAllowed = function(user){
 
 	return false;
 }
+
+CalculatorSchema.statics.findByUrlOrId = function(id, callback){
+	this.findOne({ $or:[ {'id':id}, {'url':id},]}, callback);
+};
+
+
 
 Calculator = mongoose.model('Calculator', CalculatorSchema);
 
