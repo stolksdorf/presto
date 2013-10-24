@@ -123,7 +123,7 @@ Presto.registerModule({
 				{
 					var self = this;
 					numCells = Math.ceil(numCells || this.rowCount);
-					var result =[_.evalue(this.definition.firstCell)];
+					var result =[_.evalue(this.definition.firstValue)];
 					_.times(numCells - 1, function(index){
 						result.push(self.definition.generator(result[index], index + 1));
 					});

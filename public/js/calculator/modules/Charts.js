@@ -52,6 +52,7 @@ Presto.registerModule({
 
 					this.tooltip = $('#chart__tooltip');
 
+					this.definition.points = this.definition.points || 20;
 
 					//Resizing buttons
 					this.dom.small.click(function(){
@@ -97,13 +98,9 @@ Presto.registerModule({
 					}
 
 					if(this.definition.series){
+						//TODO: build xaxis
 						result = _.keymap(this.definition.series, function(series, seriesName){
-							return {
-								label : _.evalue(series.label),
-								data  : _.map(_.evalue(series.data), function(point, index){
-									return [index, point];
-								})
-							}
+							return self.getDataFromSeries(series);
 						});
 					}
 
@@ -117,7 +114,6 @@ Presto.registerModule({
 				{
 					var self = this;
 					this.dom.title.text(_.evalue(this.definition.title));
-
 
 					if(this.definition.hover){
 						this.addHover();
@@ -135,6 +131,29 @@ Presto.registerModule({
 						return result;
 					}, []);
 					$.plot(this.dom.graph, chartData, this.options);
+				},
+
+				getDataFromSeries : function(series){
+					var self = this;
+					var result = {
+						label : _.evalue(series.label),
+						data  : []
+					};
+
+					if(series.data){
+						result.data = _.map(_.evalue(series.data), function(point, index){
+							return [index, point];
+						});
+					}
+
+					if(series.generator){
+						var numPoints = Math.ceil(_.evalue(this.definition.points));
+						result.data =[[0,_.evalue(series.firstValue)]];
+						_.times(numPoints - 1, function(index){
+							result.data.push([index, series.generator(result.data[index][1], index + 1)]);
+						});
+					}
+					return result;
 				},
 
 				getDataFromTable : function()

@@ -86,7 +86,7 @@ The `id` of the input is used to identify it in calculations For example if we w
 
 `type`  *(type)* : One of the Types defined in Presto
 
-`firstCell` *(function)*  : The starting value for the input. This must always be a function.
+`firstValue` *(function)*  : The starting value for the input. This must always be a function.
 
 `generator` *(function)* : The generator function used to calculate the value of each row. The function will be given the current row index and the previous cell's value as it's two inputs.
 
@@ -98,7 +98,7 @@ The `id` of the input is used to identify it in calculations For example if we w
 				age : {
 					title : 'Age',
 					type  : Type.Number,
-					firstCell : function(){
+					firstValue : function(){
 						return Inputs.age;
 					},
 					//Simply increments the age
@@ -109,7 +109,7 @@ The `id` of the input is used to identify it in calculations For example if we w
 				benefitBase : {
 					title : 'Benefit Base',
 					type  : Type.Money,
-					firstCell : function(){
+					firstValue : function(){
 						return Inputs.guarded;
 					},
 					generator : function(previousCellValue, index){
@@ -342,7 +342,7 @@ Every column has a number of functions built-in to make calculations simple and 
 					age : {
 						title : 'Age',
 						type : Type.Number,
-						firstCell : function(){
+						firstValue : function(){
 							return Inputs.age;
 						},
 						generator : function(previousVal){
@@ -352,7 +352,7 @@ Every column has a number of functions built-in to make calculations simple and 
 					benefitBase : {
 						title : 'Benefit Base',
 						type : Type.Money,
-						firstCell : function(){
+						firstValue : function(){
 							return Inputs.guarded;
 						},
 						generator : function(previousCellValue, index){
@@ -362,7 +362,7 @@ Every column has a number of functions built-in to make calculations simple and 
 					onClaim : {
 						title : 'On-Claim',
 						type : Type.Money,
-						firstCell : function(){
+						firstValue : function(){
 							return Inputs.guarded;
 						},
 						generator : function(previousCellValue, index){

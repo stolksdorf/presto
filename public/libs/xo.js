@@ -25,6 +25,7 @@
 				self.trigger(args.type, self);
 			},
 			error : function(err){
+				console.error(err);
 				callback(err);
 				self.trigger('error');
 				self.trigger('error:' + args.type, err);
