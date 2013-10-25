@@ -35,13 +35,23 @@ require('./modules/models/keys.js');
 
 //Routes
 app.get('/', function (req, res) {
-	res.redirect('/index');
+	res.render('home.html');
 });
 
 app.get('/home', function (req, res) {
 	res.render('home.html');
 });
 
+app.get('/index', [mw.forceLogin], function(req,res){
+	return res.render('index.html', {
+		user : req.user
+	});
+});
+
+//This will force the login check then just route to the index page
+app.get('/login', function (req, res) {
+	return res.redirect('/index');
+});
 
 app.get('/calc/:calcId', [mw.forceLogin], function(req,res){
 	Calculator.findByUrlOrId(req.params.calcId, function(err, calc){
@@ -53,15 +63,9 @@ app.get('/calc/:calcId', [mw.forceLogin], function(req,res){
 	});
 });
 
-app.get('/index', [mw.forceLogin], function(req,res){
-	return res.render('index.html', {
-		user : req.user
-	});
-});
-
 
 //TODO: Remove once new home page is made
-app.get('/register', function(req, res){
+app.get('/signup', function(req, res){
 	res.render('register.html');
 });
 

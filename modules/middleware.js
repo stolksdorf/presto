@@ -47,7 +47,7 @@ exports.matchUser = function(req,res,next){
 exports.forceLogin = function(req,res,next){
 	_loadUser(req,res, function(req,res){
 		if(!req.user){
-			return res.redirect('/register');
+			return res.redirect('/signup');
 		}
 		return next();
 	});
