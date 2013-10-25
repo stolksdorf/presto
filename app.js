@@ -109,8 +109,16 @@ app.get('/csv/:filename', function(req,res){
 	return csv().from(JSON.parse(req.query.data)).to(res)
 });
 
-
-
+app.get('/dropall',[mw.adminOnly], function(req,res){
+	User.remove({}, function(){});
+	ActivationKey.remove({}, function(){});
+	Calculator.remove({}, function(){});
+	res.send('dropped all');
+});
+app.get('/dropcalcs',[mw.adminOnly], function(req,res){
+	Calculator.remove({}, function(){});
+	res.send('dropped calcs');
+});
 
 //Catch bad pages
 app.get('*', function (req, res) {
