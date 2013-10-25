@@ -85,7 +85,7 @@
 			type : Type.Number,
 			value : function(){
 				var breakEvenAge = Tables.sample.age.find(function(age, index){
-					if(Tables.sample.capitalDelta[index] > Inputs.capital * 1.10){
+					if(Tables.sample.capitalDelta[index] < Tables.sample.baseChange[index]){
 						return true;
 					}
 					return false;
