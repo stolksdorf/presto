@@ -80,10 +80,10 @@ Presto.registerModule({
 
 					if(delta > 0){
 						this.dom.deltaPos.show()
-						this.dom.deltaPos.attr('data-hint', "+"+displayValue);
+						this.dom.deltaPos.attr('hint-left', "+"+displayValue);
 					} else if(delta < 0){
 						this.dom.deltaNeg.show()
-						this.dom.deltaNeg.attr('data-hint', "-"+displayValue);
+						this.dom.deltaNeg.attr('hint-left', "-"+displayValue);
 					}
 
 					this.old_data = this.data;
