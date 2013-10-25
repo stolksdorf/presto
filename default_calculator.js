@@ -1,9 +1,19 @@
 {
-	id          : '{{ID}}',
-	title       : 'New Calculator',
-	description : 'Click to edit COOOL',
-	icon        : 'icon-file-alt',
-	color       : 'purple',
+	info : {
+		title       : 'New Calculator',
+		description : 'Click to edit',
+		icon        : 'icon-file-alt',
+		color       : 'yellow',
+		group       : '',
+		keywords    : [],
+		tiers       : [],
+
+		dev         : true
+	},
+
+	global : {
+
+	},
 
 	inputs : {
 		capital : {
@@ -26,31 +36,31 @@
 				age : {
 					title : 'Age',
 					type : Type.Number,
-					firstCell : function(){
+					firstValue : function(){
 						return Inputs.age;
 					},
-					generator : function(previousCellValue, index){
-						return previousCellValue + 1;
+					generator : function(previousValue, index){
+						return previousValue + 1;
 					}
 				},
 				capitalDelta : {
 					title : 'Capital Change',
 					type  : Type.Money,
-					firstCell : function(){
+					firstValue : function(){
 						return Inputs.capital;
 					},
-					generator : function(previousCellValue, index){
-						return previousCellValue + Math.random()*100;
+					generator : function(previousValue, index){
+						return previousValue + 100;
 					}
 				},
-				random : {
-					title : 'Random',
+				baseChange : {
+					title : 'Base Change',
 					type  : Type.Money,
-					firstCell : function(){
+					firstValue : function(){
 						return 0;
 					},
-					generator : function(previousCellValue, index){
-						return previousCellValue + Math.random()*100;
+					generator : function(previousValue, index){
+						return previousValue + 150;
 					}
 				},
 			}
@@ -59,13 +69,11 @@
 
 	charts : {
 		basic : {
-			title : function(){
-				return 'Sample Chart' + Outputs.test;
-			},
+			title : 'Sample Chart',
 			hover : function(x,y,label){
 				return '<b>$' + y + '</b> at month ' + x + '</br>' + label;
 			},
-			breakeven : [ ['capitalDelta', 'random'] ],
+			breakeven : [ ['capitalDelta', 'baseChange'] ],
 			table : 'sample',
 		}
 	},
@@ -77,7 +85,7 @@
 			type : Type.Number,
 			value : function(){
 				var breakEvenAge = Tables.sample.age.find(function(age, index){
-					if(Tables.sample.capitalDelta[index] > Inputs.capital * 1.10){
+					if(Tables.sample.capitalDelta[index] < Tables.sample.baseChange[index]){
 						return true;
 					}
 					return false;

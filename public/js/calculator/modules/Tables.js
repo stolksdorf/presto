@@ -122,8 +122,13 @@ Presto.registerModule({
 				generate : function(numCells)
 				{
 					var self = this;
+
+					if(this.definition.data){
+						return makeGeneratorArray(_.evalue(this.definition.data));
+					}
+
 					numCells = Math.ceil(numCells || this.rowCount);
-					var result =[_.evalue(this.definition.firstCell)];
+					var result =[_.evalue(this.definition.firstValue)];
 					_.times(numCells - 1, function(index){
 						result.push(self.definition.generator(result[index], index + 1));
 					});

@@ -29,50 +29,6 @@
 	<title>Presto Calculators</title>
 
 	<script>
-
-
-		temp = archetype.extend({
-			id : 1,
-			test : function()
-			{
-				console.log('1');
-			},
-		})
-
-		temp2 = temp.extend({
-			id : 2,
-			test : function()
-			{
-				console.log('2');
-			},
-		})
-
-		temp3 = temp2.extend({
-			id : 3,
-			initialize : function()
-			{
-				var cool = 3;
-				return this;
-			},
-			test : function()
-			{
-				console.log('3', cool);
-			},
-		})
-
-		temp4 = temp3.create();
-
-		temp5 = temp4.create()
-
-
-
-
-
-
-
-
-
-
 		$(document).ready(function(){
 			PrestoHome.create();
 		});
@@ -145,10 +101,26 @@
 			<div class='calculator__info__title' xo-element='title'></div>
 			<div class='calculator__info__description' xo-element='description'></div>
 		</div>
-		<%if (user.account_type == 'admin') { %>
-			<div class='calculator__delete' xo-element='deleteBtn'>
-				<i class='icon-remove'></i>
-			</div>
-		<% } %>
+		<div class='calculator__badges'>
+			<%if (user.account_type == 'admin') { %>
+				<div class='calculator__delete' xo-element='deleteBtn' hint-left='Delete calculator'>
+					<i class='icon-remove'></i>
+				</div>
+			<% } %>
+
+			<span class='badge badge__dev' xo-element='devBadge' hint-left="In Development">
+				<i class='icon-cogs'></i>
+			</span>
+			<span class='badge badge__beta' xo-element='betaBadge' hint-left="Beta Testing">
+				<i class='icon-beaker'></i>
+			</span>
+			<span class='badge badge__silver' xo-element='silverBadge' hint-left="Silver Calculator">
+				<i class='icon-shield'></i>
+			</span>
+			<span class='badge badge__gold' xo-element='goldBadge' hint-left="Gold Calculator">
+				<i class='icon-trophy'></i>
+			</span>
+		</div>
+
 	</a>
 </div>

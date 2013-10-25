@@ -30,15 +30,10 @@ Tools = {
 	},
 
 	Increment : function(diff){
-		return function(index, prevValue){
-			return prevValue + (diff || 1);
+		return function(index, previousValue){
+			return previousValue + (diff || 1);
 		}
 	}
 
 
 };
-
-
-//TODO: Remove after push
-Functions = Tools;
-CoolFunctions = Tools;

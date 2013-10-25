@@ -53,7 +53,6 @@ ActivationKeySchema.statics.addAndSend = function(domain, email, callback){
 
 
 
-
-
-
 ActivationKey = mongoose.model('ActivationKey', ActivationKeySchema);
+
+xo.api('/api/keys', ActivationKey, [mw.adminOnly]);

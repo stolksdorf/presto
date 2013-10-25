@@ -4,102 +4,93 @@ PrestoAdmin = xo.view.extend({
 
 		var self = this;
 
-
-
-
-
-
-		var calcCollection = xo.collection.extend({
-			model : Presto_Model_Calculator.mixin({
-				update : function(obj, text){
-					this.set('script', text);
-					return this;
-				},
-				get : function(){
-					return this.script;
-				},
-			}),
-			update : function(obj, text){
-				var temp = parseText(text);
-				this.clear();
-				var self = this;
-				_.each(temp, function(calc){
-					self.add().set('script', calc);
-				});
-				return this;
-			},
-			get : function(){
-				var result = '[\n' + _.reduce(this, function(result, obj){
-					return result + obj.script + ',\n';
-				},'') + '\n]';
-				return result;
-			},
-		});
-
 		_.each(endpoints, function(ep){
+			var collection;
 			if(ep === '/api/calculators'){
-				var col = calcCollection;
+				collection = xo.collection.extend({
+					model : Presto_Model_Calculator
+				});
+				self.calculators = collection
 			}else {
-				var col = xo.collection.extend({
+				collection = xo.collection.extend({
 					model : xo.model.extend({
-						urlRoot : ep,
-						update : function(obj, text){
-							this.set(obj);
-							return this;
-						},
-						get : function(){
-							return this.toJSON();
-						}
-					}),
-					update : function(obj, text){
-						var self = this;
-						this.clear();
-						_.each(obj, function(obj){
-							self.add(obj);
-						});
-						return this;
-					},
-					get : function(){
-						var result = _.map(this, function(obj){
-							return obj.attributes();
-						});
-						return JSON.stringify(result,null,4);
-					},
+						urlRoot : ep
+					})
 				});
 			}
 
-			var group = Presto_View_EndpointGroup.create(col);
-			group.injectInto($('.routes'));
-			col.fetch();
+			var group = Presto_View_EndpointGroup.create(collection);
+			group.injectInto($('.routes__container'));
+			collection.fetch();
 		});
 
-
-
-
-
-
-
-
-
-
-
 		this.content = Presto_View_Content.create();
+
+
+
+		//Loads All the calculator scripts to text area
+		$('.BACKUP').click(function(){
+
+			self.content.dom.buttons.hide()
+			self.content.dom.data.val(
+				"[\n" + _.map(self.calculators, function(calc){
+					return calc.script;
+				}) + "]"
+				);
+
+			self.content.resize();
+		});
+
+		//takes the text from ther data area, and resets all the calculators with it
+		$('.RESTORE').click(function(){
+			if(!confirm("Delete all current calculators and restore with code in box?")){
+				return;
+			}
+			var calcData = parseText(self.content.dom.data.val());
+
+			if(calcData.length === 0){
+				alert('No restore calculator data found');
+				return;
+			}
+
+			self.calculators.delete(function(err){
+				if(err) return alert("There was an error");
+
+				_.each(calcData, function(data){
+					var temp = Presto_Model_Calculator.create();
+					temp.set('script', data);
+					self.calculators.add(temp);
+				});
+
+				self.calculators.save(function(err){
+					if(err) return alert("There was an error");
+				})
+			});
+
+		});
 
 
 		return this;
 	},
 
+
+
+
+
 	loadContent : function(newContent){
-
 		this.content.load(newContent);
-
-
 		return this;
 	},
 
 
 });
 
+
+
+
+
+//Converts text of an array of scripts into an actual array of the text of scripts
+//Basically a shallow JSON parse
 parseText = function(text){
 	var result = [];
 	var slush = '';

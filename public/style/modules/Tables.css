@@ -1,8 +1,6 @@
 .table{
-
 }
 	.table__description{
-
 	}
 
 	.table__moreRowsButton{
@@ -38,9 +36,12 @@
 	}
 
 		.table__column{
-			display      : inline-block;
-			min-width    : 50px;
-			border-right : 1px solid rgb(102, 102, 102);
+			display        : inline-block;
+			vertical-align : top;
+
+			min-width      : 50px;
+
+			border-right   : 1px solid rgb(102, 102, 102);
 		}
 
 			.table__column:first-child{

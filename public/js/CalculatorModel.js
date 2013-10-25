@@ -18,11 +18,19 @@ Presto_Model_Calculator = xo.model.extend({
 
 		eval("with (this) {var result = (" + this.script + ")}");
 
-		_.each(['title','description', 'color', 'icon', 'group', 'keywords', 'id'], function(modelAttributeName){
-			if(typeof result[modelAttributeName] !== 'undefined'){
-				self.set(modelAttributeName, result[modelAttributeName]);
-			}
+		//Extract the calculator info from the script and update the model
+		_.each(result.info, function(value, keyName){
+			self.set(keyName, value);
 		});
+
+		if(result.info){
+			if(!result.info.url){
+				this.set('url', self.id); //default the url of the calculator to the id
+			}
+			if(!result.info.dev){
+				self.set('dev', false);
+			}
+		}
 
 		this.trigger('execute', result);
 		return result;
@@ -40,6 +48,7 @@ Presto_Model_Calculator = xo.model.extend({
 			return str.toLowerCase().indexOf(target.toLowerCase()) !== -1;
 		}
 
+		//Search through the title, description, group and keywords to match each term
 		var found = _.every(terms, function(term){
 			return _.some(self.keywords, function(keyword){
 				return contains(keyword, term);

@@ -17,7 +17,7 @@ PrestoHome = xo.view.extend({
 			self.dom.container.isotope('addItems', newCalc.dom.block);
 			self.dom.container.isotope({
 				itemSelector : '.calculator',
-				layoutMode : 'fitRows'
+				layoutMode : 'masonry'
 			});
 		});
 
@@ -45,11 +45,8 @@ PrestoHome = xo.view.extend({
 
 		this.dom.container.isotope({
 			itemSelector : '.calculator',
-			layoutMode : 'fitRows'
+			layoutMode : 'masonry'
 		});
-
-		GLOBAL = this.calculators;
-
 
 		return this;
 	},
@@ -92,8 +89,15 @@ Presto_Block_CalculatorOption = xo.view.extend({
 			icon : function(icon){
 				self.dom.icon.find('i').addClass(icon);
 			},
-			id : function(id){
-				self.dom.link.attr('href', '/calc/' + id);
+			url : function(url){
+				self.dom.link.attr('href', '/calc/' + url);
+			},
+
+			dev : function(){
+				self.renderBadges()
+			},
+			tiers : function(){
+				self.renderBadges()
 			},
 		});
 
@@ -116,6 +120,14 @@ Presto_Block_CalculatorOption = xo.view.extend({
 			});
 		}
 
+		return this;
+	},
+
+	renderBadges : function(){
+		if(this.model.dev){                         return this.dom.devBadge.show(); }
+		if(_.contains(this.model.tiers, 'beta')){   return this.dom.betaBadge.show(); }
+		if(_.contains(this.model.tiers, 'gold')){   return this.dom.goldBadge.show(); }
+		if(_.contains(this.model.tiers, 'silver')){ return this.dom.silverBadge.show(); }
 		return this;
 	},
 

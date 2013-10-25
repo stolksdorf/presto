@@ -17,18 +17,14 @@ app.use(express.static(__dirname + '/public'));
 app.locals.inspect = require('util').inspect;
 
 GLOBAL.fs = require('fs');
-
 GLOBAL._ = require('underscore');
 
-
 var csv = require('csv');
-var DEBUG = false;
-
 
 //Modules
 mail          = require('./modules/mail.js');
 mw            = require('./modules/middleware.js');
-XO            = require('./modules/node-xo.js');
+xo            = require('./modules/node-xo.js');
 
 
 //Models
@@ -37,51 +33,58 @@ require('./modules/models/user.js');
 require('./modules/models/keys.js');
 
 
-
 //Routes
-app.get('/', [mw.loadUser], function (req, res) {
-	return res.redirect('/index');
-	/*
-	return res.render('home.html', {
-		user : req.user
-	});*/
+app.get('/', function (req, res) {
+	res.render('home.html');
 });
 
-app.get('/home', [mw.loadUser], function (req, res) {
-	return res.redirect('/');
-	/*
-	return res.render('home.html', {
-		user : req.user
-	});*/
+app.get('/home', function (req, res) {
+	res.render('home.html');
 });
 
-
-app.get('/calc/:calcId', [mw.loadUser], function(req,res){
-	return res.render('calculator.html', {
-		user : req.user,
-		calcId : req.params.calcId
-	});
-});
-
-app.get('/index', [mw.loadUser], function(req,res){
+app.get('/index', [mw.forceLogin], function(req,res){
 	return res.render('index.html', {
 		user : req.user
 	});
 });
 
-
-//TODO: Remove once new home page is made
-app.get('/register', function(req, res){
-	res.render('register.html');
+//This will force the login check then just route to the index page
+app.get('/login', function (req, res) {
+	return res.redirect('/index');
 });
 
-app.get('/admin', [mw.loadUser, mw.adminOnly], function(req, res){
-	return res.render('admin.html', {
-		user : req.user,
-		routes : XO.endpoints
+app.get('/calc/:calcId', [mw.forceLogin], function(req,res){
+	Calculator.findByUrlOrId(req.params.calcId, function(err, calc){
+		if(err || !calc) return res.redirect('/uhoh');
+		return res.render('calculator.html', {
+			user : req.user,
+			calcId : calc.id
+		});
 	});
 });
 
+
+//TODO: Remove once new home page is made
+app.get('/signup', function(req, res){
+	res.render('register.html');
+});
+
+app.get('/admin', [mw.adminOnly], function(req, res){
+	return res.render('admin.html', {
+		user : req.user,
+		routes : xo.endpoints
+	});
+});
+
+app.get('/uhoh', function (req, res) {
+	res.render('404.html');
+});
+
+
+
+
+
+//Other routes
 app.get('/activate/:key', function(req,res){
 	var key    = req.params.key;
 	var cookie = req.cookies.presto_auth;
@@ -106,79 +109,21 @@ app.get('/csv/:filename', function(req,res){
 	return csv().from(JSON.parse(req.query.data)).to(res)
 });
 
-
-
-/*
-	API
- */
-
-
-XO.api('/api/users', User, [mw.loadUser, mw.adminOnly]);
-
-XO.api('/api/calculators', Calculator, {
-	get  : [mw.loadUser],
-	put  : [mw.loadUser, mw.adminOnly],
-	post : [mw.loadUser, mw.adminOnly],
-	del  : [mw.loadUser, mw.adminOnly]
+app.get('/dropall',[mw.adminOnly], function(req,res){
+	User.remove({}, function(){});
+	ActivationKey.remove({}, function(){});
+	Calculator.remove({}, function(){});
+	res.send('dropped all');
+});
+app.get('/dropcalcs',[mw.adminOnly], function(req,res){
+	Calculator.remove({}, function(){});
+	res.send('dropped calcs');
 });
 
-XO.api('/api/keys', ActivationKey, [mw.loadUser, mw.adminOnly]);
-
-
-/*
-app.get('/api', function(req,res){
-	res.send(XO.endpoints);
+//Catch bad pages
+app.get('*', function (req, res) {
+	res.redirect('/uhoh');
 });
-*/
-
-/*
-
-XO.api('/api/users', User);
-
-XO.api('/api/calculators', Calculator);
-
-XO.api('/api/keys', ActivationKey);
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- *
- * Experimentation
- *
- */
-
-app.get('/backup', [mw.loadUser, mw.adminOnly], function(req, res){
-	Calculator.find({}, function(err, calcs){
-		if(err) return res.send(200, 'Error - ' + err);
-		var result = _.map(calcs, function(calc){
-			return calc.script;
-		});
-
-		return res.render('backup.html', {
-			calc : result
-		});
-	});
-});
-
-
-
-
-
-
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
 	console.log("Listening on " + port);

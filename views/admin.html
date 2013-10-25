@@ -35,12 +35,6 @@
 
 
 
-
-
-
-
-
-
 <body>
 	<title>Presto Admin</title>
 
@@ -69,16 +63,31 @@
 
 	<div class='container'>
 
-		<div class='routes tile'>
-			<div class='routes__title'>Routes</div>
+		<div class='left'>
+
+
+			<div class='routes tile'>
+				<div class='routes__title'>Routes</div>
+
+				<div class='routes__container'></div>
+
+
+
+			</div>
+
+			<div style='margin-left:15px'>
+				<div class='button purple BACKUP'>Backup</div>
+				<div class='button green RESTORE'>Restore</div>
+			</div>
 
 		</div>
 
-
 		<div class='content tile' xo-view='content'>
 			<div class='content__title'>Data</div>
+			<div class='content__option' xo-element='showScript'>Edit Script</div>
+			<div Class='content__option' xo-element='showModel'>Save Script</div>
 			<textarea class='content__data' xo-element='data'></textarea>
-			<div class='content__buttons'>
+			<div class='content__buttons' xo-element='buttons' style='display:none'>
 				<!--<div class='fetch button green'>Fetch</div> -->
 				<div class='save button blue' xo-element='save'>Save</div>
 				<div class='delete button red' xo-element='delete'>Delete</div>
