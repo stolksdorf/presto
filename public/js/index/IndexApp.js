@@ -17,7 +17,7 @@ PrestoHome = xo.view.extend({
 			self.dom.container.isotope('addItems', newCalc.dom.block);
 			self.dom.container.isotope({
 				itemSelector : '.calculator',
-				layoutMode : 'fitRows'
+				layoutMode : 'masonry'
 			});
 		});
 
@@ -45,7 +45,7 @@ PrestoHome = xo.view.extend({
 
 		this.dom.container.isotope({
 			itemSelector : '.calculator',
-			layoutMode : 'fitRows'
+			layoutMode : 'masonry'
 		});
 
 		return this;

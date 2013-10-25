@@ -16,8 +16,6 @@ Presto_Model_Calculator = xo.model.extend({
 		var self = this;
 		if(!this.script) return;
 
-		console.log(this.script);
-
 		eval("with (this) {var result = (" + this.script + ")}");
 
 		//Extract the calculator info from the script and update the model
