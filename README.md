@@ -66,8 +66,8 @@ List of inputs to be generated for the user to modify.
 
 The `id` of the input is used to identify it in calculations For example if we would like to use the On-Claim percent in a later calculation we can access it's current value by using `Inputs.onClaim`
 
-	function(previousCellValue, index){
-		return previousCellValue*(1 + Inputs.onClaim);
+	function(previousValue, index){
+		return previousValue*(1 + Inputs.onClaim);
 	}
 
 
@@ -102,8 +102,8 @@ The `id` of the input is used to identify it in calculations For example if we w
 						return Inputs.age;
 					},
 					//Simply increments the age
-					generator : function(previousCellValue, index){
-						return previousCellValue + 1;
+					generator : function(previousValue, index){
+						return previousValue + 1;
 					}
 				},
 				benefitBase : {
@@ -112,8 +112,8 @@ The `id` of the input is used to identify it in calculations For example if we w
 					firstValue : function(){
 						return Inputs.guarded;
 					},
-					generator : function(previousCellValue, index){
-						return previousCellValue*(1 + Inputs.inflationGuard);
+					generator : function(previousValue, index){
+						return previousValue*(1 + Inputs.inflationGuard);
 					}
 				}
 			}
@@ -355,8 +355,8 @@ Every column has a number of functions built-in to make calculations simple and 
 						firstValue : function(){
 							return Inputs.guarded;
 						},
-						generator : function(previousCellValue, index){
-							return previousCellValue*(1 + Inputs.inflationGuard);
+						generator : function(previousValue, index){
+							return previousValue*(1 + Inputs.inflationGuard);
 						}
 					},
 					onClaim : {
@@ -365,8 +365,8 @@ Every column has a number of functions built-in to make calculations simple and 
 						firstValue : function(){
 							return Inputs.guarded;
 						},
-						generator : function(previousCellValue, index){
-							return previousCellValue*(1 + Inputs.onClaim);
+						generator : function(previousValue, index){
+							return previousValue*(1 + Inputs.onClaim);
 						}
 					},
 				}

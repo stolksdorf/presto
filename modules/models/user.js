@@ -72,3 +72,5 @@ UserSchema.statics.getByEmail = function(email, callback){
 
 
 User = mongoose.model('User', UserSchema);
+
+xo.api('/api/users', User, [mw.adminOnly]);

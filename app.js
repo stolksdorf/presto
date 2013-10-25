@@ -20,10 +20,7 @@ GLOBAL.fs = require('fs');
 
 GLOBAL._ = require('underscore');
 
-
 var csv = require('csv');
-var DEBUG = false;
-
 
 //Modules
 mail          = require('./modules/mail.js');
@@ -76,10 +73,15 @@ app.get('/admin', [mw.adminOnly], function(req, res){
 	});
 });
 
+app.get('/uhoh', function (req, res) {
+	res.render('404.html');
+});
+
+
+
 
 
 //Other routes
-
 app.get('/activate/:key', function(req,res){
 	var key    = req.params.key;
 	var cookie = req.cookies.presto_auth;
@@ -106,43 +108,11 @@ app.get('/csv/:filename', function(req,res){
 
 
 
-/*
-	API
- */
 
-
-xo.api('/api/users', User, [mw.adminOnly]);
-
-
-
-xo.api('/api/keys', ActivationKey, [mw.adminOnly]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- *
- * Experimentation
- *
- */
-
-app.get('/uhoh', function (req, res) {
-	res.render('404.html');
-});
+//Catch bad pages
 app.get('*', function (req, res) {
 	res.redirect('/uhoh');
 });
-
-
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
 	console.log("Listening on " + port);

@@ -36,31 +36,31 @@
 				age : {
 					title : 'Age',
 					type : Type.Number,
-					firstCell : function(){
+					firstValue : function(){
 						return Inputs.age;
 					},
-					generator : function(previousCellValue, index){
-						return previousCellValue + 1;
+					generator : function(previousValue, index){
+						return previousValue + 1;
 					}
 				},
 				capitalDelta : {
 					title : 'Capital Change',
 					type  : Type.Money,
-					firstCell : function(){
+					firstValue : function(){
 						return Inputs.capital;
 					},
-					generator : function(previousCellValue, index){
-						return previousCellValue + 100;
+					generator : function(previousValue, index){
+						return previousValue + 100;
 					}
 				},
 				baseChange : {
 					title : 'Base Change',
 					type  : Type.Money,
-					firstCell : function(){
+					firstValue : function(){
 						return 0;
 					},
-					generator : function(previousCellValue, index){
-						return previousCellValue + 150;
+					generator : function(previousValue, index){
+						return previousValue + 150;
 					}
 				},
 			}
