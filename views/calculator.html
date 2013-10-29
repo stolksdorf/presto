@@ -73,22 +73,6 @@
 			calcId : '<%- calcId %>'
 		});
 
-		function cool(){
-			var temp = [_.async(function(){
-				console.log('YEAH');
-				throw 'boo'
-			}),
-			function(){
-				console.log('neato');
-			}]
-
-			for(var i in temp){
-				temp[i]();
-			}
-
-
-		}
-
 	</script>
 
 
