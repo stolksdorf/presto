@@ -178,4 +178,5 @@ Presto = Archetype.extend({
 
 window.onerror = function(error, fileName, lineNumber){
 	Presto.trigger('error', error, fileName, lineNumber);
+	if(!fileName.endsWith('.js')) return true;
 };
