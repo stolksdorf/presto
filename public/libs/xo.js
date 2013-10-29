@@ -1,12 +1,12 @@
 ;(function(){
+
+	//Add in underscore shim (extend, reduce, map)
+
+
 	jQuery("<style type='text/css'> [xo-schematic]{display:none !important;} </style>").appendTo("head");
 
-	var xo_ajax = function(args){
+	var xo_ajax = function(args){ //switch to type, callback, success
 		var self = this;
-		args.url = this.urlRoot;
-		if(this.model) args.url = this.model.urlRoot;
-
-		if(!args.url) throw 'XO : Url not set';
 		var callback = args.callback || function(){};
 		var success  = args.success  || function(){};
 		var http = {
@@ -14,40 +14,43 @@
 			'save'   : (self.id ? 'PUT' : 'POST'),
 			'delete' : 'DELETE'
 		};
+
+		args.url = this.urlRoot;
+		if(this.model) args.url = this.model.urlRoot;
+		if(!args.url) throw 'XO : Url not set';
+
 		self.trigger('before:'+args.type, self);
 		jQuery.ajax({
 			url  : args.url + (self.id ? "/" + self.id : ""),
 			type : http[args.type],
-			data : args.data,
+			data : args.data, //switch to self.attributes(); removes need of 'data'
 			success : function(data){
 				success.call(self, data);
 				callback(undefined, self);
 				self.trigger(args.type, self);
 			},
 			error : function(err){
-				console.error(err);
 				callback(err);
-				self.trigger('error');
-				self.trigger('error:' + args.type, err);
+				self.trigger('error:'+args.type, err);
+				self.trigger('error', err);
 			},
 		});
 	};
 
 	var async_map = function(list, fnName, callback){
-		callback = callback || function(){};
-		var count = list.length;
 		var result = [];
-		if(count === 0) return callback();
-		_.each(list, function(obj){
+		callback = callback || function(){};
+		if(list.length === 0) return callback();
+		_.map(list, function(obj){
 			obj[fnName](function(err, data){
 				if(err) return callback(err);
 				result.push(data);
-				if(result.length === count){
+				if(result.length === list.length){
 					callback(undefined, result);
 				}
 			})
 		});
-	}
+	};
 
 	xo = {
 		view : Archetype.extend({
@@ -60,7 +63,7 @@
 				this.model = model;
 				this.dom = {};
 				this.on('created', function(){
-					if(self.view) self.bindToView();
+					if(self.view) jQuery(document).ready(self.bindToView.bind(self));
 				});
 				return this;
 			},
@@ -68,7 +71,7 @@
 			bindToView : function()
 			{
 				var self = this;
-				this.dom.block = jQuery('[xo-view="' + this.view + '"]');
+				this.dom.block = jQuery('[xo-view="' + this.view + '"]'); //convert these to local call
 				if(this.dom.block.length === 0 ){throw 'XO: Could not find view with name ' + this.view;}
 				this.dom.block.find('[xo-element]').each(function(index, element){
 					self.dom[jQuery(element).attr('xo-element')] = jQuery(element);
@@ -83,6 +86,7 @@
 				if(target.length === 0 ){throw 'XO: Could not find target';}
 				if(!this.schematic){throw 'XO: Schematic name not set' ;}
 
+				//make a fullclone local function
 				var getSchematic = function(schematicName){
 					var schematicElement = jQuery('[xo-schematic="' + schematicName + '"]');
 					if(schematicElement.length === 0 ){throw 'XO: Could not find schematic with name "' + schematicName + '"';}
@@ -115,7 +119,7 @@
 		}),
 
 		model : Archetype.extend({
-			urlRoot : undefined,
+			urlRoot : undefined, //switch to all caps?
 
 			initialize : function(obj)
 			{
@@ -157,7 +161,7 @@
 			{
 				var self = this;
 				return _.reduce(this, function(result, v,k){
-					if(	k === '__events__' ||
+					if(	k === '__events__' || //shouldn't need to filter on these anymore
 						k === 'urlRoot' ||
 						typeof v ==='function'){ return result;}
 					result[k] = v;
@@ -209,38 +213,38 @@
 
 			extend : function(props)
 			{
-				var col = _.extend([], this, props);
-				if(col.model){ col.urlRoot = col.model.urlRoot; }
-				col.initialize();
+				var col = _.extend([], this, props); //create a multi parameter extend shim
+				//if(col.model){ col.urlRoot = col.model.urlRoot; }
+				//col.initialize();
 				return col;
 			},
 			create : function(arr)
 			{
 				arr = arr || [];
 				var col = _.extend(arr, this);
-				if(col.model){ col.urlRoot = col.model.urlRoot; }
-				col.initialize();
+				//if(col.model){ col.urlRoot = col.model.urlRoot; }
+				col.initialize(); //deep call
 				return col;
 			},
 
 			toJSON : function(){
-				return JSON.stringify(_.map(this, function(obj){
-					return obj.attributes();
+				return JSON.stringify(_.map(this, function(model){
+					return model.attributes();
 				}), null, 4);
 			},
 
 			set  : function(arr){
 				var self = this;
 				this.clear();
-				_.each(arr, function(obj){
-					self.add(obj);
+				_.map(arr, function(ele){
+					self.add(ele);
 				});
 				return this;
 			},
 
 			add : function(obj)
 			{
-				var newObj = this.model.create();
+				var newObj = this.model.create(); //move to single line
 				newObj.set(obj);
 				this.push(newObj);
 				this.trigger('add', newObj);
@@ -248,7 +252,7 @@
 			},
 			clear : function()
 			{
-				this.length = 0;
+				this.length = 0; //trigger delete on all models
 				return this;
 			},
 			fetch : function(callback)

@@ -42,9 +42,9 @@ app.get('/home', function (req, res) {
 	res.render('home.html');
 });
 
-app.get('/index', [mw.forceLogin], function(req,res){
+app.get('/index', [mw.loadUser], function(req,res){
 	return res.render('index.html', {
-		user : req.user
+		user : req.user || {}
 	});
 });
 
@@ -53,11 +53,11 @@ app.get('/login', function (req, res) {
 	return res.redirect('/index');
 });
 
-app.get('/calc/:calcId', [mw.forceLogin], function(req,res){
+app.get('/calc/:calcId', [mw.loadUser], function(req,res){
 	Calculator.findByUrlOrId(req.params.calcId, function(err, calc){
 		if(err || !calc) return res.redirect('/uhoh');
 		return res.render('calculator.html', {
-			user : req.user,
+			user : req.user || {},
 			calcId : calc.id
 		});
 	});

@@ -34,11 +34,7 @@
 			} else {
 				this.control = $(inputHTML).insertAfter(target);
 			}
-			if(typeof options.value !== 'undefined'){
-				this.value(options.value)
-			} else {
-				this.value(this.view.html());
-			}
+			this.value(options.value)
 
 			if(typeof options.event === 'undefined'){
 				this.interactionEvent = 'click';

@@ -1,0 +1,59 @@
+Presto Changelog
+
+
+===Thursday, 24/10/2013===
+Pages
+- New Home Page, looking all swanky
+- switch calculator layout to masonry mode
+- Added little 'badges' to each calculator on the index page to indicate what 'tier' it is
+- Hint.css library improved
+
+Admin Page
+- Calculators can now be edited as models or scripts on the admin page
+- Admin page design improved
+- Added a massive backup and restore option for calculators
+- Feedback on editing admin page values better
+
+Exoskeleton
+- XO collections now using a async mapping for requests
+- XO colelctions now closer to models in design
+- XO node has vastly improved using post and pre middle ware now
+- Moved XO node api definitions to model files
+- Removed mass deletes from XO collections and XO node
+
+Calculators
+- Added filtering for calculators based on who the user is. This uses the tier of the calculator if it's in dev and etc.
+- Switch the calculator model back to strict definitions
+- Wrapped all calculator details in 'info' section
+- removed calculator id's from scripts
+- Added the ability to set custom urls for each calculator. Use 'url' in the calculator info section
+- Calculators can now be put in 'dev' mode, will be hidden from all non-admin users. set 'dev' to true in the info section
+- New calculators default to dev being true, be sure to remove that once you want it to go into production
+- Added Tiers to calculators, used for 'gold', 'silver', etc.
+
+Charts & Tables
+- Charts can now accept generators and first values (just like tables)
+- When using generators with charts, use the 'points' value to determine how many points to generate, default : 20
+- Tables can now accept 'data' arrays (just like charts)
+- Renamed 'firstCell' -> 'firstValue' to better match charts
+- Charts now work with a numerical breakeven line eg. breakeven : [ ['sample', 1500]],
+
+
+
+
+===Tuesday, 29/10/2013===
+Infastrcuture
+- Added the underscore ability to run functions in their own thread
+- XO node api generating now properly returning errors on certains calls
+- Executing calculator scripts now happens in it's own thread, so it doesn't block other important functions, like rendering the code editor
+
+Code Editor
+- Errors in the code editor now more visible
+- Error line highlighting now shows consistently
+- Code editor should be use-able no matter what errors happen now
+- Code editor will keep it's scroll position when executing code
+- Engine willnow only throw errors to the console if their engine errors. Ignores calculator script errors
+
+Accounts
+- Anyone can now access all calculators for now. Put into a Guest Account. Much easier for demos.
+

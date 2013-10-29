@@ -157,6 +157,13 @@ Number.prototype.floor = function() {
 	return Math.floor(this);
 };
 
+String.prototype.startsWith = function (str){
+	return this.indexOf(str) == 0;
+};
+
+String.prototype.endsWith = function(suffix) {
+	return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
 
 
 
@@ -183,25 +190,16 @@ _.mixin({
 	compare : function(obj1, obj2){
 		return JSON.stringify(obj1) === JSON.stringify(obj2)
 	},
-});
 
-
-//Generator Arrays Test
-/*
-Array.prototype.get = function(index){
-	if(this.length > index){
-		return this[index];
-	}else if(typeof this.generator === 'function'){
-		if(this.length===0) this.push(this.initial);
-		while(this.length - 1 < index){
-			this.push(this.generator(this[this.length - 1], this.length - 1));
-		}
-		return this[index];
+	async : function(func){
+		return function(){
+			var self = this, args = arguments;
+			setTimeout(function(){
+				func.apply(self, args)
+			}, 0);
+		};
 	}
-};
-*/
-
-
+});
 
 
 

@@ -52,16 +52,16 @@
 	<% } %>
 
 	<!-- Modules -->
-	<script type="text/javascript"             src="../js/calculator/modules/Inputs.js"></script>
+	<script type="text/javascript"         src ="../js/calculator/modules/Inputs.js"></script>
 	<link rel="Stylesheet" type="text/css" href="../style/modules/Inputs.css" />
-	<script type="text/javascript"             src="../js/calculator/modules/Outputs.js"></script>
+	<script type="text/javascript"         src ="../js/calculator/modules/Outputs.js"></script>
 	<link rel="Stylesheet" type="text/css" href="../style/modules/Outputs.css" />
-	<script type="text/javascript"             src="../js/calculator/modules/Tables.js"></script>
+	<script type="text/javascript"         src ="../js/calculator/modules/Tables.js"></script>
 	<link rel="Stylesheet" type="text/css" href="../style/modules/Tables.css" />
-	<script type="text/javascript"             src="../js/calculator/modules/Charts.js"></script>
+	<script type="text/javascript"         src ="../js/calculator/modules/Charts.js"></script>
 	<link rel="Stylesheet" type="text/css" href="../style/modules/Charts.css" />
-	<script type="text/javascript"             src="../js/calculator/modules/Global.js"></script>
-	<script type="text/javascript"             src="../js/calculator/modules/Tools.js"></script>
+	<script type="text/javascript"         src ="../js/calculator/modules/Global.js"></script>
+	<script type="text/javascript"         src ="../js/calculator/modules/Tools.js"></script>
 </head>
 
 
@@ -95,15 +95,26 @@
 			<% } %>
 
 
-			<div class='topbar__account topbar__button hint--bottom' data-hint='Account'>
-				<%= user.email %>
-			</div>
+			<%if (user.email) { %>
+				<div class='topbar__logout topbar__button'>
+					<i class='icon-share-alt'></i>
+				</div>
 
-			<div class='topbar__refreshCalc topbar__button hint--bottom' xo-element='refreshButton' data-hint='Update'>
+				<div class='topbar__account topbar__button' hint-bottom='Account'>
+					<%= user.email %>
+				</div>
+			<% } %>
+			<%if (!user.email) { %>
+				<div class='topbar__account topbar__button'>
+					Guest
+				</div>
+			<% } %>
+
+			<div class='topbar__refreshCalc topbar__button' xo-element='refreshButton' hint-bottom='Update'>
 				<i class='icon-refresh'></i>
 			</div>
 
-			<div class='topbar__video topbar__button hint--bottom' data-hint='No Video Available'>
+			<div class='topbar__video topbar__button' hint-bottom='No Video Available'>
 				<i class='icon-facetime-video '></i>
 			</div>
 
@@ -114,10 +125,6 @@
 		<!-- Main Area -->
 		<div class='presto__main' xo-element='main'>
 			<div class='staticContainer' xo-element='staticContainer'></div>
-			<!--<div class='flowContainer'>
-				<div class='flowContainer__tiles' xo-element='flowContainer'></div>
-			</div>
-		-->
 			<div class='flowContainer' xo-element='flowContainer'>
 			</div>
 		</div>
@@ -209,7 +216,7 @@
 <div class='table tile' xo-schematic='table'>
 	<div class='tile__topbar'>
 		<div class='tile__buttons'>
-			<div data-hint='Download CSV' xo-element='downloadCSV'>
+			<div hint='Download CSV' xo-element='downloadCSV'>
 				<i class='icon-download-alt'></i>
 			</div>
 		</div>
@@ -234,13 +241,13 @@
 <div class='chart tile' xo-schematic='chart'>
 	<div class='tile__topbar'>
 		<div class='tile__buttons'>
-			<div data-hint='Minify' xo-element='mini'>
+			<div hint='Minify' xo-element='mini'>
 				<i class='icon-minus'></i>
 			</div>
-			<div data-hint='Small' xo-element='small'>
+			<div hint='Small' xo-element='small'>
 				<i class='icon-resize-small'></i>
 			</div>
-			<div data-hint='Large' xo-element='big'>
+			<div hint='Large' xo-element='big'>
 				<i class='icon-picture'></i>
 			</div>
 		</div>
