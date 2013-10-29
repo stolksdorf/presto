@@ -50,6 +50,12 @@
 				<%= user.email %>
 			</div>
 		<% } %>
+		<%if (!user.email) { %>
+			<div class='topbar__account topbar__button'>
+				Guest
+			</div>
+		<% } %>
+
 
 		<%if (user.account_type == 'admin') { %>
 			<div class='topbar__newCalc topbar__button' xo-element='newCalculatorButton'>
