@@ -14,7 +14,12 @@ Presto = Archetype.extend({
 		this.blueprint = Presto_Model_Calculator.create({
 			id : this.options.calcId
 		});
+
 		this.blueprint.fetch();
+
+		this.blueprint.on('error:fetch', function(data){
+			alert('Could not load Calculator');
+		})
 
 		$(document).ready(function(){
 			console.log('READY');

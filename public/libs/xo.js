@@ -31,6 +31,7 @@
 			},
 			error : function(err){
 				callback(err);
+				self.trigger('error:'+args.type, err);
 				self.trigger('error', err);
 			},
 		});

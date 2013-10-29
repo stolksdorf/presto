@@ -74,11 +74,12 @@ exports.api = function(endpoint, Model, middleware, handleError){
 	});
 
 	app.get(endpoint + '/:id', mw.find, mw.get, function(req,res){
-		return res.send(200, exports.clean(req.model) || {});
+		if(!req.model) return handleError('no model', req, res);
+		return res.send(200, exports.clean(req.model));
 	});
 
 	app.delete(endpoint + '/:id', mw.find, mw.del, function(req,res){
-		if(!req.model) return handleError('no doc', req, res);
+		if(!req.model) return handleError('no model', req, res);
 		req.model.remove(function(err){
 			if(err) return handleError(err, req, res);
 			return res.send(200);
@@ -86,6 +87,7 @@ exports.api = function(endpoint, Model, middleware, handleError){
 	});
 
 	app.post(endpoint, mw.create, mw.post, function(req, res){
+		if(!req.model) return handleError('no model', req, res);
 		req.model.save(function(err, obj){
 			if(err) return handleError(err, req, res);
 			return res.send(exports.clean(obj));
@@ -93,6 +95,7 @@ exports.api = function(endpoint, Model, middleware, handleError){
 	});
 
 	app.put(endpoint + '/:id', mw.update, mw.put, function(req,res){
+		if(!req.model) return handleError('no model', req, res);
 		req.model.save(function(err, obj){
 			if(err) return handleError(err, req, res);
 			return res.send(exports.clean(obj));
@@ -101,6 +104,7 @@ exports.api = function(endpoint, Model, middleware, handleError){
 
 	//Allow for post updating
 	app.post(endpoint + '/:id', mw.update, mw.post, function(req,res){
+		if(!req.model) return handleError('no model', req, res);
 		req.model.save(function(err, obj){
 			if(err) return handleError(err, req, res);
 			return res.send(exports.clean(obj));
