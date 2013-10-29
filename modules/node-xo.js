@@ -21,15 +21,13 @@ exports.api = function(endpoint, Model, middleware, handleError){
 	exports.endpoints.push(endpoint);
 	middleware = middleware || [];
 	var mw = {
-		//all  : middleware,
 		get  : middleware,
 		post : middleware,
 		put  : middleware,
 		del  : middleware
 	};
 
-	if(!_.isArray(middleware)){
-		//mw.all  = middleware.all  || [];
+	if(!_.isArray(middleware)){ //use non-underscore detection
 		mw.get  = middleware.get  || [];
 		mw.post = middleware.post || [];
 		mw.put  = middleware.put  || [];
@@ -42,9 +40,9 @@ exports.api = function(endpoint, Model, middleware, handleError){
 	};
 
 	mw.findAll = function(req,res,next){
-		Model.find(function(err, documents){
+		Model.find(function(err, models){
 			if(err) return handleError(err, req, res);
-			req.documents = documents;
+			req.models = models;
 			return next();
 		});
 	};
@@ -52,51 +50,50 @@ exports.api = function(endpoint, Model, middleware, handleError){
 	mw.find = function(req,res,next){
 		Model.findById(req.params.id, function(err, obj){
 			if(err) return handleError(err, req, res);
-			req.document = obj;
+			req.model = obj;
 			return next();
 		});
 	};
 
 	mw.create = function(req,res,next){
-		req.document = new Model(req.body);
-		req.document.id = req.document._id;
+		req.model = new Model(req.body);
+		req.model.id = req.model._id;
 		return next();
 	};
 
 	mw.update = function(req,res,next){
 		Model.findById(req.params.id, function(err, obj){
 			if(!obj || err) return handleError(err, req, res);
-			req.document = _.extend(obj, req.body);
+			req.model = _.extend(obj, req.body);
 			return next();
 		});
 	};
 
-
 	app.get(endpoint, mw.findAll, mw.get, function(req,res){
-		return res.send(exports.clean(req.documents) || []);
+		return res.send(exports.clean(req.models) || []);
 	});
 
 	app.get(endpoint + '/:id', mw.find, mw.get, function(req,res){
-		return res.send(200, exports.clean(req.document) || {});
+		return res.send(200, exports.clean(req.model) || {});
 	});
 
 	app.delete(endpoint + '/:id', mw.find, mw.del, function(req,res){
-		if(!req.document) return handleError('no doc', req, res);
-		req.document.remove(function(err){
+		if(!req.model) return handleError('no doc', req, res);
+		req.model.remove(function(err){
 			if(err) return handleError(err, req, res);
 			return res.send(200);
 		});
 	});
 
 	app.post(endpoint, mw.create, mw.post, function(req, res){
-		req.document.save(function(err, obj){
+		req.model.save(function(err, obj){
 			if(err) return handleError(err, req, res);
 			return res.send(exports.clean(obj));
 		});
 	});
 
 	app.put(endpoint + '/:id', mw.update, mw.put, function(req,res){
-		req.document.save(function(err, obj){
+		req.model.save(function(err, obj){
 			if(err) return handleError(err, req, res);
 			return res.send(exports.clean(obj));
 		});
@@ -104,7 +101,7 @@ exports.api = function(endpoint, Model, middleware, handleError){
 
 	//Allow for post updating
 	app.post(endpoint + '/:id', mw.update, mw.post, function(req,res){
-		req.document.save(function(err, obj){
+		req.model.save(function(err, obj){
 			if(err) return handleError(err, req, res);
 			return res.send(exports.clean(obj));
 		});

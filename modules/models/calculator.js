@@ -62,7 +62,6 @@ var filterCalc = function(req,res,next){
 
 
 xo.api('/api/calculators', Calculator, {
-	//all  : [mw.forceUser, filterCalcs],
 	get  : [mw.forceUser, filterCalc],
 	put  : [mw.adminOnly],
 	post : [mw.adminOnly],

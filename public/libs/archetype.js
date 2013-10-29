@@ -27,10 +27,12 @@
 			return this;
 		},
 		create : function(){
-			var newObj = Object.create(this);
+			var newObj = Object.create(this); //rename new obj
+
+			//make deep call badass
 			var params = Array.prototype.slice.apply(arguments);
 			params.unshift('initialize');
-			newObj.deep.apply(newObj, params);
+			newObj.deep.apply(newObj, params); //possibly do not need apply
 			newObj.trigger('created');
 			return newObj;
 		},
@@ -50,10 +52,19 @@
 				if(obj[method]) deepcall(Object.getPrototypeOf(obj), method, args);
 				if(obj.hasOwnProperty(method)){
 					//console.log(obj[method], args);
-					obj[method].apply(self, args);
+					obj[method].apply(self, args); //collaspe this
 				}
 			};
 			return deepcall(this, method, Array.prototype.slice.apply(arguments).slice(1));
+		},
+
+		deep2 : function(method){
+			var self = this;
+			var deep = function(){
+				if(this[method]) deep.apply(Object.getPrototypeOf(this), arguments);
+				if(this.hasOwnProperty(method)) this[method].apply(self, arguments);
+			};
+			return deep.bind(this);
 		},
 	};
 
@@ -72,7 +83,7 @@
 			this.__events__ = this.__events__ || [];
 			for(var i = 0; i < this.__events__.length; i++) {
 				if(eventName === this.__events__[i].id || eventName === this.__events__[i].name){
-					this.__events__[i].event.apply(this, Array.prototype.slice.apply(arguments).slice(1));
+					this.__events__[i].event.apply(this, Array.prototype.slice.apply(arguments).slice(1)); //move 1 are aparameter of first slice
 				}
 			}
 			return this;
@@ -94,7 +105,7 @@
 		}
 	};
 
-	Archetype_Super = {
+	Archetype_Super = { //just add supers into the mix
 		create : function(){
 			var self = this;
 			var newObj = Object.create(this);
