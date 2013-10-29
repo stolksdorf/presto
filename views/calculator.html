@@ -52,16 +52,16 @@
 	<% } %>
 
 	<!-- Modules -->
-	<script type="text/javascript"             src="../js/calculator/modules/Inputs.js"></script>
+	<script type="text/javascript"         src ="../js/calculator/modules/Inputs.js"></script>
 	<link rel="Stylesheet" type="text/css" href="../style/modules/Inputs.css" />
-	<script type="text/javascript"             src="../js/calculator/modules/Outputs.js"></script>
+	<script type="text/javascript"         src ="../js/calculator/modules/Outputs.js"></script>
 	<link rel="Stylesheet" type="text/css" href="../style/modules/Outputs.css" />
-	<script type="text/javascript"             src="../js/calculator/modules/Tables.js"></script>
+	<script type="text/javascript"         src ="../js/calculator/modules/Tables.js"></script>
 	<link rel="Stylesheet" type="text/css" href="../style/modules/Tables.css" />
-	<script type="text/javascript"             src="../js/calculator/modules/Charts.js"></script>
+	<script type="text/javascript"         src ="../js/calculator/modules/Charts.js"></script>
 	<link rel="Stylesheet" type="text/css" href="../style/modules/Charts.css" />
-	<script type="text/javascript"             src="../js/calculator/modules/Global.js"></script>
-	<script type="text/javascript"             src="../js/calculator/modules/Tools.js"></script>
+	<script type="text/javascript"         src ="../js/calculator/modules/Global.js"></script>
+	<script type="text/javascript"         src ="../js/calculator/modules/Tools.js"></script>
 </head>
 
 
@@ -72,6 +72,22 @@
 		Presto.start({
 			calcId : '<%- calcId %>'
 		});
+
+		function cool(){
+			var temp = [_.async(function(){
+				console.log('YEAH');
+				throw 'boo'
+			}),
+			function(){
+				console.log('neato');
+			}]
+
+			for(var i in temp){
+				temp[i]();
+			}
+
+
+		}
 
 	</script>
 
@@ -125,10 +141,6 @@
 		<!-- Main Area -->
 		<div class='presto__main' xo-element='main'>
 			<div class='staticContainer' xo-element='staticContainer'></div>
-			<!--<div class='flowContainer'>
-				<div class='flowContainer__tiles' xo-element='flowContainer'></div>
-			</div>
-		-->
 			<div class='flowContainer' xo-element='flowContainer'>
 			</div>
 		</div>

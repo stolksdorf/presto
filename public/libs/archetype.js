@@ -80,9 +80,12 @@
 			return archetype_EventCount;
 		},
 		trigger : function(eventName){
+			//console.log('ARCH - trigger', eventName);
 			this.__events__ = this.__events__ || [];
+			//console.log('looping through', eventName, this.__events__.length);
 			for(var i = 0; i < this.__events__.length; i++) {
 				if(eventName === this.__events__[i].id || eventName === this.__events__[i].name){
+					//console.log('ARCH - doing', this.__events__[i].id);
 					this.__events__[i].event.apply(this, Array.prototype.slice.apply(arguments).slice(1)); //move 1 are aparameter of first slice
 				}
 			}

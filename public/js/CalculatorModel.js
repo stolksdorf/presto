@@ -5,15 +5,16 @@ Presto_Model_Calculator = xo.model.extend({
 	{
 		var self = this;
 
-		this.onChange('script', function(){
+		this.onChange('script', _.async(function(){
 			self.execute();
-		});
+		}));
 		return this;
 	},
 
 	execute : function()
 	{
-		var self = this;
+		var self = this,
+			result = {};
 		if(!this.script) return;
 
 		eval("with (this) {var result = (" + this.script + ")}");
@@ -33,7 +34,7 @@ Presto_Model_Calculator = xo.model.extend({
 			}
 		}
 
-		this.trigger('execute', result);
+		//this.trigger('execute', result);
 		return result;
 	},
 

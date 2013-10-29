@@ -62,7 +62,7 @@
 				this.model = model;
 				this.dom = {};
 				this.on('created', function(){
-					if(self.view) self.bindToView();
+					if(self.view) jQuery(document).ready(self.bindToView.bind(self));
 				});
 				return this;
 			},

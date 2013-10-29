@@ -200,6 +200,7 @@
 
 
 	.codeEditor__footer{
+		z-index : 1000;
 		position : absolute;
 		bottom   : 0px;
 		width    : 100%;

@@ -14,7 +14,6 @@ Presto = Archetype.extend({
 		this.blueprint = Presto_Model_Calculator.create({
 			id : this.options.calcId
 		});
-		//this.blueprint.id = ;
 		this.blueprint.fetch();
 
 		$(document).ready(function(){
@@ -30,9 +29,9 @@ Presto = Archetype.extend({
 
 		this.view = Presto_View_Calculator.create(this.blueprint);
 
-		this.blueprint.on('execute', function(newCalcModel){
-			self.model.set(newCalcModel);
-		});
+		this.blueprint.on('change:script', _.async(function(newModel){
+			self.model.set(self.blueprint.execute());
+		}));
 
 		this.model.on('change', function(){
 			self.initializeModules();
@@ -66,15 +65,20 @@ Presto = Archetype.extend({
 	initializeModules : function()
 	{
 		var self = this;
+
 		this.removeModules();
-		_.each(this.sortedModules(), function(module){
-			module.definition = self.model[module.name];
-			if(module.schematic){
-				module.injectInto(module.target.call(self));
-			}
-			module.components = module.registerComponents(module);
-			module.start();
-		});
+		try{
+			_.each(this.sortedModules(), function(module){
+				module.definition = self.model[module.name];
+				if(module.schematic){
+					module.injectInto(module.target.call(self));
+				}
+				module.components = module.registerComponents(module);
+				module.start();
+			});
+		}catch(e){
+			console.error('Tried using module data before modules were generated');
+		}
 		this.update();
 		return this;
 	},
@@ -108,7 +112,7 @@ Presto = Archetype.extend({
 			if(iterationCount > Presto.options.max_update_iterations){
 
 				//throw 'Circular dependacy';
-				console.error('System Oscillating: No saddlepoint found');
+				//console.error('System Oscillating: No saddlepoint found');
 				break;
 			}
 			//Trying fix
@@ -165,6 +169,7 @@ Presto = Archetype.extend({
 	},
 
 });
+
 
 window.onerror = function(error, fileName, lineNumber){
 	Presto.trigger('error', error, fileName, lineNumber);

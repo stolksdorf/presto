@@ -40,7 +40,7 @@ Presto.registerModule({
 				{
 					var self = this;
 					this.widget = this.dom.value.widget({
-						value    : _.evalue(this.definition.initialValue),
+						value    : undefined,
 						renderer : this.definition.type.renderer,
 						onChange : function(newVal){
 							Presto.update();
@@ -52,6 +52,11 @@ Presto.registerModule({
 
 				generate : function()
 				{
+					if(typeof this.widget.value() === 'undefined'){
+						this.widget.value(_.evalue(this.definition.initialValue));
+					}
+
+
 					if(this.definition.type.isNumerical){
 						return this.widget.value() * 1;
 					}
