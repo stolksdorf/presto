@@ -25,7 +25,8 @@ Presto_Model_Calculator = xo.model.extend({
 
 		if(result.info){
 			if(!result.info.url){
-				this.set('url', self.id); //default the url of the calculator to the id
+				//default the url of the calculator to the id
+				this.set('url', self.id);
 			}
 			if(!result.info.dev){
 				self.set('dev', false);

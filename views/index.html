@@ -41,13 +41,15 @@
 
 		<div class='topbar__title'>Presto</div>
 
-		<div class='topbar__logout topbar__button'>
-			<i class='icon-share-alt'></i>
-		</div>
+		<%if (user.email) { %>
+			<div class='topbar__logout topbar__button'>
+				<i class='icon-share-alt'></i>
+			</div>
 
-		<div class='topbar__account topbar__button'>
-			<%= user.email %>
-		</div>
+			<div class='topbar__account topbar__button'>
+				<%= user.email %>
+			</div>
+		<% } %>
 
 		<%if (user.account_type == 'admin') { %>
 			<div class='topbar__newCalc topbar__button' xo-element='newCalculatorButton'>

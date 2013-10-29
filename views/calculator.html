@@ -95,9 +95,15 @@
 			<% } %>
 
 
-			<div class='topbar__account topbar__button' hint-bottom='Account'>
-				<%= user.email %>
-			</div>
+			<%if (user.email) { %>
+				<div class='topbar__logout topbar__button'>
+					<i class='icon-share-alt'></i>
+				</div>
+
+				<div class='topbar__account topbar__button' hint-bottom='Account'>
+					<%= user.email %>
+				</div>
+			<% } %>
 
 			<div class='topbar__refreshCalc topbar__button' xo-element='refreshButton' hint-bottom='Update'>
 				<i class='icon-refresh'></i>
