@@ -65,6 +65,7 @@ Presto_View_CodeEditor = xo.view.extend({
 					self.editor.getLineHandle(lineNumber-1),
 					'background',
 					'codeEditor__editor__errorLine');
+				self.editor.setCursor(lineNumber);
 				self.showMessage('line ' + lineNumber + ' : ' + error, 'error');
 				return;
 			}
@@ -81,12 +82,14 @@ Presto_View_CodeEditor = xo.view.extend({
 	setCode : function(code)
 	{
 		var isVisible = this.dom.block.is(':visible');
+		var scrollData = this.editor.getScrollInfo();
 		code = code || "";
 		this.dom.block.show();
 		if(typeof code !== 'string'){
 			code = JSON.stringify(code, null, '  ');
 		}
 		this.editor.setValue(code);
+		this.editor.scrollTo(scrollData.left, scrollData.top);
 		if(!isVisible) this.dom.block.hide();
 		return this;
 	},

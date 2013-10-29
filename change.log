@@ -51,6 +51,7 @@ Code Editor
 - Errors in the code editor now more visible
 - Error line highlighting now shows consistently
 - Code editor should be use-able no matter what errors happen now
+- Code editor will keep it's scroll position when executing code
 
 Accounts
 - Anyone can now access all calculators for now. Put into a Guest Account. Much easier for demos.
