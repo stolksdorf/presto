@@ -247,6 +247,7 @@
 
 			add : function(obj)
 			{
+				//add listeners of model changes
 				var newObj = this.model.create(); //move to single line
 				newObj.set(obj);
 				this.push(newObj);

@@ -8,6 +8,10 @@ PrestoAccount = xo.view.extend({
 
 		//plans
 
+		this.plans = xo.collection.extend({
+
+		})
+
 		this.plans = {
 			bronze : Presto_View_Plan.create({
 				id : 'bronze',

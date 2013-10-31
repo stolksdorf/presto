@@ -10,7 +10,8 @@ Presto_View_Content = xo.view.extend({
 
 		this.dom.delete.click(function(){
 			if(self.model){
-				self.model.delete(function(){
+				self.model.delete(function(err){
+					if(err) return alert('Error!');
 					alert('Deleted!');
 					self.model = undefined;
 					self.dom.data.val('');
@@ -24,6 +25,7 @@ Presto_View_Content = xo.view.extend({
 			if(self.model.model){
 				var temp = self.model.model.create();
 				temp.save(function(err,result){
+					if(err) return alert('Error!');
 					alert('Created new model');
 					self.model.fetch();
 				});
@@ -80,7 +82,8 @@ Presto_View_Content = xo.view.extend({
 
 		if(this.model){
 			this.model.set(result);
-			this.model.save(function(){
+			this.model.save(function(err){
+				if(err) return alert('Error!');
 				alert('Saved!');
 			});
 		}
