@@ -63,6 +63,12 @@ app.get('/calc/:calcId', [mw.loadUser], function(req,res){
 	});
 });
 
+app.get('/account', [mw.forceUser], function(req,res){
+	return res.render('account.html', {
+		user : req.user
+	});
+});
+
 
 //TODO: Remove once new home page is made
 app.get('/signup', function(req, res){
