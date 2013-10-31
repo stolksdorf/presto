@@ -1,43 +1,39 @@
 ;(function(){
-	/**
-	 * Shim for Object.create, in case the browser doesn't support it
-	 */
+	//Shim for Object.create, in case the browser doesn't support it
 	if (typeof Object.create === 'undefined') {
-		Object.create = function (o) {
-			function F() {};
-			F.prototype = o;
-			return new F();
+		Object.create = function(proto) {
+			function Obj(){};
+			Obj.prototype = proto;
+			return new Obj();
 		};
 	}
 	var archetype_EventCount = new Date().getTime();
 
-/*
-	var fullCall = function(obj,method, args){
-		if(obj[method]) fullCall(Object.getPrototypeOf(obj), args);
-		if(obj.hasOwnProperty(method)){
-			console.log('test', obj[method]);
+	var ForgeObject = function(proto){
+		var obj = Object.create(proto);
+		var eventScope = {events : [], scope : obj};
 
-			obj[method].apply(newObj, args);
-		}
+		obj.super     = Object.getPrototypeOf(obj);
+		obj.getEvents = obj.getEvents(eventScope);
+		obj.on        = obj.on.bind(eventScope);
+		obj.trigger   = obj.trigger.bind(eventScope);
+		obj.off       = obj.off.bind(eventScope);
+
+		return obj;
 	};
-*/
 
-	Archetype = {
+	Archetype = archetype ={
 		initialize : function(){
 			return this;
 		},
 		create : function(){
-			var newObj = Object.create(this); //rename new obj
-
-			//make deep call badass
-			var params = Array.prototype.slice.apply(arguments);
-			params.unshift('initialize');
-			newObj.deep.apply(newObj, params); //possibly do not need apply
-			newObj.trigger('created');
-			return newObj;
+			var obj = ForgeObject(this);
+			obj.deep('initialize').apply(obj, arguments);
+			obj.trigger('created');
+			return obj;
 		},
 		extend : function(methods){
-			return Object.create(this).mixin(methods);
+			return ForgeObject(this).mixin(methods);
 		},
 		mixin : function(methods){
 			for(var methodName in methods){
@@ -45,96 +41,46 @@
 			}
 			return this;
 		},
-		deep : function(method, arg1, arg2){
-			var self = this;
-			var deepcall = function(obj,method,args){
-				//console.log('WOO', obj.hasOwnProperty(method), args, obj[method]);
-				if(obj[method]) deepcall(Object.getPrototypeOf(obj), method, args);
-				if(obj.hasOwnProperty(method)){
-					//console.log(obj[method], args);
-					obj[method].apply(self, args); //collaspe this
-				}
-			};
-			return deepcall(this, method, Array.prototype.slice.apply(arguments).slice(1));
-		},
-
-		deep2 : function(method){
+		deep : function(method){
 			var self = this;
 			var deep = function(){
 				if(this[method]) deep.apply(Object.getPrototypeOf(this), arguments);
-				if(this.hasOwnProperty(method)) this[method].apply(self, arguments);
+				if(this.hasOwnProperty(method)) return this[method].apply(self, arguments);
 			};
 			return deep.bind(this);
 		},
-	};
 
-	Archetype_Events = {
+		getEvents : function(){
+			return this.events;
+		},
 		on : function(eventName, event){
-			archetype_EventCount++;
-			this.__events__ = this.__events__ || [];
-			this.__events__.push({
-				id    : archetype_EventCount,
+			this.events.push({
+				id    : ++archetype_EventCount,
 				name  : eventName,
 				event : event
 			});
 			return archetype_EventCount;
 		},
 		trigger : function(eventName){
-			//console.log('ARCH - trigger', eventName);
-			this.__events__ = this.__events__ || [];
-			//console.log('looping through', eventName, this.__events__.length);
-			for(var i = 0; i < this.__events__.length; i++) {
-				if(eventName === this.__events__[i].id || eventName === this.__events__[i].name){
-					//console.log('ARCH - doing', this.__events__[i].id);
-					this.__events__[i].event.apply(this, Array.prototype.slice.apply(arguments).slice(1)); //move 1 are aparameter of first slice
+			for(var i in this.events){
+				var evt = this.events[i];
+				if(eventName == evt.id || eventName == evt.name){
+					evt.event.apply(this.scope, Array.prototype.slice.apply(arguments).slice(1));
 				}
 			}
-			return this;
+			return this.scope;
 		},
 		off : function(eventName){
-			if(!eventName){
-				this.__events__ = [];
-				return this;
-			}
 			var events = [];
-			this.__events__ = this.__events__ || [];
-			for(var i = 0; i < this.__events__.length; i++) {
-				if(eventName !== this.__events__[i].id && eventName !== this.__events__[i].name){
-					events.push(this.__events__[i]);
+			if(!eventName) this.events = [];
+			for(var i in this.events){
+				var evt = this.events[i];
+				if(eventName != evt.id && eventName != evt.name){
+					events.push(this.events[i]);
 				}
 			}
-			this.__events__ = events;
-			return this;
+			this.events = events;
+			return this.scope;
 		}
 	};
-
-	Archetype_Super = { //just add supers into the mix
-		create : function(){
-			var self = this;
-			var newObj = Object.create(this);
-			newObj.super = function(){ return self; };
-			var params = Array.prototype.slice.apply(arguments);
-			params.unshift('initialize');
-			newObj.deep.apply(newObj, params);
-			newObj.trigger('created');
-			return newObj;
-		},
-		super : function(){
-			return Object.getPrototypeOf(this);
-		},
-	};
-
-
-	Archetype.mixin(Archetype_Events);
-	//Archetype.mixin(Archetype_Super);
-	archetype = Archetype;
 })();
-
-
-
-
-
-
-
-
-
