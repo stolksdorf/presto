@@ -10,7 +10,7 @@ Presto_View_EndpointGroup = xo.view.extend({
 	render : function(){
 		var self = this;
 
-		this.dom.title.text(this.collection.urlRoot);
+		this.dom.title.text(this.collection.model.urlRoot);
 
 		this.endpointViews = [];
 

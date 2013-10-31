@@ -6,18 +6,28 @@ Presto_Model_Calculator = xo.model.extend({
 		var self = this;
 
 		this.onChange('script', _.async(function(){
-			self.execute();
+			self.execute(); //look into removing this
 		}));
 		return this;
 	},
 
-	execute : function()
+	execute : function(catchErrors)
 	{
 		var self = this,
 			result = {};
 		if(!this.script) return;
 
-		eval("with (this) {var result = (" + this.script + ")}");
+
+		if(catchErrors){
+			try{
+				eval("with (this) {var result = (" + this.script + ")}");
+			}catch(e){
+				console.error('WOAH NOW', this.script);
+			}
+		}else{
+			eval("with (this) {var result = (" + this.script + ")}");
+		}
+
 
 		//Extract the calculator info from the script and update the model
 		_.each(result.info, function(value, keyName){

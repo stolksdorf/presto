@@ -4,6 +4,8 @@ PrestoAdmin = xo.view.extend({
 
 		var self = this;
 
+		this.endpoints = [];
+
 		_.each(endpoints, function(ep){
 			var collection;
 			if(ep === '/api/calculators'){
@@ -21,6 +23,7 @@ PrestoAdmin = xo.view.extend({
 
 			var group = Presto_View_EndpointGroup.create(collection);
 			group.injectInto($('.routes__container'));
+			self.endpoints.push(group);
 			collection.fetch();
 		});
 

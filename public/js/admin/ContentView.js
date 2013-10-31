@@ -19,6 +19,20 @@ Presto_View_Content = xo.view.extend({
 			}
 		});
 
+
+		this.dom.new.click(function(){
+			if(self.model.model){
+				var temp = self.model.model.create();
+				temp.save(function(err,result){
+					alert('Created new model');
+					self.model.fetch();
+				});
+			}
+
+		});
+
+
+
 		this.dom.showScript.hide();
 		this.dom.showModel.hide();
 
@@ -42,6 +56,12 @@ Presto_View_Content = xo.view.extend({
 		this.dom.showModel.hide();
 		if(this.model.script){
 			this.dom.showScript.show();
+		}
+
+		if(this.model.model){
+			this.dom.new.show();
+		} else{
+			this.dom.new.hide();
 		}
 
 		this.dom.data.val(model.toJSON());
