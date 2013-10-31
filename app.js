@@ -25,6 +25,8 @@ var csv = require('csv');
 mail          = require('./modules/mail.js');
 mw            = require('./modules/middleware.js');
 xo            = require('./modules/node-xo.js');
+payments      = require('./modules/payments.js')
+
 
 
 //Models
@@ -66,6 +68,16 @@ app.get('/calc/:calcId', [mw.loadUser], function(req,res){
 app.get('/account', [mw.forceUser], function(req,res){
 	return res.render('account.html', {
 		user : req.user
+	});
+});
+
+//Process new card
+app.post('/account', [mw.forceUser], function(req,res){
+	var stripeToken = req.body.stripeToken;
+
+	payments.charge(stripeToken, function(err, charge){
+		if(err){ return res.send(500, err);}
+		return res.send(200, charge);
 	});
 });
 

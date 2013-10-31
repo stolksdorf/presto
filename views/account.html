@@ -33,6 +33,18 @@
 
 	<%= user.email %>
 
+	<!-- Stripe's Checkout button -->
+	<form action="" method="POST">
+		<script
+			src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
+			data-key="pk_test_V0lqKPOUMmrHAy7n6w2HAe46"
+			data-amount="100"
+			data-name="Presto Calculators"
+			data-description="TEST"
+			data-image="/128x128.png">
+		</script>
+	</form>
+
 
 	<script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
