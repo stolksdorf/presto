@@ -175,11 +175,7 @@ _.mixin({
 		if(typeof obj === 'function') return obj();
 		return obj;
 	},
-	evalueObj  : function(obj){
-		return _.keymap(obj, function(val){
-			return _.evalue(val);
-		});
-	},
+
 	keymap : function(obj, fn){
 		var result = {};
 		for(var propName in obj){

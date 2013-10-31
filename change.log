@@ -47,6 +47,7 @@ Infastrcuture
 - XO node api generating now properly returning errors on certains calls
 - Executing calculator scripts now happens in it's own thread, so it doesn't block other important functions, like rendering the code editor
 
+
 Code Editor
 - Errors in the code editor now more visible
 - Error line highlighting now shows consistently
