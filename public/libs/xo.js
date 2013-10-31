@@ -77,6 +77,7 @@
 					self.dom[jQuery(element).attr('xo-element')] = jQuery(element);
 				});
 				this.render();
+				this.trigger('render');
 				return this;
 			},
 			injectInto : function(target, options)
@@ -103,6 +104,7 @@
 					self.dom[jQuery(element).attr('xo-element')] = jQuery(element);
 				});
 				this.render();
+				this.trigger('render');
 				return this;
 			},
 			render : function()
@@ -116,6 +118,7 @@
 				this.off();
 				return this;
 			},
+
 		}),
 
 		model : Archetype.extend({

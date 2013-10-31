@@ -1,0 +1,89 @@
+body{
+	background-color : #BDC3C7;
+	height:inherit;
+}
+
+.content{
+	height           : 100%;
+	max-width        : 1020px;
+	margin-right     : auto;
+	margin-left      : auto;
+	padding-top      : 80px;
+
+
+}
+
+.page{
+	background-color : white;
+	padding: 20px;
+	margin-left: 30px;
+	margin-right: 30px;
+}
+
+	.page__section{
+		margin-left: 20px;
+		margin-bottom: 30px;
+		margin-top: 30px;
+	}
+
+h1{
+	font-family: Lato;
+	font-size: 3em;
+	font-weight: 300;
+	margin-bottom: 20px;
+
+}
+
+h2{
+	font-family: Lato;
+	font-size: 2em;
+	font-weight: 300;
+	margin-bottom: 20px;
+	margin-left: -20px;
+}
+
+.plan__container{
+
+
+}
+
+.plan{
+	cursor: pointer;
+	display: inline-block;
+	vertical-align: top;
+	height: 150px;
+	width: 150px;
+	margin: 20px;
+	text-align: center;
+	border: 15px solid transparent;
+}
+	.plan.selected{
+		border: 15px solid #eee;
+	}
+
+	.plan:hover{
+		border: 15px solid #ddd;
+	}
+
+	.plan__icon{
+		font-size: 3em;
+		margin-top: 10px;
+		margin-bottom: 10px;
+
+	}
+		.plan__icon i{
+
+		}
+	.plan__title{
+		font-size: 2em;
+		margin-bottom: 10px;
+	}
+	.plan__description{
+		font-style: italic;
+	}
+
+
+	.plan.bronze .plan__icon i{ color: #A67D3D;}
+	.plan.silver .plan__icon i{ color: #95A5A6;}
+	.plan.gold   .plan__icon i{ color: #DAA520;}
+	.plan.beta   .plan__icon i{ color: #27AE60;}

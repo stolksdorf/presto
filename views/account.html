@@ -6,7 +6,7 @@
 	<script type="text/javascript" src="libs/archetype.js"></script>
 	<script type="text/javascript" src="libs/xo.js"></script>
 	<script type="text/javascript" src="../js/prototypes.js"></script>
-	<script type="text/javascript" src="../js/calculator/modules/Tools.js"></script>
+	<!--<script type="text/javascript" src="../js/calculator/modules/Tools.js"></script>-->
 
 	<link href='libs/lato/lato.css' rel='stylesheet' type='text/css'>
 	<link href='libs/font-awesome/css/font-awesome.css' rel='stylesheet' type='text/css'>
@@ -17,47 +17,122 @@
 	<link rel="Stylesheet" type="text/css" href="style/pages/account.css" />
 
 	<script type="text/javascript" src="../js/account/AccountApp.js"></script>
+	<script src="https://checkout.stripe.com/v2/checkout.js"></script>
 </head>
 
 <body>
-	<title>Account</title>
+	<title>Presto Account</title>
 
 	<script>
+
+		var user_type = '<%= user.account_type %>';
+
+		PrestoAccount = PrestoAccount.create();
+
+
 		$(document).ready(function(){
-			$('#charge').click(function(){
-				console.log('clicked!');
+/*
+			$('.plan').click(function(){
+				var token = function(res){
+					var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+					$('form').append($input).submit();
+				};
 
-				$.ajax({
-					url : '/account2',
-					type : 'GET',
-					complete : function(data){
-						console.log('complete', data);
-					},
-				})
-			})
+				StripeCheckout.open({
+					key:         'pk_test_V0lqKPOUMmrHAy7n6w2HAe46',
+					currency:    'cad',
+					name:        'Presto Bronze Plan',
+					description: 'Get your sweet sweet bronze plan',
+					panelLabel:  'Submit',
+					token:       token
+				});
 
+				return false;
+			});
+*/
 		});
 	</script>
 
-	<div>Account page</div>
+	<div class='topbar green'>
+		<div class='topbar__icon'>
+			<img src='/assets/logo_100w.png'></img>
+		</div>
 
-	<div><%= user.email %></div>
+		<div class='topbar__title'>Presto - Account</div>
 
-	<%if (user.stripeId) { %>
-		<div id='charge' class='red button'>Charge Card</div>
-	<% } %>
+		<div class='topbar__logout topbar__button'>
+			<i class='icon-share-alt'></i>
+		</div>
 
-	<!-- Stripe's Checkout button -->
-	<form action="" method="POST">
-		<script
-			src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
-			data-key="pk_test_V0lqKPOUMmrHAy7n6w2HAe46"
-			data-amount="100"
-			data-name="Presto Calculators"
-			data-description="TEST"
-			data-image="/128x128.png">
-		</script>
-	</form>
+		<div class='topbar__account topbar__button'>
+			<%= user.email %>
+		</div>
+	</div>
+
+	<div class='content' xo-view='account'>
+		<div class='page'>
+
+			<h1>Account page</h1>
+
+			<div class=' email page__section'>
+				<h2>Email : <%= user.email %></h2>
+			</div>
+
+			<div class='plans page__section'>
+				<h2>Plan</h2>
+
+				<div class='plan__container'>
+
+					<div class='plan bronze' xo-view='bronze_plan'>
+						<div class='plan__icon'><i class='icon-certificate' style='color:#A67D3D'></i></div>
+						<div class='plan__title'>Bronze</div>
+						<div class='plan__description'>Free!</div>
+					</div>
+					<div class='plan silver' xo-view='silver_plan'>
+						<div class='plan__icon'><i class='icon-shield' style='color:#95A5A6'></i></div>
+						<div class='plan__title'>Silver</div>
+						<div class='plan__description'>$20.00/month</div>
+					</div>
+					<div class='plan gold' xo-view='gold_plan'>
+						<div class='plan__icon'><i class='icon-trophy' style='color:#DAA520'></i></div>
+						<div class='plan__title'>Gold</div>
+						<div class='plan__description'>$50.00/month</div>
+					</div>
+
+					<div class='plan beta' style='display:none' xo-view='beta_plan'>
+						<div class='plan__icon'><i class='icon-beaker' style='color:#27AE60'></i></div>
+						<div class='plan__title'>Beta</div>
+						<div class='plan__description'>Thanks for helping!</div>
+					</div>
+
+
+					<div class='plan admin' style='display:none' xo-view='admin_plan'>
+						<div class='plan__icon'><i class='icon-rocket' style='color:#C0392B'></i></div>
+						<div class='plan__title'>Admin</div>
+						<div class='plan__description'>Greetings sir!</div>
+					</div>
+
+
+				</div>
+				<p>Next invoice: Never</p>
+			</div>
+
+			<div class='computers page__section'>
+				<h2>Linked Computers</h2>
+				No Data yet.
+			</div>
+
+			<div class='calculators page__section'>
+				<h2>Recently Used Calculators</h2>
+				No Data yet.
+			</div>
+
+
+		</div>
+
+	</div>
+
+
 
 
 	<script>

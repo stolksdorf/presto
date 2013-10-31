@@ -47,31 +47,6 @@ body{
 		font-size     : 3.5em;
 		font-weight   : 300;
 	}
-/*
-	.content__groups{
-		margin-bottom : 25px;
-		margin-left   : 25px;
-	}
-
-	.group{
-	}
-		.group__title{
-			margin-top     : 10px;
-			padding-bottom : 5px;
-			padding-left   : 20px;
-
-			font-size      : 2em;
-			color          : #2980B9;
-			border-bottom  : 1px solid #2980B9;
-		}
-
-			.group__title i{
-			}
-
-			.group__text{
-				margin-left : 8px;
-			}
-*/
 
 	.content__search{
 		display          : inline-block;

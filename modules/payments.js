@@ -43,9 +43,10 @@ exports.saveUser = function(user, stripeToken, callback){
 
 	stripe.customers.create({
 		card: stripeToken,
-		description: 'payinguser@example.com'
+		plan : 'presto_bronze',
+		description: user.email
 	}).then(function(customer) {
-		user.stripeId = customer.id;
+		user.stripeId = customer.id; //Add our own DB for stripe tokens
 		user.save(callback);
 	});
 };

@@ -33,6 +33,7 @@ payments      = require('./modules/payments.js')
 require('./modules/models/calculator.js');
 require('./modules/models/user.js');
 require('./modules/models/keys.js');
+require('./modules/models/plan.js');
 
 
 //Routes
