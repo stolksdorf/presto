@@ -75,10 +75,28 @@ app.get('/account', [mw.forceUser], function(req,res){
 app.post('/account', [mw.forceUser], function(req,res){
 	var stripeToken = req.body.stripeToken;
 
+	payments.saveUser(req.user, stripeToken, function(err, user){
+		if(err){ return res.send(500, err);}
+		return res.send(200, user);
+	});
+
+
+/*
 	payments.charge(stripeToken, function(err, charge){
 		if(err){ return res.send(500, err);}
 		return res.send(200, charge);
 	});
+
+*/
+});
+
+app.get('/account2', [mw.forceUser], function(req,res){
+
+	payments.chargeUser(req.user, function(err, result){
+		if(err){ return res.send(500, err);}
+		return res.send(200, result);
+	})
+
 });
 
 

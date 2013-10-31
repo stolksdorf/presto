@@ -24,14 +24,28 @@
 
 	<script>
 		$(document).ready(function(){
+			$('#charge').click(function(){
+				console.log('clicked!');
 
+				$.ajax({
+					url : '/account2',
+					type : 'GET',
+					complete : function(data){
+						console.log('complete', data);
+					},
+				})
+			})
 
 		});
 	</script>
 
 	<div>Account page</div>
 
-	<%= user.email %>
+	<div><%= user.email %></div>
+
+	<%if (user.stripeId) { %>
+		<div id='charge' class='red button'>Charge Card</div>
+	<% } %>
 
 	<!-- Stripe's Checkout button -->
 	<form action="" method="POST">

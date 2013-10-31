@@ -23,6 +23,7 @@ UserSchema = mongoose.Schema({
 	auth : [{
 		cookie      : String
 	}],
+	stripeId : String,
 	date  : { type: Date, default: Date.now },
 });
 
