@@ -131,6 +131,7 @@
 				for(var i=0; i < this._events.length; i++){
 					this._events[i](this._value, this);
 				}
+				this.control.val(this._value);
 				this.renderer(this._value, this.view);
 			}
 			return this;

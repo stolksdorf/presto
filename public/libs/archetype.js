@@ -9,6 +9,14 @@
 			return new F();
 		};
 	}
+
+	//Shime for getPrototypeOf for IE9/8
+	Object.getPrototypeOf = Object.getPrototypeOf || function (obj) {
+		return obj.constructor.prototype;
+	};
+
+
+
 	var archetype_EventCount = new Date().getTime();
 
 /*
@@ -58,6 +66,7 @@
 			return deepcall(this, method, Array.prototype.slice.apply(arguments).slice(1));
 		},
 
+/*
 		deep2 : function(method){
 			var self = this;
 			var deep = function(){
@@ -66,6 +75,7 @@
 			};
 			return deep.bind(this);
 		},
+*/
 	};
 
 	Archetype_Events = {
@@ -108,21 +118,6 @@
 		}
 	};
 
-	Archetype_Super = { //just add supers into the mix
-		create : function(){
-			var self = this;
-			var newObj = Object.create(this);
-			newObj.super = function(){ return self; };
-			var params = Array.prototype.slice.apply(arguments);
-			params.unshift('initialize');
-			newObj.deep.apply(newObj, params);
-			newObj.trigger('created');
-			return newObj;
-		},
-		super : function(){
-			return Object.getPrototypeOf(this);
-		},
-	};
 
 
 	Archetype.mixin(Archetype_Events);

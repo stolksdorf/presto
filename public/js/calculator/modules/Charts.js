@@ -45,9 +45,9 @@ Presto.registerModule({
 				{
 					var self = this;
 					if(this.definition.type === 'bar'){
-						this.options = _.extend(module.options.bar, module.options.default);
+						this.options = _.extend(module.options.bar, module.options.base);
 					} else{
-						this.options = _.extend(module.options.line, module.options.default);
+						this.options = _.extend(module.options.line, module.options.base);
 					}
 
 					this.tooltip = $('#chart__tooltip');
@@ -262,7 +262,7 @@ Presto.registerModule({
 
 	//Flot Options
 	options : {
-		default : {
+		base : {
 			xaxis:{
 				font : {
 					weight: "300",
