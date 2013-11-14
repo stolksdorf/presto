@@ -42,6 +42,7 @@ Type = {
 	},
 
 	Percent : {
+		type : 'percent',
 		isNumerical : true,
 		renderer : function(value, view){
 			var val = +(value * 100).toFixed(3) + '%';
