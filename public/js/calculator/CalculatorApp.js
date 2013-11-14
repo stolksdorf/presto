@@ -22,7 +22,7 @@ Presto = Archetype.extend({
 		})
 
 		$(document).ready(function(){
-			//console.log('READY');
+			console.log('READY');
 			self.render();
 		});
 		return this;
