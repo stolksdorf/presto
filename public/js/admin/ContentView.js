@@ -44,7 +44,7 @@ Presto_View_Content = xo.view.extend({
 			this.dom.showScript.show();
 		}
 
-		this.dom.data.val(model.toJSON());
+		this.dom.data.val(JSON.stringify(model.attributes(), null, 2));
 		this.resize();
 		return this;
 	},
@@ -82,7 +82,8 @@ Presto_View_Content = xo.view.extend({
 		this.dom.showModel.hide();
 		this.dom.buttons.show();
 		this.model.set('script', this.dom.data.val());
-		this.dom.data.val(this.model.toJSON());
+
+		this.dom.data.val(JSON.stringify(this.model.attributes(), null, 2));
 		this.resize();
 		return this;
 	},

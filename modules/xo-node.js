@@ -27,7 +27,7 @@ exports.api = function(endpoint, Model, middleware, handleError){
 		del  : middleware
 	};
 
-	if(!_.isArray(middleware)){ //use non-underscore detection
+	if(!_.isArray(middleware)){
 		mw.get  = middleware.get  || [];
 		mw.post = middleware.post || [];
 		mw.put  = middleware.put  || [];
@@ -39,6 +39,7 @@ exports.api = function(endpoint, Model, middleware, handleError){
 		res.send(500, err);
 	};
 
+	//XO Middleware
 	mw.findAll = function(req,res,next){
 		Model.find(function(err, models){
 			if(err) return handleError(err, req, res);
@@ -46,7 +47,6 @@ exports.api = function(endpoint, Model, middleware, handleError){
 			return next();
 		});
 	};
-
 	mw.find = function(req,res,next){
 		Model.findById(req.params.id, function(err, obj){
 			if(err) return handleError(err, req, res);
@@ -54,13 +54,11 @@ exports.api = function(endpoint, Model, middleware, handleError){
 			return next();
 		});
 	};
-
 	mw.create = function(req,res,next){
 		req.model = new Model(req.body);
 		req.model.id = req.model._id;
 		return next();
 	};
-
 	mw.update = function(req,res,next){
 		Model.findById(req.params.id, function(err, obj){
 			if(!obj || err) return handleError(err, req, res);
@@ -69,10 +67,14 @@ exports.api = function(endpoint, Model, middleware, handleError){
 		});
 	};
 
+
+	//Collection
 	app.get(endpoint, mw.findAll, mw.get, function(req,res){
-		return res.send(exports.clean(req.models) || []);
+		if(!req.models) return handleError('no collection', req, res);
+		return res.send(200, exports.clean(req.models));
 	});
 
+	//Model
 	app.get(endpoint + '/:id', mw.find, mw.get, function(req,res){
 		if(!req.model) return handleError('no model', req, res);
 		return res.send(200, exports.clean(req.model));
@@ -90,7 +92,7 @@ exports.api = function(endpoint, Model, middleware, handleError){
 		if(!req.model) return handleError('no model', req, res);
 		req.model.save(function(err, obj){
 			if(err) return handleError(err, req, res);
-			return res.send(exports.clean(obj));
+			return res.send(200, exports.clean(obj));
 		});
 	});
 
@@ -98,16 +100,7 @@ exports.api = function(endpoint, Model, middleware, handleError){
 		if(!req.model) return handleError('no model', req, res);
 		req.model.save(function(err, obj){
 			if(err) return handleError(err, req, res);
-			return res.send(exports.clean(obj));
-		});
-	});
-
-	//Allow for post updating
-	app.post(endpoint + '/:id', mw.update, mw.post, function(req,res){
-		if(!req.model) return handleError('no model', req, res);
-		req.model.save(function(err, obj){
-			if(err) return handleError(err, req, res);
-			return res.send(exports.clean(obj));
+			return res.send(200, exports.clean(obj));
 		});
 	});
 }

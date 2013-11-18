@@ -9,14 +9,12 @@ PrestoAdmin = xo.view.extend({
 			if(ep === '/api/calculators'){
 				collection = xo.collection.extend({
 					model : Presto_Model_Calculator
-				});
+				}).create();
 				self.calculators = collection
 			}else {
 				collection = xo.collection.extend({
-					model : xo.model.extend({
-						urlRoot : ep
-					})
-				});
+					URL : ep
+				}).create();
 			}
 
 			var group = Presto_View_EndpointGroup.create(collection);

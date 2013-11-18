@@ -1,336 +1,270 @@
-;(function(){
+;(function($){
+	$("<style type='text/css'> [xo-schematic]{display:none !important;} </style>").appendTo("head");
 
-	//Add in underscore shim (extend, reduce, map)
+	var _ = _ || {
+		map : function(obj, fn){
+			var result = [];
+			for(var propName in obj){
+				if(obj.hasOwnProperty(propName)){ result.push(fn(obj[propName], propName)); }
+			}
+			return result;
+		},
+		reduce : function(obj, fn, memo){
+			for(var propName in obj){
+				if(obj.hasOwnProperty(propName)){ memo = fn(memo, obj[propName], propName); }
+			}
+			return memo;
+		},
+	};
 
+	var xo_ajax = function(self, url, method, type, callback){
+		callback = callback || function(){};
+		self.trigger('before:'+method, self);
 
-	jQuery("<style type='text/css'> [xo-schematic]{display:none !important;} </style>").appendTo("head");
+		//TODO: Figure out what to do with NO URLS
+		if(!url){
+			self.trigger(method, self);
+			return callback();
+		}
 
-	var xo_ajax = function(args){ //switch to type, callback, success
-		var self = this;
-		var callback = args.callback || function(){};
-		var success  = args.success  || function(){};
-		var http = {
-			'fetch ' : 'GET',
-			'save'   : (self.id ? 'PUT' : 'POST'),
-			'delete' : 'DELETE'
-		};
-
-		args.url = this.urlRoot;
-		if(this.model) args.url = this.model.urlRoot;
-		if(!args.url) throw 'XO : Url not set';
-
-		self.trigger('before:'+args.type, self);
-		jQuery.ajax({
-			url  : args.url + (self.id ? "/" + self.id : ""),
-			type : http[args.type],
-			data : args.data, //switch to self.attributes(); removes need of 'data'
+		$.ajax({
+			url  : url + (self.id ? "/" + self.id : ""),
+			type : type,
+			data : self.attributes(),
 			success : function(data){
-				success.call(self, data);
-				callback(undefined, self);
-				self.trigger(args.type, self);
+				self.set(data);
+				self.trigger(method, self);
+				return callback(undefined, data);
 			},
 			error : function(err){
-				callback(err);
-				self.trigger('error:'+args.type, err);
-				self.trigger('error', err);
+				self.trigger('error', self, err);
+				return callback(err);
 			},
 		});
 	};
 
-	var async_map = function(list, fnName, callback){
-		var result = [];
+	var xo_ajax_batch = function(self, method, callback){
 		callback = callback || function(){};
-		if(list.length === 0) return callback();
-		_.map(list, function(obj){
-			obj[fnName](function(err, data){
-				if(err) return callback(err);
-				result.push(data);
-				if(result.length === list.length){
-					callback(undefined, result);
-				}
-			})
-		});
-	};
-
-	xo = {
-		view : Archetype.extend({
-			view      : undefined,
-			schematic : undefined,
-
-			initialize : function(model)
-			{
-				var self = this;
-				this.model = model;
-				this.dom = {};
-				this.on('created', function(){
-					if(self.view) jQuery(document).ready(self.bindToView.bind(self));
-				});
-				return this;
-			},
-
-			bindToView : function()
-			{
-				var self = this;
-				this.dom.block = jQuery('[xo-view="' + this.view + '"]'); //convert these to local call
-				if(this.dom.block.length === 0 ){throw 'XO: Could not find view with name ' + this.view;}
-				this.dom.block.find('[xo-element]').each(function(index, element){
-					self.dom[jQuery(element).attr('xo-element')] = jQuery(element);
-				});
-				this.render();
-				return this;
-			},
-			injectInto : function(target, options)
-			{
-				var self = this;
-				options = options || {};
-				if(target.length === 0 ){throw 'XO: Could not find target';}
-				if(!this.schematic){throw 'XO: Schematic name not set' ;}
-
-				//make a fullclone local function
-				var getSchematic = function(schematicName){
-					var schematicElement = jQuery('[xo-schematic="' + schematicName + '"]');
-					if(schematicElement.length === 0 ){throw 'XO: Could not find schematic with name "' + schematicName + '"';}
-					var schematicCode = jQuery('<div>').append(schematicElement.clone().removeAttr('xo-schematic')).html();
-					return jQuery(schematicCode);
-				};
-
-				if(options.at_top){
-					this.dom.block = getSchematic(this.schematic).prependTo(target);
-				} else {
-					this.dom.block = getSchematic(this.schematic).appendTo(target);
-				}
-				this.dom.block.find('[xo-element]').each(function(index, element){
-					self.dom[jQuery(element).attr('xo-element')] = jQuery(element);
-				});
-				this.render();
-				return this;
-			},
-			render : function()
-			{
-				return this;
-			},
-			remove : function()
-			{
-				this.trigger('remove', this);
-				if(this.dom.block) this.dom.block.remove();
-				this.off();
-				return this;
-			},
-		}),
-
-		model : Archetype.extend({
-			urlRoot : undefined, //switch to all caps?
-
-			initialize : function(obj)
-			{
-				this.set(obj);
-				return this;
-			},
-			set : function(key, value)
-			{
-				if(typeof key === 'object' && typeof value === 'undefined'){
-					var self = this;
-					_.map(key, function(v, k){
-						self.set(k,v);
-					});
-					this.trigger('change');
-					return this;
-				}
-				if(this[key] !== value){
-					this[key] = value;
-					this.trigger('change:' + key, value);
-				}
-				return this;
-			},
-			onChange : function(attrName, event)
-			{
-				var self = this;
-				if(typeof attrName === 'object' && typeof event === 'undefined'){
-					_.map(attrName, function(v, k){
-						self.onChange(k,v);
-					});
-					return this;
-				}
-				this.on('change:' + attrName, function(){
-					event(self[attrName]);
-				});
-				event(this[attrName]);
-				return this;
-			},
-			attributes : function()
-			{
-				var self = this;
-				return _.reduce(this, function(result, v,k){
-					if(	k === '__events__' || //shouldn't need to filter on these anymore
-						k === 'urlRoot' ||
-						typeof v ==='function'){ return result;}
-					result[k] = v;
-					return result;
-				}, {});
-			},
-			toJSON : function(){
-				return JSON.stringify(this.attributes(), null, 4);
-			},
-			save : function(callback)
-			{
-				xo_ajax.call(this,{
-					//url  : this.urlRoot,
-					type : 'save',
-					data : this.attributes(),
-					callback : callback,
-					success : function(data){
-						this.set(data);
-					}
-				});
-				return this;
-			},
-			fetch : function(callback)
-			{
-				xo_ajax.call(this,{
-					//url  : this.urlRoot,
-					type : 'fetch',
-					callback : callback,
-					success : function(data){
-						this.set(data);
-					}
-				});
-				return this;
-			},
-			delete : function(callback)
-			{
-				xo_ajax.call(this,{
-					//url  : this.urlRoot,
-					type : 'delete',
-					callback : callback
-				});
-				return this;
-			},
-		}),
-
-
-		collection : Archetype.extend({
-			model : undefined,
-
-			extend : function(props)
-			{
-				var col = _.extend([], this, props); //create a multi parameter extend shim
-				//if(col.model){ col.urlRoot = col.model.urlRoot; }
-				//col.initialize();
-				return col;
-			},
-			create : function(arr)
-			{
-				arr = arr || [];
-				var col = _.extend(arr, this);
-				//if(col.model){ col.urlRoot = col.model.urlRoot; }
-				col.initialize(); //deep call
-				return col;
-			},
-
-			toJSON : function(){
-				return JSON.stringify(_.map(this, function(model){
-					return model.attributes();
-				}), null, 4);
-			},
-
-			set  : function(arr){
-				var self = this;
-				this.clear();
-				_.map(arr, function(ele){
-					self.add(ele);
-				});
-				return this;
-			},
-
-			add : function(obj)
-			{
-				var newObj = this.model.create(); //move to single line
-				newObj.set(obj);
-				this.push(newObj);
-				this.trigger('add', newObj);
-				return newObj;
-			},
-			clear : function()
-			{
-				this.length = 0; //trigger delete on all models
-				return this;
-			},
-			fetch : function(callback)
-			{
-				var self = this;
-				xo_ajax.call(this,{
-					//url  : this.model.urlRoot,
-					type : 'fetch',
-					callback : callback,
-					success : function(data){
-						self.set(data);
-					}
-				});
-				return this;
-			},
-			delete : function(callback)
-			{
-				var self = this;
-				callback = callback || function(){};
-				async_map(this, 'delete', function(err, data){
-					if(err) return callback(err);
-					self.clear();
-					callback(undefined, self);
-				});
-
-
-				/*
-				var self = this;
-				xo_ajax.call(this,{
-					url  : this.model.urlRoot,
-					type : 'delete',
-					callback : callback,
-					success : function(data){
-						self.clear();
-					}
-				}); */
-
-				return this;
-			},
-			save : function(callback)
-			{
-				var self = this;
-				callback = callback || function(){};
-				async_map(this, 'save', function(err, data){
-					if(err) return callback(err);
-					//self.set(data);
-					callback(undefined, self);
-				});
-/*
-
-				var self = this,
-					count = this.length;
-				this.trigger('before:save', this);
-
-				_.map(this, function(model){
-					model.save(function(err, data){
-						count--;
-						self.add(data).trigger('save');
-						if(typeof callback === 'function'){
-							if(count === 0){
-								self.trigger('save', self);
-								callback(undefined, self);
-							}
-							if(err){
-								self.trigger('error:save', self);
-								callback(err);
-							}
-						}
-					});
-				});
-				this.clear();
-				*/
-				return this;
-			},
+		var numRequests = 0;
+		var async = function(val){
+			numRequests += val;
+			if(numRequests === 0){
+				callback.call(self, undefined, self);
+				self.trigger(method);
+			}
+		}
+		self.trigger('before:' + method);
+		self.each(function(model){
+			async(1);
+			model[method](function(err, data){
+				if(err) callback.call(self, err);
+				async(-1);
+			});
 		})
 	};
 
-})();
+
+	xo = {};
+
+	xo.view = Archetype.extend({
+		view      : undefined,
+		schematic : undefined,
+
+		initialize : function(model){
+			this.model = model;
+			this.dom = {};
+			if(this.view){
+				this.once('created', function(){
+					$(document).ready(this.injectInto.bind(this));
+				});
+			}
+			return this;
+		},
+		injectInto : function(target, prepend){
+			var self = this;
+			if(this.schematic){
+				var schematicElement = $('[xo-schematic="' + this.schematic + '"]');
+				if(target.length === 0){throw 'xo-view: Could not find target';}
+				if(schematicElement.length === 0 ){throw 'xo-view: Could not find schematic with name "' + this.schematic + '"';}
+
+				var schematicClone = $($('<div>').append(schematicElement.clone().removeAttr('xo-schematic')).html());
+				if(prepend){
+					this.dom.view = schematicClone.prependTo(target);
+				} else {
+					this.dom.view = schematicClone.appendTo(target);
+				}
+			}
+			if(this.view){
+				this.dom.view = $('[xo-view="' + this.view + '"]');
+				if(this.dom.view.length === 0 ){throw 'xo-view: Could not find view with name ' + this.view;}
+			}
+			this.dom.view.find('[xo-element]').each(function(index, element){
+				self.dom[$(element).attr('xo-element')] = $(element);
+			});
+			this.render();
+			this.trigger('render');
+			return this;
+		},
+		remove : function(){
+			this.trigger('remove');
+			if(this.dom.view) this.dom.view.remove();
+			this.off();
+			return this;
+		},
+		render : function(){
+			return this;
+		},
+		show : function(hide){
+			if(hide===false) return this.hide();
+			if(this.dom.view) this.dom.view.show();
+			return this;
+		},
+		hide : function(){
+			if(this.dom.view) this.dom.view.hide();
+			return this;
+		},
+	});
+
+	/*
+		MODEL
+	 */
+	xo.model = Archetype.extend({
+		URL : undefined,
+
+		initialize : function(obj){
+			this.set(obj);
+			this.on('delete', this.off);
+			return this;
+		},
+		set : function(key, value){
+			var changes = {};
+			changes[key] = value;
+			var hasChanges = false;
+			if(typeof key === 'object') changes = key;
+
+			for(var key in changes){
+				var val = changes[key];
+				if(this[key] !== val){
+					this[key] = val;
+					hasChanges = true;
+					this.trigger('change:' + key, val);
+				}
+			}
+			if(hasChanges) this.trigger('change');
+			return this;
+		},
+		onChange : function(attrName, evt){
+			if(typeof attrName === 'object'){
+				for(var k in attrName){
+					this.onChange(k, attrName[k]);
+				}
+				return this;
+			}
+			this.on('change:' + attrName, evt);
+			evt(this[attrName]);
+			return this;
+		},
+		attributes : function(){
+			return _.reduce(this, function(result, v,k){
+				if(k !== 'URL' && typeof v !=='function'){ result[k] = v; }
+				return result;
+			}, {});
+		},
+
+		//ajax methods
+		save : function(callback){
+			xo_ajax(this, this.URL, 'save', (this.id ? 'PUT' : 'POST'), callback);
+			return this;
+		},
+		fetch : function(callback){
+			xo_ajax(this, this.URL, 'fetch', 'GET', callback);
+			return this;
+		},
+		delete : function(callback){
+			xo_ajax(this, this.URL, 'delete', 'DELETE', callback);
+			return this;
+		},
+	});
+
+
+	/*
+		COLLECTION
+	 */
+	xo.collection = Archetype.extend({
+		URL    : undefined,
+		model  : undefined,
+		models : [],
+
+		initialize : function(objs){
+			this.set(objs);
+			if(this.model) this.URL = this.model.URL;
+			if(!this.model) this.model = xo.model; //Setup for using a basic model
+
+			//Make sure this works
+			this.model.URL = this.model.URL || this.URL;
+
+			return this;
+		},
+		set : function(objs){
+			this.models = [];
+			for(var i in objs){
+				this.add(objs[i])
+			}
+			return this;
+		},
+		get : function(id){
+			return _.reduce(this.models, function(result, model){
+				if(model.id === id) result = model;
+				return result;
+			});
+		},
+		remove : function(arg){
+			id = arg.id || arg; //handles models and raw ids
+			for(var i in this.models){
+				if(id == this.models[i].id) this.models.splice(i,1);
+			}
+			return this;
+		},
+		add : function(obj){
+			var findModel = this.get(obj.id);
+			if(findModel) return findModel.set(obj); //Update if already exists
+
+			if(!this.model.isPrototypeOf(obj)) obj = this.model.create(obj);
+			obj.on('delete', function(obj){
+				this.remove(obj);
+			}.bind(this));
+			this.models.push(obj);
+			this.trigger('add', obj);
+			return obj;
+		},
+		each : function(fn){
+			return _.map(this.models, fn);
+		},
+		attributes : function(){
+			return _.map(this.models, function(model){
+				return model.attributes();
+			});
+		},
+
+		//Ajax methods
+		fetch : function(callback){
+			xo_ajax(this, this.URL || this.model.URL, 'fetch', 'GET', callback);
+			return this;
+		},
+		delete : function(callback){
+			xo_ajax_batch(this, 'delete', callback);
+			return this;
+		},
+		save : function(callback){
+			xo_ajax_batch(this, 'save', callback);
+			return this;
+		},
+	});
+
+})(jQuery);
+
+
+
 
 
 
