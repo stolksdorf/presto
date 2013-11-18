@@ -76,8 +76,6 @@ Presto_Block_CalculatorOption = xo.view.extend({
 	{
 		var self = this;
 
-		console.log(this.model);
-
 		this.model.onChange({
 			color : function(color){
 				self.dom.view.addClass(color);

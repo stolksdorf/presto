@@ -39,7 +39,7 @@ CalculatorSchema.methods.isUserAllowed = function(user){
 }
 
 CalculatorSchema.statics.findByUrlOrId = function(id, callback){
-	this.findOne({ $or:[ {'id':id}, {'url':id},]}, callback);
+	this.findOne({ $or:[ {'id':id}, {'url':id}]}, callback);
 };
 
 

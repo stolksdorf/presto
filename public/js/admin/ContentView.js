@@ -78,7 +78,6 @@ Presto_View_Content = xo.view.extend({
 	},
 
 	showModel : function(){
-		console.log(this.dom.data.val());
 		this.dom.showScript.show();
 		this.dom.showModel.hide();
 		this.dom.buttons.show();
