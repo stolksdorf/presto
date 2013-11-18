@@ -24,7 +24,7 @@ Presto_View_CodeEditor = xo.view.extend({
 		});
 
 		this.dom.closeButton.click(function(){
-			self.dom.block.hide();
+			self.dom.view.hide();
 		});
 
 		this.dom.runButton.click(function(){
@@ -74,23 +74,23 @@ Presto_View_CodeEditor = xo.view.extend({
 		});
 
 
-		this.addWindowTraits(this.dom.block, this.dom.topbar)
-		this.dom.block.hide();
+		this.addWindowTraits(this.dom.view, this.dom.topbar)
+		this.dom.view.hide();
 		return this;
 	},
 
 	setCode : function(code)
 	{
-		var isVisible = this.dom.block.is(':visible');
+		var isVisible = this.dom.view.is(':visible');
 		var scrollData = this.editor.getScrollInfo();
 		code = code || "";
-		this.dom.block.show();
+		this.dom.view.show();
 		if(typeof code !== 'string'){
 			code = JSON.stringify(code, null, '  ');
 		}
 		this.editor.setValue(code);
 		this.editor.scrollTo(scrollData.left, scrollData.top);
-		if(!isVisible) this.dom.block.hide();
+		if(!isVisible) this.dom.view.hide();
 		return this;
 	},
 
@@ -101,13 +101,13 @@ Presto_View_CodeEditor = xo.view.extend({
 
 	show : function()
 	{
-		this.dom.block.show();
+		this.dom.view.show();
 		this.editor.refresh();
 		return this;
 	},
 	hide : function()
 	{
-		this.dom.block.hide();
+		this.dom.view.hide();
 		return this;
 	},
 

@@ -31,7 +31,7 @@ Presto_View_EndpointGroup = xo.view.extend({
 
 		this.dom.title.click(function(){
 			$('.selected').removeClass('selected');
-			self.dom.block.addClass('selected');
+			self.dom.view.addClass('selected');
 			PrestoAdmin.loadContent(self.collection);
 		});
 

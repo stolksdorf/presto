@@ -11,7 +11,7 @@ Presto.registerModule({
 		this.inputs = this.createComponents({
 			definition : this.definition,
 			component  : this.components.input,
-			target     : this.dom.block
+			target     : this.dom.view
 		});
 
 		return this;

@@ -11,7 +11,7 @@ Presto.registerModule({
 		this.outputs = this.createComponents({
 			definition : this.definition,
 			component  : this.components.output,
-			target     : this.dom.block
+			target     : this.dom.view
 		});
 
 		return this;

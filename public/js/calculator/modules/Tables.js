@@ -95,7 +95,7 @@ Presto.registerModule({
 						column.draw(self.data[column.name]);
 					});
 
-					if(this.dom.columnContainer.height() < this.columns[0].dom.block.height()){
+					if(this.dom.columnContainer.height() < this.columns[0].dom.view.height()){
 						this.dom.columnContainer.css({"overflow-y" : "scroll"});
 					} else {
 						this.dom.columnContainer.css({"overflow-y" : "hidden"});

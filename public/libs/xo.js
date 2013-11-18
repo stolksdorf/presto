@@ -122,7 +122,8 @@
 			return this;
 		},
 		set : function(key, value){
-			var changes = {key : value};
+			var changes = {};
+			changes[key] = value;
 			var hasChanges = false;
 			if(typeof key === 'object') changes = key;
 
@@ -214,7 +215,6 @@
 			if(findModel) return findModel.set(obj); //Update if already exists
 
 			if(!this.model.isPrototypeOf(obj)) obj = this.model.create(obj);
-			obj = this.model.create(obj);
 			obj.on('delete', function(obj){
 				this.remove(obj);
 			}.bind(this));
