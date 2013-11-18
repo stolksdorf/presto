@@ -5,6 +5,7 @@
 		Obj.prototype = proto;
 		return new Obj();
 	};
+
 	var archetype_EventCount = new Date().getTime();
 
 	/**
@@ -98,8 +99,6 @@
 			}
 			this.events(remainingEvents);
 			return this;
-		},
-
-
+		}
 	};
 })();
