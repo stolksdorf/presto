@@ -76,6 +76,8 @@ Presto_Block_CalculatorOption = xo.view.extend({
 	{
 		var self = this;
 
+		console.log(this.model);
+
 		this.model.onChange({
 			color : function(color){
 				self.dom.view.addClass(color);
@@ -90,7 +92,7 @@ Presto_Block_CalculatorOption = xo.view.extend({
 				self.dom.icon.find('i').addClass(icon);
 			},
 			url : function(url){
-				self.dom.link.attr('href', '/calc/' + url);
+				self.dom.link.attr('href', '/calc/' + url || this.model.id);
 			},
 
 			dev : function(){

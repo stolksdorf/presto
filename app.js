@@ -55,7 +55,7 @@ app.get('/login', function (req, res) {
 
 app.get('/calc/:calcId', [mw.loadUser], function(req,res){
 	Calculator.findByUrlOrId(req.params.calcId, function(err, calc){
-		if(err || !calc) return res.redirect('/uhoh');
+		if(err || !calc) return res.render('404.html');
 		return res.render('calculator.html', {
 			user : req.user || {},
 			calcId : calc.id
@@ -76,10 +76,11 @@ app.get('/admin', [mw.adminOnly], function(req, res){
 	});
 });
 
+/*
 app.get('/uhoh', function (req, res) {
 	res.render('404.html');
 });
-
+*/
 
 
 
@@ -122,7 +123,8 @@ app.get('/dropcalcs',[mw.adminOnly], function(req,res){
 
 //Catch bad pages
 app.get('*', function (req, res) {
-	res.redirect('/uhoh');
+	//res.redirect('/uhoh');
+	res.render('404.html');
 });
 var port = process.env.PORT || 5000;
 app.listen(port, function() {

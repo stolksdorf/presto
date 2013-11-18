@@ -10,7 +10,7 @@ Presto_View_EndpointGroup = xo.view.extend({
 	render : function(){
 		var self = this;
 
-		this.dom.title.text(this.collection.urlRoot);
+		this.dom.title.text(this.collection.URL);
 
 		this.endpointViews = [];
 
@@ -20,7 +20,7 @@ Presto_View_EndpointGroup = xo.view.extend({
 				epv.remove();
 			});
 
-			_.each(self.collection, function(endpoint){
+			_.each(self.collection.models, function(endpoint){
 				var newV = Presto_View_Endpoint.create(endpoint);
 				newV.injectInto(self.dom.container);
 				self.endpointViews.push(newV);
