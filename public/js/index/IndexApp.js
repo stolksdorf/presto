@@ -5,16 +5,16 @@ PrestoHome = xo.view.extend({
 	{
 		var self = this;
 
-		this.calculators = xo.collection.extend({model : Presto_Model_Calculator });
+		this.calculatorCollection = xo.collection.extend({model : Presto_Model_Calculator });
 
-		this.calculators.on('add', function(calc){
+		this.calculatorCollection.on('add', function(calc){
 			var newCalc = Presto_Block_CalculatorOption.create(calc);
 			newCalc.on('remove', function(){
-				self.dom.container.isotope( 'remove', newCalc.dom.block);
+				self.dom.container.isotope( 'remove', newCalc.dom.view);
 			});
 
 			newCalc.injectInto(self.dom.container);
-			self.dom.container.isotope('addItems', newCalc.dom.block);
+			self.dom.container.isotope('addItems', newCalc.dom.view);
 			self.dom.container.isotope({
 				itemSelector : '.calculator',
 				layoutMode : 'masonry'
@@ -23,7 +23,7 @@ PrestoHome = xo.view.extend({
 
 		if(this.dom.newCalculatorButton){
 			this.dom.newCalculatorButton.click(function(){
-				self.calculators.add().save();
+				self.calculatorCollection.add().save();
 			});
 		}
 
@@ -41,7 +41,7 @@ PrestoHome = xo.view.extend({
 			}, 500);
 		});
 
-		this.calculators.fetch();
+		this.calculatorCollection.fetch();
 
 		this.dom.container.isotope({
 			itemSelector : '.calculator',
@@ -53,7 +53,7 @@ PrestoHome = xo.view.extend({
 
 	search : function(terms)
 	{
-		var matchedItems = _.filter(this.calculators, function(calc){
+		var matchedItems = _.filter(this.calculatorCollection.models, function(calc){
 			return calc.search(terms);
 		});
 
@@ -78,7 +78,7 @@ Presto_Block_CalculatorOption = xo.view.extend({
 
 		this.model.onChange({
 			color : function(color){
-				self.dom.block.addClass(color);
+				self.dom.view.addClass(color);
 			},
 			title : function(title){
 				self.dom.title.text(title);
@@ -103,9 +103,9 @@ Presto_Block_CalculatorOption = xo.view.extend({
 
 		this.model.on('isMatched', function(isMatched){
 			if(isMatched){
-				self.dom.block.addClass('matched');
+				self.dom.view.addClass('matched');
 			} else {
-				self.dom.block.removeClass('matched');
+				self.dom.view.removeClass('matched');
 			}
 		});
 

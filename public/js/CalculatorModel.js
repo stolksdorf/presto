@@ -1,5 +1,5 @@
 Presto_Model_Calculator = xo.model.extend({
-	urlRoot : '/api/calculators',
+	URL : '/api/calculators',
 
 	initialize : function()
 	{
