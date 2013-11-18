@@ -24,7 +24,7 @@ var csv = require('csv');
 //Modules
 mail          = require('./modules/mail.js');
 mw            = require('./modules/middleware.js');
-xo            = require('./modules/node-xo.js');
+xo            = require('./modules/xo-node.js');
 
 
 //Models

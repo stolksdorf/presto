@@ -49,7 +49,7 @@ Calculator = mongoose.model('Calculator', CalculatorSchema);
 
 
 //API
-var filterCalc = function(req,res,next){
+var filterCalcForUser = function(req,res,next){
 	if(req.model){
 		if(!req.model.isUserAllowed(req.user)){
 			req.model = undefined;
@@ -67,8 +67,7 @@ var filterCalc = function(req,res,next){
 
 
 xo.api('/api/calculators', Calculator, {
-	//get  : [mw.forceUser, filterCalc],
-	get  : [mw.loadUser, filterCalc],
+	get  : [mw.loadUser, filterCalcForUser],
 	put  : [mw.adminOnly],
 	post : [mw.adminOnly],
 	del  : [mw.adminOnly]

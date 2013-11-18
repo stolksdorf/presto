@@ -19,15 +19,11 @@
 
 	var xo_ajax = function(self, url, method, type, callback){
 		callback = callback || function(){};
-
-		//Fire triggers
-		_.map(self.models, function(model){model.trigger('before:' + method, self)});
 		self.trigger('before:'+method, self);
 
 		//TODO: Figure out what to do with NO URLS
 		if(!url){
 			self.trigger(method, self);
-			_.map(self.models, function(model){model.trigger(method, self)});
 			return callback();
 		}
 
@@ -37,7 +33,6 @@
 			data : self.attributes(),
 			success : function(data){
 				self.set(data);
-				_.map(self.models, function(model){model.trigger(method, self)});
 				self.trigger(method, self);
 				return callback(undefined, data);
 			},
@@ -46,6 +41,26 @@
 				return callback(err);
 			},
 		});
+	};
+
+	var xo_ajax_batch = function(self, method, callback){
+		callback = callback || function(){};
+		var numRequests = 0;
+		var async = function(val){
+			numRequests += val;
+			if(numRequests === 0){
+				callback.call(self, undefined, self);
+				self.trigger(method);
+			}
+		}
+		self.trigger('before:' + method);
+		self.each(function(model){
+			async(1);
+			model[method](function(err, data){
+				if(err) callback.call(self, err);
+				async(-1);
+			});
+		})
 	};
 
 
@@ -169,7 +184,7 @@
 			xo_ajax(this, this.URL, 'delete', 'DELETE', callback);
 			return this;
 		},
-	}),
+	});
 
 
 	/*
@@ -237,16 +252,19 @@
 			return this;
 		},
 		delete : function(callback){
-			xo_ajax(this, this.URL || this.model.URL, 'delete', 'DELETE', callback);
+			xo_ajax_batch(this, 'delete', callback);
 			return this;
 		},
 		save : function(callback){
-			xo_ajax(this, this.URL || this.model.URL, 'save', 'PUT', callback);
+			xo_ajax_batch(this, 'save', callback);
 			return this;
 		},
 	});
 
 })(jQuery);
+
+
+
 
 
 
