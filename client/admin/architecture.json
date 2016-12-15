@@ -1,0 +1,29 @@
+{
+	"C:\\Dropbox\\root\\Programming\\Javascript\\Presto\\node_modules\\codemirror\\lib\\codemirror.js": [],
+	"C:\\Dropbox\\root\\Programming\\Javascript\\Presto\\node_modules\\codemirror\\mode\\javascript\\javascript.js": [
+		"../../lib/codemirror"
+	],
+	"C:\\Dropbox\\root\\Programming\\Javascript\\Presto\\client\\admin\\calcs\\calcEdit\\calcEdit.jsx": [
+		"react",
+		"lodash",
+		"classnames",
+		"superagent",
+		"pico-router",
+		"react-codemirror",
+		"codemirror/mode/javascript/javascript"
+	],
+	"C:\\Dropbox\\root\\Programming\\Javascript\\Presto\\client\\admin\\calcs\\calcs.jsx": [
+		"react",
+		"lodash",
+		"classnames",
+		"superagent",
+		"./calcEdit/calcEdit.jsx"
+	],
+	"C:\\Dropbox\\root\\Programming\\Javascript\\Presto\\client\\admin\\admin.jsx": [
+		"react",
+		"lodash",
+		"classnames",
+		"pico-router",
+		"./calcs/calcs.jsx"
+	]
+}

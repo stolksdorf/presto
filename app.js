@@ -1,4 +1,4 @@
-var mongoUri = process.env.MONGOLAB_URI ||
+var mongoUri = process.env.MONGODB_URI ||
 	process.env.MONGOHQ_URL ||
 	'mongodb://localhost/presto';
 mongoose = require('mongoose');

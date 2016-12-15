@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns= "http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Language" content="en">
+		<script>global=window</script>
+		<link href="//netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" />
+		<link href='https://fonts.googleapis.com/css?family=Lato:400,300,300italic,700,900' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="/presto/bundle.css" />
+		<title>Presto</title>
+		<link rel="shortcut icon" href="/assets/presto/favicon.ico" type="image/x-icon">
+		<link rel="icon" href="/assets/presto/favicon.ico" type="image/x-icon">
+	</head>
+	<body>
+		<div id="reactContainer">{{=render.component}}</div>
+	</body>
+	<script src="/libs.js"></script>
+	<script src="/presto/bundle.js"></script>
+	<script>require("react-dom").render(require("react").createElement(require("C:\\Dropbox\\root\\Programming\\Javascript\\Presto\\client\\presto\\presto.jsx"), {{=render.initial_props}}), document.getElementById("reactContainer"));</script>
+</html>

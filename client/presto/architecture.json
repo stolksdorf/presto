@@ -1,0 +1,12 @@
+{
+	"C:\\Dropbox\\root\\Programming\\Javascript\\Presto\\client\\presto\\home\\home.jsx": [
+		"react",
+		"lodash"
+	],
+	"C:\\Dropbox\\root\\Programming\\Javascript\\Presto\\client\\presto\\presto.jsx": [
+		"react",
+		"lodash",
+		"pico-router",
+		"./home/home.jsx"
+	]
+}
